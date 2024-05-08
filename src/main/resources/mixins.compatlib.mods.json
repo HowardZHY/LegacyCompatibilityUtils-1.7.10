@@ -1,0 +1,10 @@
+{
+  "required": false,
+  "minVersion": "0.7",
+  "package": "space.libs.mixins.mods",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+  ],
+  "mixins": [
+  ]
+}

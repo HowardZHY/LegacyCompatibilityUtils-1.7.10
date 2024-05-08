@@ -4,6 +4,7 @@
 .vscode
 run
 build
+temp
 /eclipse/
 .classpath
 .project

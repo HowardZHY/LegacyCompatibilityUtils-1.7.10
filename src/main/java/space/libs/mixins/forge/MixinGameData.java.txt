@@ -1,0 +1,29 @@
+package space.libs.mixins.forge;
+
+import cpw.mods.fml.common.FMLLog;
+import net.minecraft.item.Item;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.Objects;
+
+@SuppressWarnings("all")
+@Mixin(targets = "cpw.mods.fml.common.registry.GameData", remap = false)
+public class MixinGameData {
+
+    // 1.6 compat?
+    @Inject(method = "registerItem(Lnet/minecraft/item/Item;Ljava/lang/String;)I", at = @At("HEAD"))
+    private void registerItem(Item item, String name, CallbackInfo ci) {
+        if (!Objects.equals(name, item.getUnlocalizedName())) {
+            try {
+                name = item.getUnlocalizedName();
+                FMLLog.warning("Illegal name for item " + name + " invalid registry invocation/invalid name ?");
+            } catch (Exception e) {
+                FMLLog.severe("Cannot getUnlocalizedName for item " + name);
+            }
+        }
+    }
+
+}
