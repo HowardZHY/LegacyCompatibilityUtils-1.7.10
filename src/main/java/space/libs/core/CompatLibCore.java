@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 @SuppressWarnings("all")
-@IFMLLoadingPlugin.TransformerExclusions({"space.libs.asm", "space.libs.core"})
+@IFMLLoadingPlugin.TransformerExclusions({"space.libs.asm", "space.libs.core", "space.libs.util.cursedmixinextensions", "org.joml"})
 @IFMLLoadingPlugin.SortingIndex(Integer.MIN_VALUE + 5)
 public class CompatLibCore implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
@@ -30,7 +30,6 @@ public class CompatLibCore implements IFMLLoadingPlugin, IEarlyMixinLoader {
     public List<String> getMixins(Set<String> loadedCoreMods) {
         List<String> mixins = new ArrayList<>();
         mixins.add("MixinFMLModContainer");
-        //mixins.add("MixinGameData");
         return mixins;
     }
 
@@ -38,7 +37,7 @@ public class CompatLibCore implements IFMLLoadingPlugin, IEarlyMixinLoader {
     public String[] getASMTransformerClass() {
         return new String[] {
             // "space.libs.asm.GameDataTransformer"
-            // "space.libs.asm.RemapTransformer",
+            // "space.libs.asm.RemapTransformer"
             "space.libs.asm.ReplaceTransformer"
         };
     }

@@ -52,7 +52,7 @@ public abstract class RemapTransformer extends Remapper implements IClassTransfo
         }
         ClassReader reader = new ClassReader(bytes);
         ClassWriter writer = new ClassWriter(reader, 0);
-        reader.accept(createClassRemapper(reader, writer), 0);
+        reader.accept(createClassRemapper(reader, writer), ClassReader.EXPAND_FRAMES);
         return writer.toByteArray();
     }
 
