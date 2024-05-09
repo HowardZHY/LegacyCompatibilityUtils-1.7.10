@@ -12,7 +12,6 @@ public class ClassNameList {
         return Arrays.stream(ClassNameList.CONTAINS_WHITELIST).anyMatch(name::contains);
     }
 
-
     /** Things shouldn't be transformed */
     public static String[] WHITELIST = {
         "club.sk1er.patcher",
@@ -51,8 +50,13 @@ public class ClassNameList {
         "optifine",
     };
 
-    /** Mod packages that's obf */
-    public static String[] BLACKLIST_164 = {
+    /** Mod packages that requires addtional transforms */
+    public static String[] BLACKLIST = {
+        ""
+    };
+
+    /** Mod that requires addtional transforms */
+    public static String[] CONTAINS_BLACKLIST = {
         ""
     };
 
