@@ -20,7 +20,7 @@ public class CompatLibLateMixinPlugin implements ILateMixinLoader {
     public List<String> getMixins(Set<String> loadedMods) {
         List<String> mixins = new ArrayList<>();
         if (loadedMods.contains("eternisles")) {
-            CompatLib.LOGGER.info("Found Eternal Isles. Injecting Fixes...");
+            CompatLib.LOGGER.info("Found Eternal Isles. Injecting Required Fixes...");
             mixins.add("aoa.MixinArmorEffects");
             mixins.add("aoa.MixinClientProxy");
         } else {
