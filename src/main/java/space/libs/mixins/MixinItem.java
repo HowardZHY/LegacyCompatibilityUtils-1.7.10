@@ -3,12 +3,9 @@ package space.libs.mixins;
 import net.minecraft.item.IItem;
 import net.minecraft.item.Item;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import space.libs.util.cursedmixinextensions.annotations.NewConstructor;
 import space.libs.util.cursedmixinextensions.annotations.ShadowSuperConstructor;
-
-import static net.minecraft.item.Item.itemRegistry;
 
 @SuppressWarnings("all")
 @Mixin(value = Item.class, priority = 500)
@@ -47,7 +44,7 @@ public class MixinItem implements IItem {
      * @author HowardZHY
      * @reason 1.6 item id
      */
-    @Overwrite
+    /*@Overwrite
     public static int getIdFromItem(Item item) {
         IItem accessor = (IItem) item;
         if (item == null) {
@@ -57,7 +54,6 @@ public class MixinItem implements IItem {
             accessor.setItemID(itemRegistry.getIDForObject(item));
             return itemRegistry.getIDForObject(item);
         }
-    }
-
+    }*/
 
 }

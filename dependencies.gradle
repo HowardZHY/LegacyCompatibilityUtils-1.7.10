@@ -40,6 +40,5 @@ dependencies {
     //runtimeOnlyNonPublishable deobf('https://github.com/Yoghurt4C/Audino/releases/download/1.0.1/Audino-1.0.1.jar')
     shadowImplementation("org.joml:joml:1.10.5")
     compileOnly("org.ow2.asm:asm-commons:9.6")
-    String curseMaven = "https://cursemaven.com/"
-    compileOnly(deobfMaven(curseMaven, "curse.maven:last-sword-you-will-ever-need-mo-72511:774998"))
+    compileOnlyApi("curse.maven:ichunutil-229060:2338149-deobf")
 }

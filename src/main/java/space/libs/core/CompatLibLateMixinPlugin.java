@@ -38,6 +38,13 @@ public class CompatLibLateMixinPlugin implements ILateMixinLoader {
         } else {
             CompatLib.LOGGER.info("Damage Indicators was not found.");
         }
+        if (loadedMods.contains("iChunUtil")) {
+            CompatLib.LOGGER.info("Found iChunUtil. Disabling Update Checker & Get Patrons...");
+            mixins.add("ichun.MixinModVersionChecker");
+            mixins.add("ichun.MixinThreadGetPatrons");
+        } else {
+            CompatLib.LOGGER.info("iChunUtil was not found.");
+        }
         return mixins;
     }
 
