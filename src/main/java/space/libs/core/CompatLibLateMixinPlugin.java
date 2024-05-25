@@ -11,6 +11,7 @@ import java.util.Set;
 @SuppressWarnings("unused")
 @LateMixin
 public class CompatLibLateMixinPlugin implements ILateMixinLoader {
+
     @Override
     public String getMixinConfig() {
         return "mixins.compatlib.mods.json";

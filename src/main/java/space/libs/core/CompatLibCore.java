@@ -35,11 +35,11 @@ public class CompatLibCore implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
     @Override
     public String[] getASMTransformerClass() {
-        return new String[] {
+        return new String[0]; //{
             // "space.libs.asm.GameDataTransformer"
             // "space.libs.asm.RemapTransformer"
-            "space.libs.asm.ReplaceTransformer"
-        };
+            // "space.libs.asm.ReplaceTransformer"
+        //};
     }
 
     @Override

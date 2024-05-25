@@ -17,8 +17,7 @@ public class MixinGameData {
     @Inject(method = "registerItem(Lnet/minecraft/item/Item;Ljava/lang/String;)I", at = @At("HEAD"))
     private void registerItem(Item item, String name, CallbackInfo ci) {
         if (!Objects.equals(name, item.getUnlocalizedName())) {
-            try {
-                name = item.getUnlocalizedName();
+            try { // TODO
                 FMLLog.warning("Illegal name for item " + name + " invalid registry invocation/invalid name ?");
             } catch (Exception e) {
                 FMLLog.severe("Cannot getUnlocalizedName for item " + name);
