@@ -38,6 +38,16 @@ public abstract class MixinCompressedStreamTools {
     }
 
     @Public
+    private static NBTTagCompound func_74794_a(DataInput data) throws IOException {
+        NBTBase nbtbase = func_150664_a(data, 0);
+        if (nbtbase instanceof NBTTagCompound) {
+            return (NBTTagCompound) nbtbase;
+        } else {
+            throw new IOException("Root tag must be a named compound tag");
+        }
+    }
+
+    @Public
     private static NBTBase func_150664_a(DataInput p_150664_0_, int p_150664_1_) throws IOException {
         byte b0 = p_150664_0_.readByte();
         if (b0 == 0) {

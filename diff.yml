@@ -229,6 +229,7 @@ net/minecraft/nbt/CompressedStreamTools:
   - error: func_74792_a([B)Lnet/minecraft/nbt/NBTTagCompound; - Method was removed
   - error: func_150664_a(Ljava/io/DataInput;I)Lnet/minecraft/nbt/NBTBase; - Method was removed
   - error: func_74794_a(Ljava/io/DataInput;)Lnet/minecraft/nbt/NBTTagCompound; - Method was removed
+    #DONE
 net/minecraft/command/IAdminCommand:
   - error: func_71563_a(Lnet/minecraft/command/ICommandSender;ILjava/lang/String;[Ljava/lang/Object;)V - Method was removed
   - error: func_152372_a(Lnet/minecraft/command/ICommandSender;Lnet/minecraft/command/ICommand;ILjava/lang/String;[Ljava/lang/Object;)V - Method was made abstract
@@ -293,10 +294,13 @@ net/minecraft/client/Minecraft:
   - error: <init>(Lnet/minecraft/util/Session;IIZZLjava/io/File;Ljava/io/File;Ljava/io/File;Ljava/net/Proxy;Ljava/lang/String;)V - Method was removed
   - error: func_147105_a(Ljava/lang/String;)V - Method was removed
   - error: field_71414_F:Z - Field was removed
+    #DONE
 net/minecraft/client/renderer/IImageBuffer:
   - error: func_152634_a()V - Method was made abstract
+    #INVALID
 net/minecraftforge/common/BiomeDictionary$Type:
   - error: <init>(Ljava/lang/String;I)V - Method was removed
+    #INVALID
 net/minecraft/client/resources/data/PackMetadataSection:
   - error: <init>(Ljava/lang/String;I)V - Method was removed
   - error: func_110461_a()Ljava/lang/String; - Method was removed
@@ -327,5 +331,7 @@ net/minecraft/client/entity/AbstractClientPlayer:
   - error: func_110301_a(Lnet/minecraft/util/ResourceLocation;Ljava/lang/String;Lnet/minecraft/util/ResourceLocation;Lnet/minecraft/client/renderer/IImageBuffer;)Lnet/minecraft/client/renderer/ThreadDownloadImageData; - Method was removed
   - error: field_110316_a:Lnet/minecraft/client/renderer/ThreadDownloadImageData; - Field was removed
   - error: field_110315_c:Lnet/minecraft/client/renderer/ThreadDownloadImageData; - Field was removed
+    #DONE
 cpw/mods/fml/client/FMLConfigGuiFactory:
   - error: minecraft:Lnet/minecraft/client/Minecraft; - Field was removed
+    #INVALID

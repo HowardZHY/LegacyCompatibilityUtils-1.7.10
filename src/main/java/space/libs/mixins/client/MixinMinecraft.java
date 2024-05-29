@@ -8,11 +8,14 @@ import net.minecraft.util.ScreenShotHelper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import space.libs.util.cursedmixinextensions.annotations.Public;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 
 @SuppressWarnings("all")
@@ -66,6 +69,19 @@ public abstract class MixinMinecraft {
         }
         bytebuffer.flip();
         return bytebuffer;
+    }
+
+    @Public
+    private static void func_147105_a(String p_147105_0_) {
+        try {
+            Toolkit toolkit = Toolkit.getDefaultToolkit();
+            Class<?> oclass = toolkit.getClass();
+            if (oclass.getName().equals("sun.awt.X11.XToolkit")) {
+                Field field = oclass.getDeclaredField("awtAppClassName");
+                field.setAccessible(true);
+                field.set(toolkit, p_147105_0_);
+            }
+        } catch (Exception exception) {}
     }
 
 }
