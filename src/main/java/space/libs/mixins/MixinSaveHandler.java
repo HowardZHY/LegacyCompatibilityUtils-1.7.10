@@ -1,7 +1,9 @@
 package space.libs.mixins;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.storage.SaveHandler;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Final;
@@ -13,7 +15,7 @@ import java.io.FileInputStream;
 
 @SuppressWarnings("all")
 @Mixin(SaveHandler.class)
-public class MixinSaveHandler {
+public abstract class MixinSaveHandler {
 
     @Final
     @Shadow
@@ -23,17 +25,19 @@ public class MixinSaveHandler {
     @Shadow
     private File playersDirectory;
 
+    @Shadow
+    public abstract NBTTagCompound readPlayerData(EntityPlayer player);
+
     /** getPlayerData */
-    public NBTTagCompound func_75764_a(String par1Str) {
+    public NBTTagCompound func_75764_a(String name) {
+        EntityPlayer player;
         try {
-            File file1 = new File(this.playersDirectory, par1Str + ".dat");
-            if (file1.exists()) {
-                return CompressedStreamTools.readCompressed(new FileInputStream(file1));
-            }
+            player = MinecraftServer.getServer().getEntityWorld().getPlayerEntityByName(name);
         } catch (Exception exception) {
-            logger.warn("[CompatLib] Failed to load player data for " + par1Str);
+            logger.warn("[CompatLib] Player " + name + " is offline or doesn't exist, cannot load player data !");
+            return null;
         }
-        return null;
+        return this.readPlayerData(player);
     }
 
 }

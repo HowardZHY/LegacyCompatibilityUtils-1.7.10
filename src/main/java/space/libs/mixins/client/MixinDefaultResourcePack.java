@@ -19,7 +19,9 @@ public class MixinDefaultResourcePack {
 
     @Final
     @Shadow
-    private Map<String, java.io.File> field_152781_b;
+    private Map field_152781_b;
+
+    public Map field_110606_b;
 
     public File field_110607_c;
 
@@ -39,13 +41,14 @@ public class MixinDefaultResourcePack {
             for (File file : Objects.requireNonNull(paramFile.listFiles()))
                 func_110603_a(file);
         } else {
-            func_110604_a(AbstractResourcePack.getRelativeName(this.field_152781_b.get(paramFile), paramFile), paramFile);
+            func_110604_a(AbstractResourcePack.getRelativeName((File) this.field_152781_b.get(paramFile), paramFile), paramFile);
         }
     }
 
     /** addResourceFile */
     public void func_110604_a(String paramString, File paramFile) {
         this.field_152781_b.put((new ResourceLocation(paramString)).toString(), paramFile);
+        this.field_110606_b = this.field_152781_b;
     }
 
 }

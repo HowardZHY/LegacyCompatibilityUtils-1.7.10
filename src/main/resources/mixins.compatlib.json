@@ -25,6 +25,7 @@
     "MixinEntityTameable",
     "MixinItem",
     "MixinMinecraftServer",
+    "MixinPlayerManager",
     "MixinSaveHandler",
     "MixinServerConfigurationManager",
     "MixinUtil",
