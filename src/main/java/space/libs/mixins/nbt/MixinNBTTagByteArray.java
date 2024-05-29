@@ -9,7 +9,7 @@ import java.io.IOException;
 
 @SuppressWarnings("unused")
 @Mixin(NBTTagByteArray.class)
-public class MixinNBTTagByteArray {
+public class MixinNBTTagByteArray extends MixinNBTBase {
 
     @Shadow
     private byte[] byteArray;

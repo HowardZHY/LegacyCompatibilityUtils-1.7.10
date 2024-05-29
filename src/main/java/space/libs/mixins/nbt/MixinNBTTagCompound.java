@@ -16,7 +16,7 @@ import java.util.Map;
 
 @SuppressWarnings("all")
 @Mixin(NBTTagCompound.class)
-public class MixinNBTTagCompound implements INBTBase {
+public class MixinNBTTagCompound extends MixinNBTBase implements INBTBase {
     @Shadow
     private Map tagMap;
 

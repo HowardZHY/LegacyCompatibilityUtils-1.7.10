@@ -9,7 +9,7 @@ import java.io.IOException;
 
 @SuppressWarnings("unused")
 @Mixin(NBTTagIntArray.class)
-public class MixinNBTTagIntArray {
+public class MixinNBTTagIntArray extends MixinNBTBase {
 
     @Shadow
     private int[] intArray;

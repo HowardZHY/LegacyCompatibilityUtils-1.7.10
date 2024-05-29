@@ -10,7 +10,7 @@ import java.io.IOException;
 
 @SuppressWarnings("unused")
 @Mixin(NBTTagShort.class)
-public class MixinNBTTagShort implements INBTBase {
+public class MixinNBTTagShort extends MixinNBTBase implements INBTBase {
 
     @Shadow
     private short data;
