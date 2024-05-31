@@ -9,13 +9,19 @@
   "client": [
     "client.MixinAbstractClientPlayer",
     "client.MixinDefaultResourcePack",
+    "client.MixinGameSettings",
+    "client.MixinGuiConfirmOpenLink",
     "client.MixinGuiEditSign",
+    "client.MixinGuiMainMenu",
+    "client.MixinGuiSelectWorld",
+    "client.MixinGuiYesNo",
     "client.MixinMinecraft",
     "client.MixinOpenGlHelper",
     "client.MixinPackMetadataSection",
     "client.MixinScaledResolution",
     "client.MixinServerData",
     "client.MixinShaderGroup",
+    "client.MixinTextureUtil",
     "client.MixinThreadDownloadImageData"
   ],
   "mixins": [

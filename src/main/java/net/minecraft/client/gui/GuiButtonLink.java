@@ -9,7 +9,8 @@ import org.apache.logging.log4j.Logger;
 @SuppressWarnings("all")
 @SideOnly(Side.CLIENT)
 public class GuiButtonLink extends GuiButton {
-    private static final Logger field_146139_o = LogManager.getLogger();
+
+    public static final Logger field_146139_o = LogManager.getLogger();
 
     public GuiButtonLink(int id, int x, int y, int w, int h, String buttonText) {
         super(id, x, y, w, h, buttonText);
