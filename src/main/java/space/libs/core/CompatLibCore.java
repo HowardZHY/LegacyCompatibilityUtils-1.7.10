@@ -30,6 +30,7 @@ public class CompatLibCore implements IFMLLoadingPlugin, IEarlyMixinLoader {
     public List<String> getMixins(Set<String> loadedCoreMods) {
         List<String> mixins = new ArrayList<>();
         mixins.add("MixinFMLModContainer");
+        mixins.add("MixinLanguageRegistry");
         return mixins;
     }
 

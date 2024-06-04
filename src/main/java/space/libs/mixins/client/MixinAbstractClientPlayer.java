@@ -50,13 +50,13 @@ public abstract class MixinAbstractClientPlayer extends EntityPlayer {
 
     /** getSkinUrl */
     @Public
-    private static String func_110300_d(String paramString) {
-        return String.format("https://mineskin.eu/skin/%s.png", new Object[] {StringUtils.stripControlCodes(paramString)});
+    private static String func_110300_d(String name) {
+        return String.format("https://mineskin.eu/skin/%s.png", new Object[] {StringUtils.stripControlCodes(name)});
     } //mirror url
 
     /** getDownloadImage */
     @Public
-    private static ThreadDownloadImageData func_110301_a(ResourceLocation location, String name, ResourceLocation paramResourceLocation2, IImageBuffer paramIImageBuffer) {
+    private static ThreadDownloadImageData func_110301_a(ResourceLocation location, String name, ResourceLocation paramResourceLocation2, IImageBuffer buffer) {
         return getDownloadImageSkin(location, name);
     }
 
@@ -86,9 +86,9 @@ public abstract class MixinAbstractClientPlayer extends EntityPlayer {
 
     /** getCapeUrl */
     @Public
-    private static String func_110308_e(String url) {
-        return String.format("http://skins.minecraft.net/MinecraftCloaks/%s.png", new Object[] {StringUtils.stripControlCodes(url)});
-    } //won't work anymore
+    private static String func_110308_e(String name) {
+        return String.format("http://skins.minecraft.net/MinecraftCloaks/%s.png", new Object[] {StringUtils.stripControlCodes(name)});
+    } // won't work anymore
 
     /** getTextureSkin */
     public ThreadDownloadImageData func_110309_l() {

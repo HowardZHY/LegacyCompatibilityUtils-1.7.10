@@ -1,4 +1,4 @@
-Incompatibilities found: 188 errors, 0 warnings
+Incompatibilities found: 187 errors, 0 warnings
 cpw/mods/fml/common/registry/GameData:
   - error: injectWorldIDMap(Ljava/util/Map;ZZ)Ljava/util/List; - Method was removed
   - error: buildItemDataList()Ljava/util/Map; - Method was removed
@@ -34,9 +34,6 @@ cpw/mods/fml/common/IFMLSidedHandler:
   - error: stripSpecialChars(Ljava/lang/String;)Ljava/lang/String; - Method was made abstract
   - error: processWindowMessages()V - Method was made abstract
     #INVALID
-net/minecraftforge/event/entity/player/EntityItemPickupEvent:
-  - error: Class no longer exists
-    #TODO?
 net/minecraft/util/AABBPool:
   - error: Class no longer exists
     #DONE
@@ -170,9 +167,10 @@ net/minecraft/client/gui/inventory/GuiEditSign:
     #DONE
 net/minecraft/client/settings/GameSettings$Options:
   - error: USE_SERVER_TEXTURES:Lnet/minecraft/client/settings/GameSettings$Options; - Field was removed
-    #TODO?
+    #NOT PLANNED
 cpw/mods/fml/common/registry/LanguageRegistry:
   - error: loadLanguageTable(Ljava/util/Map;Ljava/lang/String;)V - Method was removed
+    #DONE
 net/minecraft/server/management/BanList:
   - error: func_73709_b(Ljava/lang/String;)V - Method was removed
   - error: func_73712_c()Ljava/util/Map; - Method was removed
@@ -316,6 +314,7 @@ net/minecraftforge/common/BiomeDictionary$Type:
 net/minecraft/client/resources/data/PackMetadataSection:
   - error: <init>(Ljava/lang/String;I)V - Method was removed
   - error: func_110461_a()Ljava/lang/String; - Method was removed
+    #DONE
 net/minecraft/client/gui/GuiYesNo:
   - error: <init>(Lnet/minecraft/client/gui/GuiScreen;Ljava/lang/String;Ljava/lang/String;I)V - Method was removed
   - error: <init>(Lnet/minecraft/client/gui/GuiScreen;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V - Method was removed
@@ -326,6 +325,7 @@ net/minecraft/client/settings/GameSettings:
 net/minecraft/client/renderer/ThreadDownloadImageData:
   - error: <init>(Ljava/lang/String;Lnet/minecraft/util/ResourceLocation;Lnet/minecraft/client/renderer/IImageBuffer;)V - Method was removed
   - error: func_110557_a()Z - Method was removed
+    #DONE
 cpw/mods/fml/common/eventhandler/Event$HasResult:
   - error: Class no longer exists
     #INVALID
