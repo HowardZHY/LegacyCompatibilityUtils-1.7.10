@@ -99,4 +99,5 @@ public abstract class MixinAbstractClientPlayer extends EntityPlayer {
     public ThreadDownloadImageData func_110310_o() {
         return this.field_110315_c;
     }
+
 }

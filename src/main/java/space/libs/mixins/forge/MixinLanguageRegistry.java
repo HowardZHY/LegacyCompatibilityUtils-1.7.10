@@ -24,11 +24,13 @@ public abstract class MixinLanguageRegistry {
 
     public void loadLanguageTable(Map field_135032_a, String lang) {
         Properties usPack = this.modLanguageData.get("en_US");
-        if (usPack != null)
+        if (usPack != null) {
             field_135032_a.putAll(usPack);
+        }
         Properties langPack = this.modLanguageData.get(lang);
-        if (langPack == null)
+        if (langPack == null) {
             return;
+        }
         field_135032_a.putAll(langPack);
     }
 }
