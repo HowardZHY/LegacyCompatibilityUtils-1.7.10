@@ -257,7 +257,7 @@ net/minecraft/entity/player/EntityPlayerMP:
     #DONE
 net/minecraft/nbt/NBTTagFloat:
   - error: func_74735_a(Ljava/io/DataInput;I)V - Method was removed
-    #INVALID
+    #DONE
 net/minecraft/client/gui/GuiConfirmOpenLink:
   - error: <init>(Lnet/minecraft/client/gui/GuiScreen;Ljava/lang/String;IZ)V - Method was removed
   - error: field_146361_t:Ljava/lang/String; - Field was made final
