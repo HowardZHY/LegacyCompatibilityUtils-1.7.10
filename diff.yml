@@ -42,7 +42,7 @@ net/minecraft/world/gen/layer/GenLayerBiome:
   - error: warmBiomes:Ljava/util/List; - Field was removed
   - error: desertBiomes:Ljava/util/List; - Field was removed
   - error: coolBiomes:Ljava/util/List; - Field was removed
-    #TODO
+    #INVALID
 net/minecraft/nbt/NBTTagByteArray:
   - error: func_74735_a(Ljava/io/DataInput;I)V - Method was removed
     #DONE
@@ -88,11 +88,11 @@ net/minecraft/profiler/PlayerUsageSnooper:
   - error: func_76464_f()V - Method was removed
   - error: func_76472_a(Ljava/lang/String;Ljava/lang/Object;)V - Method was removed
   - error: field_76482_a:Ljava/util/Map; - Field was removed
-    #TODO?
+    #DONE
 net/minecraft/entity/IEntityOwnable:
   - error: func_70905_p()Ljava/lang/String; - Method was removed
   - error: func_152113_b()Ljava/lang/String; - Method was made abstract
-    #NOT PLANNED
+    #DONE
 net/minecraft/client/renderer/OpenGlHelper:
   - error: field_77477_c:Z - Field was removed
     #DONE
@@ -139,12 +139,13 @@ net/minecraft/tileentity/TileEntitySkull:
   - error: func_145905_a(ILjava/lang/String;)V - Method was removed
   - error: func_145907_c()Ljava/lang/String; - Method was removed
   - error: field_145909_j:Ljava/lang/String; - Field was removed
-    #TODO
+    #DONE
 net/minecraft/util/IJsonSerializable:
   - error: func_152753_a(Lcom/google/gson/JsonElement;)V - Method was made abstract
     #INVALID
 net/minecraft/command/ServerCommandManager:
   - error: func_71563_a(Lnet/minecraft/command/ICommandSender;ILjava/lang/String;[Ljava/lang/Object;)V - Method was removed
+    #DONE
 net/minecraft/nbt/NBTTagEnd:
   - error: func_74735_a(Ljava/io/DataInput;I)V - Method was removed
     #DONE
@@ -158,7 +159,7 @@ net/minecraft/world/World:
     #DONE
 net/minecraft/client/renderer/tileentity/TileEntitySkullRenderer:
   - error: func_147530_a(FFFIFILjava/lang/String;)V - Method was removed
-    #TODO
+    #DONE
 net/minecraft/client/gui/inventory/GuiEditSign:
   - error: field_146850_a:Ljava/lang/String; - Field was removed
     #DONE
@@ -182,6 +183,7 @@ net/minecraft/server/management/BanList:
   - error: field_73714_c:Z - Field was removed
   - error: field_73713_b:Ljava/io/File; - Field was removed
   - error: field_151356_a:Lorg/apache/logging/log4j/Logger; - Field was removed
+    #NOT PLANNED FOR DEDICATED SERVER
 net/minecraft/client/resources/DefaultResourcePack:
   - error: <init>(Ljava/io/File;)V - Method was removed
   - error: func_110604_a(Ljava/lang/String;Ljava/io/File;)V - Method was removed
@@ -237,6 +239,7 @@ net/minecraft/nbt/CompressedStreamTools:
 net/minecraft/command/IAdminCommand:
   - error: func_71563_a(Lnet/minecraft/command/ICommandSender;ILjava/lang/String;[Ljava/lang/Object;)V - Method was removed
   - error: func_152372_a(Lnet/minecraft/command/ICommandSender;Lnet/minecraft/command/ICommand;ILjava/lang/String;[Ljava/lang/Object;)V - Method was made abstract
+    #DONE
 net/minecraft/client/mco/Request$Put:
   - error: Class no longer exists
     #INVALID

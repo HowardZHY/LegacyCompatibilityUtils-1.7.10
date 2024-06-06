@@ -1,5 +1,6 @@
 package space.libs.mixins;
 
+import net.minecraft.entity.IEntityOwnableName;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
@@ -8,13 +9,13 @@ import org.spongepowered.asm.mixin.Shadow;
 
 @SuppressWarnings("unused")
 @Mixin(EntityTameable.class)
-public abstract class MixinEntityTameable {
+public abstract class MixinEntityTameable implements IEntityOwnableName {
 
     @Shadow
     public abstract String func_152113_b();
 
     @Shadow
-    public void func_152115_b(String uuid) {}
+    public abstract void func_152115_b(String uuid);
 
     /** getOwnerName */
     public String func_70905_p() {
