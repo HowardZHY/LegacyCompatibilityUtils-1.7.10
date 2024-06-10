@@ -16,6 +16,7 @@
     "client.MixinGuiYesNo",
     "client.MixinMinecraft",
     "client.MixinOpenGlHelper",
+    "client.MixinOptions",
     "client.MixinPackMetadataSection",
     "client.MixinScaledResolution",
     "client.MixinServerData",

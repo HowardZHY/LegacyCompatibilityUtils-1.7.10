@@ -165,7 +165,7 @@ net/minecraft/client/gui/inventory/GuiEditSign:
     #DONE
 net/minecraft/client/settings/GameSettings$Options:
   - error: USE_SERVER_TEXTURES:Lnet/minecraft/client/settings/GameSettings$Options; - Field was removed
-    #NOT PLANNED
+    #DONE?
 cpw/mods/fml/common/registry/LanguageRegistry:
   - error: loadLanguageTable(Ljava/util/Map;Ljava/lang/String;)V - Method was removed
     #DONE
