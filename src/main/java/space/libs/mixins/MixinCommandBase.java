@@ -1,9 +1,6 @@
 package space.libs.mixins;
 
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.IAdminCommand;
-import net.minecraft.command.ICommand;
-import net.minecraft.command.ICommandSender;
+import net.minecraft.command.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import space.libs.util.cursedmixinextensions.annotations.Public;
@@ -26,7 +23,9 @@ public abstract class MixinCommandBase {
 
     @Public
     private static void func_71524_a(ICommandSender sender, int paramInt, String msgFormat, Object... paramVarArgs) {
-        throw new UnsupportedOperationException("Admin Command without ICommand is unsupported");
-        //func_152374_a(sender, this, msgFormat, paramVarArgs);
+        if (theAdmin != null) {
+            IAdminCommandLegacy accessor = (IAdminCommandLegacy) theAdmin;
+            accessor.func_71563_a(sender, paramInt, msgFormat, paramVarArgs);
+        }
     }
 }

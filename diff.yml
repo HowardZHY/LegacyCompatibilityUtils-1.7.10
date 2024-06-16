@@ -131,7 +131,7 @@ net/minecraft/nbt/NBTTagInt:
     #DONE
 net/minecraft/util/Util$EnumOS:
   - error: MACOS:Lnet/minecraft/util/Util$EnumOS; - Field was removed
-    #F*CK MAC
+    #DONE with ASM?
 net/minecraft/client/mco/Request$Get:
   - error: Class no longer exists
     #INVALID
