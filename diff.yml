@@ -275,12 +275,13 @@ net/minecraft/server/management/ServerConfigurationManager:
   - error: func_72357_a(Lnet/minecraft/world/WorldSettings$GameType;)V - Method was removed
   - error: func_72398_c()Ljava/lang/String; - Method was removed
   - error: a(Lnet/minecraft/network/NetworkManager;Lnet/minecraft/entity/player/EntityPlayerMP;Lnet/minecraft/network/NetHandlerPlayServer;)V - Method was removed
+    #INVALID METHOD?
   - error: func_72353_e(Ljava/lang/String;)Z - Method was removed
   - error: func_72376_i()Ljava/util/Set; - Method was removed
   - error: func_72390_e()Lnet/minecraft/server/management/BanList; - Method was removed
   - error: func_72386_b(Ljava/lang/String;)V - Method was removed
   - error: field_72402_d:I - Field was lowered in visibility
-    #TODO
+    #DONE MOST
 net/minecraft/client/mco/McoClientConfig:
   - error: Class no longer exists
     #INVALID
