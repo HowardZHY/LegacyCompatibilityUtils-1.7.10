@@ -9,7 +9,7 @@ import java.util.Map;
 
 @SuppressWarnings("all")
 @IFMLLoadingPlugin.TransformerExclusions({"space.libs.asm", "space.libs.core", "space.libs.util.cursedmixinextensions", "org.joml"})
-@IFMLLoadingPlugin.SortingIndex(Integer.MIN_VALUE + 5)
+@IFMLLoadingPlugin.SortingIndex(Integer.MIN_VALUE + 2)
 public class CompatLibCore implements IFMLLoadingPlugin {
 
     public static Logger LOGGER = LogManager.getLogger("CompatLibCore");
