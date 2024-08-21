@@ -61,6 +61,22 @@ public class FMLPlayerTransformer implements IClassTransformer {
                 }
                 super.visitMethodInsn(opcode, owner, name, desc, itf);
             }
+
+            @Override
+            public void visitLocalVariable(String name, String desc, String signature, Label start, Label end, int index) {
+                if (desc.equals("Lcpw/mods/fml/common/network/Player;")) {
+                    desc = "Lspace/libs/interfaces/IPlayer;";
+                }
+                super.visitLocalVariable(name, desc, signature, start, end, index);
+            }
+
+            @Override
+            public void visitTypeInsn(int opcode, String type) {
+                if (type.equals("cpw/mods/fml/common/network/Player") && opcode == Opcodes.CHECKCAST) {
+                    type = "space/libs/interfaces/IPlayer";
+                }
+                super.visitTypeInsn(opcode, type);
+            }
         }
     }
 }
