@@ -8,7 +8,7 @@ public class ItemTransformer implements IClassTransformer {
     @Override
     public byte[] transform(String name, String transformedName, byte[] bytes) {
         if (name == null || bytes == null) {
-            return null;
+            return bytes;
         }
         if (ClassNameList.Contains(name) || ClassNameList.Startswith(name)) {
             return bytes;
@@ -30,9 +30,9 @@ public class ItemTransformer implements IClassTransformer {
             return new MethodVisitor(Opcodes.ASM5, super.visitMethod(access, name, descriptor, signature, exceptions)) {
                 @Override
                 public void visitFieldInsn(int opcode, String owner, String name, String descriptor) {
-                    if (descriptor.startsWith("Lnet/minecraft/item/Item") && name.startsWith("field_")) {
+                    if (owner.equals("net/minecraft/item/Item") && descriptor.startsWith("Lnet/minecraft/item/Item") && (!descriptor.contains("$")) && name.startsWith("field_")) {
                         if (!name.startsWith("field_77700")) {
-                            descriptor = "Lnet/minecraft/init/Items;";
+                            owner = "net/minecraft/init/Items";
                         }
                     }
                     super.visitFieldInsn(opcode, owner, name, descriptor);

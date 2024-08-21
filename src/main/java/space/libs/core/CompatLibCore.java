@@ -25,6 +25,11 @@ public class CompatLibCore implements IFMLLoadingPlugin {
     @Override
     public String[] getASMTransformerClass() {
         return new String[] {
+            "space.libs.asm.BlockTransformer",
+            "space.libs.asm.EventBusTransformer",
+            "space.libs.asm.FMLPlayerTransformer",
+            "space.libs.asm.ForgeSubscribeTransformer",
+            "space.libs.asm.ItemTransformer",
             "space.libs.asm.MacOSTransformer"
             // "space.libs.asm.GameDataTransformer"
             // "space.libs.asm.RemapTransformer"

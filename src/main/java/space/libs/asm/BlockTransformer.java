@@ -8,7 +8,7 @@ public class BlockTransformer implements IClassTransformer {
     @Override
     public byte[] transform(String name, String transformedName, byte[] bytes) {
         if (name == null || bytes == null) {
-            return null;
+            return bytes;
         }
         if (ClassNameList.Contains(name) || ClassNameList.Startswith(name)) {
             return bytes;
@@ -30,8 +30,8 @@ public class BlockTransformer implements IClassTransformer {
             return new MethodVisitor(Opcodes.ASM5, super.visitMethod(access, name, descriptor, signature, exceptions)) {
                 @Override
                 public void visitFieldInsn(int opcode, String owner, String name, String descriptor) {
-                    if (descriptor.startsWith("Lnet/minecraft/block/Block") && name.startsWith("field_")) {
-                        descriptor = "Lnet/minecraft/init/Blocks;";
+                    if (owner.equals("net/minecraft/block/Block") && descriptor.startsWith("Lnet/minecraft/block/Block") && (!descriptor.contains("$")) && name.startsWith("field_")) {
+                        owner = "net/minecraft/init/Blocks";
                     }
                     super.visitFieldInsn(opcode, owner, name, descriptor);
                 }

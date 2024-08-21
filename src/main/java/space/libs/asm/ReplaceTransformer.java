@@ -45,7 +45,7 @@ public class ReplaceTransformer implements IClassTransformer {
     @Override
     public byte[] transform(String name, String transformedName, byte[] bytes) {
         if (name == null || bytes == null) {
-            return null;
+            return bytes;
         }
         if (ClassNameList.Contains(name) || ClassNameList.Startswith(name)) {
             return bytes;

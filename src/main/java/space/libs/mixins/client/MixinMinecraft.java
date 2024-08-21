@@ -2,6 +2,7 @@ package space.libs.mixins.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngame;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.util.ScreenShotHelper;
@@ -43,6 +44,8 @@ public abstract class MixinMinecraft {
 
     public boolean field_71414_F;
 
+    @Shadow
+    public void displayGuiScreen(GuiScreen guiScreenIn) {}
 
     /** screenshotListenerchecks */
     public void func_71365_K() {
@@ -54,6 +57,10 @@ public abstract class MixinMinecraft {
         } else {
             this.field_71414_F = false;
         }
+    }
+
+    public void func_71373_a(GuiScreen screen) {
+        this.displayGuiScreen(screen);
     }
 
     /** readImage */

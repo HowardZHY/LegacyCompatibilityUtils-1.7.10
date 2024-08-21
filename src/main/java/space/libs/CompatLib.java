@@ -30,8 +30,6 @@ public class CompatLib {
         }
     }
 
-    public void onClientModLoading() {
-
-    }
+    public void onClientModLoading() {}
 
 }
