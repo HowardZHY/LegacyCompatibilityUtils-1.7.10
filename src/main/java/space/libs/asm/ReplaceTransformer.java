@@ -15,12 +15,6 @@ import java.util.stream.Collectors;
 @SuppressWarnings("all")
 public class ReplaceTransformer implements IClassTransformer {
 
-    public ReplaceTransformer INSTANCE;
-
-    public ReplaceTransformer() {
-        INSTANCE = this;
-    }
-
     public static String ATTRIBUTE_OLD = "net/minecraft/entity/ai/attributes/Attribute";
 
     public static String ATTRIBUTE = "net/minecraft/entity/ai/attributes/IAttribute";
