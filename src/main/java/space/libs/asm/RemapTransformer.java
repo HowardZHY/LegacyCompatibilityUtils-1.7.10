@@ -45,10 +45,13 @@ public abstract class RemapTransformer extends Remapper implements IClassTransfo
     @Override
     public final byte[] transform(String name, String transformedName, byte[] bytes) {
         if (name == null || bytes == null) {
-            return null;
+            return bytes;
         }
         if (ClassNameList.Contains(name) || ClassNameList.Startswith(name)) {
             return bytes;
+        }
+        if (!name.contains(".")) {
+            return bytes; // Exclude Obf and OptiFine base classes
         }
         ClassReader reader = new ClassReader(bytes);
         ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS);

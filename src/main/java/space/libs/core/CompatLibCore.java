@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.launch.MixinBootstrap;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 @SuppressWarnings("all")
@@ -24,17 +25,18 @@ public class CompatLibCore implements IFMLLoadingPlugin {
 
     @Override
     public String[] getASMTransformerClass() {
-        return new String[] {
-            "space.libs.asm.BlockTransformer",
-            "space.libs.asm.EventBusTransformer",
-            "space.libs.asm.FMLPlayerTransformer",
-            "space.libs.asm.ForgeSubscribeTransformer",
-            "space.libs.asm.ItemTransformer",
-            "space.libs.asm.MacOSTransformer"
-            // "space.libs.asm.GameDataTransformer"
-            // "space.libs.asm.RemapTransformer"
-            // "space.libs.asm.ReplaceTransformer"
-        };
+        ArrayList<String> transformersList = new ArrayList<>();
+        transformersList.add("space.libs.asm.BlockTransformer");
+        transformersList.add("space.libs.asm.EventBusTransformer");
+        transformersList.add("space.libs.asm.FMLPlayerTransformer");
+        transformersList.add("space.libs.asm.ForgeSubscribeTransformer");
+        transformersList.add("space.libs.asm.ItemTransformer");
+        transformersList.add("space.libs.asm.MacOSTransformer");
+        // transformersList.add("space.libs.asm.RemapTransformer");
+        // "space.libs.asm.GameDataTransformer"
+        // "space.libs.asm.ReplaceTransformer"
+        String[] transformers = new String[transformersList.size()];
+        return transformersList.toArray(transformers);
     }
 
     @Override

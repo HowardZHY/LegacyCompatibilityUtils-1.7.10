@@ -226,8 +226,8 @@ public class CustomRemapTransformer extends RemapTransformer implements IClassNa
         Map<String, String> raw = this.rawFields.row(name);
         if (!raw.isEmpty()) {
             // Resolve field descriptors
-            ClassNode classNode = new ClassNode();
-            reader.accept(classNode, /*ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG |*/ ClassReader.SKIP_FRAMES);
+            ClassNode classNode = new ClassNode(ASM5);
+            reader.accept(classNode, 0 /*ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES*/);
 
             for (FieldNode fieldNode : classNode.fields) {
                 String newName = raw.get(fieldNode.name);

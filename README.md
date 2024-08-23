@@ -1,6 +1,8 @@
 # LegacyCompatibilityUtils
 
-(CompatLib in short) Made most 1.7.2 mods working on 1.7.10
+[Here for 1.8.9 Version with 1.8 Mod Compat](https://github.com/HowardZHY/LegacyCompatibilityUtils-1.8.9)
+
+(CompatLib in short) Made most 1.7.2 mods working on 1.7.10.
 
 This is done by re-add removed classes and srg methods/fields.
 
