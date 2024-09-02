@@ -29,6 +29,7 @@ public class CompatLibCore implements IFMLLoadingPlugin {
         transformersList.add("space.libs.asm.BlockTransformer");
         transformersList.add("space.libs.asm.EventBusTransformer");
         transformersList.add("space.libs.asm.FMLPlayerTransformer");
+        transformersList.add("space.libs.asm.FMLModContainerTransformer");
         transformersList.add("space.libs.asm.ForgeSubscribeTransformer");
         transformersList.add("space.libs.asm.ItemTransformer");
         transformersList.add("space.libs.asm.MacOSTransformer");

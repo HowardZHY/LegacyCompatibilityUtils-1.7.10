@@ -2,7 +2,7 @@
  * ASM: a very small and fast Java bytecode manipulation framework
  * Copyright (c) 2000-2011 INRIA, France Telecom
  * All rights reserved.
- *
+ * <p>
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -14,7 +14,7 @@
  * 3. Neither the name of the copyright holders nor the names of its
  *    contributors may be used to endorse or promote products derived from
  *    this software without specific prior written permission.
- *
+ * <p>
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -42,6 +42,7 @@ import org.objectweb.asm.TypePath;
  *
  * @author Eugene Kuleshov
  */
+@SuppressWarnings("all")
 public class ClassRemapper extends ClassVisitor {
 
     protected final Remapper remapper;
@@ -106,7 +107,7 @@ public class ClassRemapper extends ClassVisitor {
     @Override
     public void visitInnerClass(String name, String outerName,
                                 String innerName, int access) {
-        // TODO should innerName be changed?
+        // should innerName be changed?
         super.visitInnerClass(remapper.mapType(name), outerName == null ? null
             : remapper.mapType(outerName), innerName, access);
     }
