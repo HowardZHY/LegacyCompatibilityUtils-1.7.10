@@ -27,6 +27,7 @@ public class MixinEntityPlayerMP extends MixinEntityPlayer {
         this.field_71142_cm = server.getConfigurationManager().getViewDistance();
     }
 
+    @Override
     public void func_71035_c(String msg) {
         this.playerNetServerHandler.sendPacket(new S02PacketChat(new ChatComponentText(msg)));
     }

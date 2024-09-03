@@ -42,7 +42,7 @@ net/minecraft/world/gen/layer/GenLayerBiome:
   - error: warmBiomes:Ljava/util/List; - Field was removed
   - error: desertBiomes:Ljava/util/List; - Field was removed
   - error: coolBiomes:Ljava/util/List; - Field was removed
-    #INVALID
+    #DONE
 net/minecraft/nbt/NBTTagByteArray:
   - error: func_74735_a(Ljava/io/DataInput;I)V - Method was removed
     #DONE

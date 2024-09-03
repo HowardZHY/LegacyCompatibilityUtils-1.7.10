@@ -155,7 +155,7 @@ public abstract class MixinServerConfigurationManager {
             GameProfile profile = this.func_72361_f(name).getGameProfile();
             return profile;
         } catch (Exception e) {
-            logger.error("[CompatLib] Cannot get offline player by name: " + name);
+            logger.error("[CompatLib] Cannot get offline player profile by name: " + name);
             e.printStackTrace();
             return null;
         }
