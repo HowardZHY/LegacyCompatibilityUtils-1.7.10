@@ -1,4 +1,4 @@
-Incompatibilities found: 184 errors, 0 warnings
+Incompatibilities found: 182 errors, 0 warnings
 cpw/mods/fml/common/registry/GameData:
   - error: injectWorldIDMap(Ljava/util/Map;ZZ)Ljava/util/List; - Method was removed
   - error: buildItemDataList()Ljava/util/Map; - Method was removed
@@ -248,9 +248,6 @@ net/minecraftforge/fluids/Fluid:
   - error: registerLegacyName(Ljava/lang/String;Ljava/lang/String;)V - Method was removed
   - error: <clinit>()V - Method was removed
   - error: legacyNames:Ljava/util/Map; - Field was removed
-cpw/mods/fml/common/eventhandler/Cancelable:
-  - error: Class no longer exists
-    #DONE
 net/minecraft/entity/player/EntityPlayerMP:
   - error: field_71130_g:Ljava/util/List; - Field was lowered in visibility
   - error: field_71142_cm:I - Field was removed
@@ -328,9 +325,6 @@ net/minecraft/client/renderer/ThreadDownloadImageData:
   - error: <init>(Ljava/lang/String;Lnet/minecraft/util/ResourceLocation;Lnet/minecraft/client/renderer/IImageBuffer;)V - Method was removed
   - error: func_110557_a()Z - Method was removed
     #DONE
-cpw/mods/fml/common/eventhandler/Event$HasResult:
-  - error: Class no longer exists
-    #INVALID
 net/minecraft/util/Vec3Pool:
   - error: Class no longer exists
     #DONE
