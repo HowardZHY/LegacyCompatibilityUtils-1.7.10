@@ -27,23 +27,18 @@ package space.libs.asm;
 import net.minecraft.launchwrapper.IClassNameTransformer;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
-import org.objectweb.asm.commons.ClassRemapper;
-import org.objectweb.asm.commons.Remapper;
-import org.spongepowered.asm.mixin.extensibility.IRemapper;
+import org.objectweb.asm.commons.RemappingClassAdapter;
 
-public abstract class RemapTransformer extends Remapper implements IClassTransformer, IRemapper, IClassNameTransformer {
+public class RemapTransformer implements IClassTransformer, IClassNameTransformer {
 
-    /** Is it the start of sth? */
-    // public static File MAPPINGS_FOLDER = new File("mappings");
-
-    public RemapTransformer INSTANCE;
+    public RemapTransformer instance;
 
     public RemapTransformer() {
-        INSTANCE = this;
+        instance = this;
     }
 
     @Override
-    public final byte[] transform(String name, String transformedName, byte[] bytes) {
+    public byte[] transform(String name, String transformedName, byte[] bytes) {
         if (name == null || bytes == null) {
             return bytes;
         }
@@ -55,38 +50,22 @@ public abstract class RemapTransformer extends Remapper implements IClassTransfo
         }
         ClassReader reader = new ClassReader(bytes);
         ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS);
-        reader.accept(createClassRemapper(reader, writer), ClassReader.EXPAND_FRAMES);
+        RemappingClassAdapter remapAdapter = new CustomRemappingAdapter(writer);
+        reader.accept(remapAdapter, ClassReader.EXPAND_FRAMES);
         return writer.toByteArray();
     }
 
-    ClassVisitor createClassRemapper(ClassReader reader, ClassVisitor cv) {
-        return new ClassRemapper(cv, this);
+    public CustomRemappingAdapter getAdapter() {
+        return CustomRemappingAdapter.INSTANCE;
     }
 
     @Override
-    public String unmap(String typeName) {
-        return typeName;
+    public String remapClassName(String name) {
+        return this.getAdapter().getRemapper().map(name.replace('.','/')).replace('/', '.');
     }
 
-    // Copied from Remapper#mapDesc with references to 'map' replaced with 'unmap'
     @Override
-    public String unmapDesc(String desc) {
-        Type t = Type.getType(desc);
-        switch (t.getSort()) {
-            case Type.ARRAY:
-                String s = unmapDesc(t.getElementType().getDescriptor());
-                StringBuilder sb = new StringBuilder(s.length());
-                for (int i = 0; i < t.getDimensions(); ++i) {
-                    sb.append('[');
-                }
-                sb.append(s);
-                return sb.toString();
-            case Type.OBJECT:
-                String newType = unmap(t.getInternalName());
-                if (newType != null) {
-                    return 'L' + newType + ';';
-                }
-        }
-        return desc;
+    public String unmapClassName(String name) {
+        return this.getAdapter().getRemapper().unmap(name.replace('.', '/')).replace('/','.');
     }
 }
