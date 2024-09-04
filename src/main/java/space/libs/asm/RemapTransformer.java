@@ -29,7 +29,8 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
 import org.objectweb.asm.commons.RemappingClassAdapter;
 
-public class RemapTransformer implements IClassTransformer, IClassNameTransformer {
+public class RemapTransformer implements IClassTransformer //, IClassNameTransformer
+{
 
     public RemapTransformer instance;
 
@@ -59,7 +60,7 @@ public class RemapTransformer implements IClassTransformer, IClassNameTransforme
         return CustomRemappingAdapter.INSTANCE;
     }
 
-    @Override
+    /*@Override
     public String remapClassName(String name) {
         return this.getAdapter().getRemapper().map(name.replace('.','/')).replace('/', '.');
     }
@@ -67,5 +68,5 @@ public class RemapTransformer implements IClassTransformer, IClassNameTransforme
     @Override
     public String unmapClassName(String name) {
         return this.getAdapter().getRemapper().unmap(name.replace('.', '/')).replace('/','.');
-    }
+    }*/
 }

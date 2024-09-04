@@ -167,8 +167,7 @@ public class CustomRemapRemapper extends Remapper {
 
     @Override
     public String mapFieldName(String owner, String name, String desc) {
-        if (classNameBiMap == null || classNameBiMap.isEmpty())
-        {
+        if (classNameBiMap == null || classNameBiMap.isEmpty()) {
             return name;
         }
         Map<String, String> fieldMap = getFieldMap(owner);
@@ -177,12 +176,10 @@ public class CustomRemapRemapper extends Remapper {
 
     @Override
     public String map(String typeName) {
-        if (classNameBiMap == null || classNameBiMap.isEmpty())
-        {
+        if (classNameBiMap == null || classNameBiMap.isEmpty()) {
             return typeName;
         }
-        if (classNameBiMap.containsKey(typeName))
-        {
+        if (classNameBiMap.containsKey(typeName)) {
             return classNameBiMap.get(typeName);
         }
         int dollarIdx = typeName.lastIndexOf('$');
@@ -194,18 +191,15 @@ public class CustomRemapRemapper extends Remapper {
     }
 
     public String unmap(String typeName) {
-        if (classNameBiMap == null || classNameBiMap.isEmpty())
-        {
+        if (classNameBiMap == null || classNameBiMap.isEmpty()) {
             return typeName;
         }
 
-        if (classNameBiMap.containsValue(typeName))
-        {
+        if (classNameBiMap.containsValue(typeName)) {
             return classNameBiMap.inverse().get(typeName);
         }
         int dollarIdx = typeName.lastIndexOf('$');
-        if (dollarIdx > -1)
-        {
+        if (dollarIdx > -1) {
             return unmap(typeName.substring(0, dollarIdx)) + "$" + typeName.substring(dollarIdx + 1);
         }
         return typeName;
@@ -214,8 +208,7 @@ public class CustomRemapRemapper extends Remapper {
 
     @Override
     public String mapMethodName(String owner, String name, String desc) {
-        if (classNameBiMap==null || classNameBiMap.isEmpty())
-        {
+        if (classNameBiMap==null || classNameBiMap.isEmpty()) {
             return name;
         }
         Map<String, String> methodMap = getMethodMap(owner);
