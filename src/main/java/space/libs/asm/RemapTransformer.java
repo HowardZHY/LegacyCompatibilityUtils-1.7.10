@@ -24,12 +24,11 @@
  */
 package space.libs.asm;
 
-import net.minecraft.launchwrapper.IClassNameTransformer;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
 import org.objectweb.asm.commons.RemappingClassAdapter;
 
-public class RemapTransformer implements IClassTransformer //, IClassNameTransformer
+public class RemapTransformer implements IClassTransformer
 {
 
     public RemapTransformer instance;
@@ -56,17 +55,4 @@ public class RemapTransformer implements IClassTransformer //, IClassNameTransfo
         return writer.toByteArray();
     }
 
-    public CustomRemappingAdapter getAdapter() {
-        return CustomRemappingAdapter.INSTANCE;
-    }
-
-    /*@Override
-    public String remapClassName(String name) {
-        return this.getAdapter().getRemapper().map(name.replace('.','/')).replace('/', '.');
-    }
-
-    @Override
-    public String unmapClassName(String name) {
-        return this.getAdapter().getRemapper().unmap(name.replace('.', '/')).replace('/','.');
-    }*/
 }

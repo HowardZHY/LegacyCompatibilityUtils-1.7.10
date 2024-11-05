@@ -13,7 +13,7 @@ import java.util.Map;
 @IFMLLoadingPlugin.SortingIndex(Integer.MIN_VALUE + 2)
 public class CompatLibCore implements IFMLLoadingPlugin {
 
-    public static Logger LOGGER = LogManager.getLogger("CompatLibCore");
+    public static final Logger LOGGER = LogManager.getLogger("CompatLibCore");
 
     public CompatLibCore() {}
 
@@ -26,12 +26,10 @@ public class CompatLibCore implements IFMLLoadingPlugin {
     @Override
     public String[] getASMTransformerClass() {
         ArrayList<String> transformersList = new ArrayList<>();
-        //transformersList.add("space.libs.asm.BlockTransformer");
         transformersList.add("space.libs.asm.EventBusTransformer");
         transformersList.add("space.libs.asm.FMLPlayerTransformer");
         transformersList.add("space.libs.asm.FMLModContainerTransformer");
         transformersList.add("space.libs.asm.ForgeSubscribeTransformer");
-        //transformersList.add("space.libs.asm.ItemTransformer");
         transformersList.add("space.libs.asm.MacOSTransformer");
         //transformersList.add("space.libs.asm.RemapTransformer");
         // "space.libs.asm.GameDataTransformer"

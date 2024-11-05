@@ -27,6 +27,7 @@
   ],
   "mixins": [
     "MixinAxisAlignedBB",
+    "MixinBlock",
     "MixinChunkCache",
     "MixinCommandBase",
     "MixinEnchantmentDamage",

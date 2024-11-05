@@ -41,4 +41,5 @@ dependencies {
     shadowImplementation("org.joml:joml:1.10.5")
     compileOnly("org.ow2.asm:asm-commons:9.6")
     compileOnlyApi("curse.maven:ichunutil-229060:2338149-deobf")
+    compileOnlyApi deobfCurse("advent-of-ascension-nevermine-311054:2973536")
 }
