@@ -3,6 +3,7 @@ package space.libs.core;
 import com.gtnewhorizon.gtnhmixins.ILateMixinLoader;
 import com.gtnewhorizon.gtnhmixins.LateMixin;
 import space.libs.CompatLib;
+import space.libs.util.ModDetector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class CompatLibLateMixin implements ILateMixinLoader {
     public List<String> getMixins(Set<String> loadedMods) {
         List<String> mixins = new ArrayList<>();
         if (loadedMods.contains("eternisles")) {
+            ModDetector.AOA1 = true;
             CompatLib.LOGGER.info("Found Eternal Isles. Injecting Required Fixes...");
             mixins.add("aoa.MixinArmorEffects");
             mixins.add("aoa.MixinClientProxy");
@@ -28,6 +30,7 @@ public class CompatLibLateMixin implements ILateMixinLoader {
             CompatLib.LOGGER.info("Eternal Isles was not found.");
         }
         if (loadedMods.contains("nevermine")) {
+            ModDetector.AOA2 = true;
             CompatLib.LOGGER.info("Found AoA2. Disabling Update Checker...");
             mixins.add("aoa.MixinUpdateChecker");
         } else {
@@ -44,6 +47,7 @@ public class CompatLibLateMixin implements ILateMixinLoader {
             mixins.add("ichun.MixinModVersionChecker");
             mixins.add("ichun.MixinThreadGetPatrons");
             if (loadedMods.contains("MobDismemberment")) {
+                mixins.add("mobdis.MixinModelGib");
                 mixins.add("mobdis.MixinTickHandlerClient");
             }
         } else {
