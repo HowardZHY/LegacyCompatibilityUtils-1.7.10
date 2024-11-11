@@ -1,4 +1,6 @@
 CL: net/minecraft/client/renderer/texture/IconRegister net/minecraft/client/renderer/texture/IIconRegister
 CL: net/minecraft/entity/ai/attributes/Attribute net/minecraft/entity/ai/attributes/IAttribute
 CL: net/minecraft/item/EnumToolMaterial net/minecraft/item/Item$ToolMaterial
+CL: net/minecraftforge/common/Configuration net/minecraftforge/common/config/Configuration
 CL: net/minecraftforge/common/EnumHelper net/minecraftforge/common/util/EnumHelper
+CL: net/minecraftforge/common/Property net/minecraftforge/common/config/Property

@@ -24,6 +24,7 @@ import org.objectweb.asm.commons.Remapper;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import space.libs.core.CompatLibCore;
+import space.libs.core.CompatLibDebug;
 
 import java.io.IOException;
 import java.net.URL;
@@ -48,8 +49,6 @@ public class CustomRemapRemapper extends Remapper {
 
     private LaunchClassLoader classLoader;
 
-    public static boolean DEBUG_REMAPPING = true;
-
     public static String DEFAULT_MAPPINGS = "compatlib.srg";
 
     public CustomRemapRemapper() {
@@ -65,7 +64,7 @@ public class CustomRemapRemapper extends Remapper {
             List<String> srgList = srgSource.readLines();
             rawMethodMaps = Maps.newHashMap();
             rawFieldMaps = Maps.newHashMap();
-            Builder<String, String> builder = ImmutableBiMap.<String,String>builder();
+            Builder<String, String> builder = ImmutableBiMap.builder();
             Splitter splitter = Splitter.on(CharMatcher.anyOf(": ")).omitEmptyStrings().trimResults();
             for (String line : srgList)
             {
@@ -108,7 +107,7 @@ public class CustomRemapRemapper extends Remapper {
         String newName = newSrg.substring(lastNew+1);
         if (!rawFieldMaps.containsKey(cl))
         {
-            rawFieldMaps.put(cl, Maps.<String,String>newHashMap());
+            rawFieldMaps.put(cl, Maps.newHashMap());
         }
         rawFieldMaps.get(cl).put(oldName + ":" + getFieldType(cl, oldName), newName);
         rawFieldMaps.get(cl).put(oldName + ":null", newName);
@@ -134,7 +133,7 @@ public class CustomRemapRemapper extends Remapper {
                 ClassNode classNode = new ClassNode();
                 cr.accept(classNode, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
                 Map<String,String> resMap = Maps.newHashMap();
-                for (FieldNode fieldNode : (List<FieldNode>) classNode.fields) {
+                for (FieldNode fieldNode : classNode.fields) {
                     resMap.put(fieldNode.name, fieldNode.desc);
                 }
                 fieldDescriptions.put(owner, resMap);
@@ -205,7 +204,6 @@ public class CustomRemapRemapper extends Remapper {
         return typeName;
     }
 
-
     @Override
     public String mapMethodName(String owner, String name, String desc) {
         if (classNameBiMap==null || classNameBiMap.isEmpty()) {
@@ -223,7 +221,7 @@ public class CustomRemapRemapper extends Remapper {
                 negativeCacheFields.add(className);
             }
 
-            if (DEBUG_REMAPPING) {
+            if (CompatLibDebug.DEBUG) {
                 CompatLibCore.LOGGER.info("Field map for " + className + " : " + fieldNameMaps.get(className));
             }
         }
@@ -236,10 +234,9 @@ public class CustomRemapRemapper extends Remapper {
             if (!methodNameMaps.containsKey(className)) {
                 negativeCacheMethods.add(className);
             }
-            if (DEBUG_REMAPPING) {
-                CompatLibCore.LOGGER.info("Field map for " + className + " : " + methodNameMaps.get(className));
+            if (CompatLibDebug.DEBUG) {
+                CompatLibCore.LOGGER.info("Method map for " + className + " : " + methodNameMaps.get(className));
             }
-
         }
         return methodNameMaps.get(className);
     }
@@ -269,7 +266,6 @@ public class CustomRemapRemapper extends Remapper {
         if (Strings.isNullOrEmpty(superName)) {
             return;
         }
-
         List<String> allParents = ImmutableList.<String>builder().add(superName).addAll(Arrays.asList(interfaces)).build();
         // generate maps for all parent objects
         for (String parentThing : allParents) {
@@ -277,8 +273,8 @@ public class CustomRemapRemapper extends Remapper {
                 findAndMergeSuperMaps(parentThing);
             }
         }
-        Map<String, String> methodMap = Maps.<String,String>newHashMap();
-        Map<String, String> fieldMap = Maps.<String,String>newHashMap();
+        Map<String, String> methodMap = Maps.newHashMap();
+        Map<String, String> fieldMap = Maps.newHashMap();
         for (String parentThing : allParents) {
             if (methodNameMaps.containsKey(parentThing)) {
                 methodMap.putAll(methodNameMaps.get(parentThing));
@@ -304,13 +300,11 @@ public class CustomRemapRemapper extends Remapper {
 
     public String getStaticFieldType(String oldType, String oldName, String newType, String newName) {
         String fType = getFieldType(oldType, oldName);
-        if (oldType.equals(newType))
-        {
+        if (oldType.equals(newType)) {
             return fType;
         }
         Map<String,String> newClassMap = fieldDescriptions.get(newType);
-        if (newClassMap == null)
-        {
+        if (newClassMap == null) {
             newClassMap = Maps.newHashMap();
             fieldDescriptions.put(newType, newClassMap);
         }
