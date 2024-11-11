@@ -42,4 +42,5 @@ dependencies {
     compileOnly("org.ow2.asm:asm-commons:9.6")
     compileOnlyApi("curse.maven:ichunutil-229060:2338149-deobf")
     compileOnlyApi deobfCurse("advent-of-ascension-nevermine-311054:2973536")
+    compileOnlyApi deobfCurse("mob-dismemberment-229067:2232121")
 }

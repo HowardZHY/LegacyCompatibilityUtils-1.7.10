@@ -14,9 +14,7 @@ import space.libs.util.cursedmixinextensions.annotations.ShadowConstructor;
 public abstract class MixinBlock implements IBlock {
 
     @Shadow
-    public boolean isOpaqueCube() {
-        return true;
-    }
+    public abstract boolean isOpaqueCube();
 
     @ShadowConstructor
     protected void Block(Material materialIn) {}
@@ -31,6 +29,7 @@ public abstract class MixinBlock implements IBlock {
         this.field_71990_ca = id;
     }
 
+    @SuppressWarnings("all")
     @Public
     private static Block[] field_71973_m = new Block[4096];
 

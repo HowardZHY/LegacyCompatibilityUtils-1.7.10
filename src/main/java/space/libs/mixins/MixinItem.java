@@ -2,7 +2,10 @@ package space.libs.mixins;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
+import net.minecraft.util.RegistryNamespaced;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import space.libs.util.cursedmixinextensions.annotations.NewConstructor;
 import space.libs.util.cursedmixinextensions.annotations.Public;
@@ -11,6 +14,9 @@ import space.libs.util.cursedmixinextensions.annotations.ShadowSuperConstructor;
 @SuppressWarnings("all")
 @Mixin(value = Item.class, priority = 200)
 public class MixinItem implements IItem {
+
+    @Shadow
+    public static @Final RegistryNamespaced itemRegistry;
 
     @Shadow
     public static Item getItemById(int p_150899_0_) {
@@ -47,13 +53,13 @@ public class MixinItem implements IItem {
      */
     /*@Overwrite
     @Public private static int getIdFromItem(Item item) {
-        IItem accessor = (IItem) item;
         if (item == null) {
-            accessor.setItemID(0);
             return 0;
         } else {
-            accessor.setItemID(itemRegistry.getIDForObject(item));
-            return itemRegistry.getIDForObject(item);
+            IItem accessor = (IItem) item;
+            int id = itemRegistry.getIDForObject(item);
+            accessor.setItemID(id);
+            return id;
         }
     }*/
 
