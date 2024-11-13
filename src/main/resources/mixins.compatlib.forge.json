@@ -5,8 +5,11 @@
   "plugin": "space.libs.core.CompatLibLateMixinPlugin",
   "compatibilityLevel": "JAVA_8",
   "client": [
+    "MixinFMLClientHandler"
   ],
   "mixins": [
-    "MixinLanguageRegistry"
+    "MixinFMLCommonHandler",
+    "MixinLanguageRegistry",
+    "MixinTickEventType"
   ]
 }

@@ -1,10 +1,13 @@
 package space.libs.util;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraftforge.common.util.EnumHelper;
 import space.libs.CompatLib;
 
 @SuppressWarnings("rawtypes")
+@SideOnly(Side.CLIENT)
 public class EnumHelperClientOption extends EnumHelper {
 
     private static final Class[][] Types = {
