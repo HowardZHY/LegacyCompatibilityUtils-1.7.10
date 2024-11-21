@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(EntityLiving.class)
-public abstract class MixinEntityLiving extends MixinEntity {
+public abstract class MixinEntityLiving extends MixinEntityLivingBase {
 
     @Shadow
     public abstract String getCommandSenderName();

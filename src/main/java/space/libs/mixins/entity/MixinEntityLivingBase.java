@@ -1,8 +1,9 @@
 package space.libs.mixins.entity;
 
+import net.minecraft.entity.EntityLivingBase;
 import org.spongepowered.asm.mixin.Mixin;
 
-@Mixin(MixinEntityLivingBase.class)
+@Mixin(EntityLivingBase.class)
 public abstract class MixinEntityLivingBase extends MixinEntity {
-    // Weird compile error, can't use
+
 }
