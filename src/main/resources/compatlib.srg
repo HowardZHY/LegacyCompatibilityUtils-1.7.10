@@ -1,10 +1,10 @@
-CL: cpw/mods/fml/client/registry/KeyBindingRegistry space/libs/util/KeyBindingRegistry
-CL: cpw/mods/fml/client/registry/KeyBindingRegistry$KeyHandler space/libs/util/KeyBindingRegistry$KeyHandler
+CL: cpw/mods/fml/client/registry/KeyBindingRegistry space/libs/util/forge/KeyBindingRegistry
+CL: cpw/mods/fml/client/registry/KeyBindingRegistry$KeyHandler space/libs/util/forge/KeyBindingRegistry$KeyHandler
 CL: cpw/mods/fml/common/IScheduledTickHandler space/libs/interfaces/IScheduledTickHandler
 CL: cpw/mods/fml/common/ITickHandler space/libs/interfaces/ITickHandler
-CL: cpw/mods/fml/common/SingleIntervalHandler space/libs/util/SingleIntervalHandler
+CL: cpw/mods/fml/common/SingleIntervalHandler space/libs/util/forge/SingleIntervalHandler
 CL: cpw/mods/fml/common/TickType cpw/mods/fml/common/gameevent/TickEvent$Type
-CL: cpw/mods/fml/common/registry/TickRegistry space/libs/util/TickRegistry
+CL: cpw/mods/fml/common/registry/TickRegistry space/libs/util/forge/TickRegistry
 CL: net/minecraft/client/renderer/texture/IconRegister net/minecraft/client/renderer/texture/IIconRegister
 CL: net/minecraft/entity/ai/attributes/Attribute net/minecraft/entity/ai/attributes/IAttribute
 CL: net/minecraft/item/EnumToolMaterial net/minecraft/item/Item$ToolMaterial

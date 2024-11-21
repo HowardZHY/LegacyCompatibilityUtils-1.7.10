@@ -10,7 +10,7 @@
  *     cpw - implementation
  */
 
-package space.libs.util;
+package space.libs.util.forge;
 
 import java.util.List;
 import java.util.PriorityQueue;

@@ -2,6 +2,8 @@ package space.libs;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,6 +30,14 @@ public class CompatLib {
         if (FMLCommonHandler.instance().getSide().isClient()) {
             this.onClientModLoading();
         }
+    }
+
+    @Mod.EventHandler
+    public void preInit(FMLPreInitializationEvent event) {}
+
+    @Mod.EventHandler
+    public void init(FMLInitializationEvent event) {
+        //FMLCommonHandler.instance().bus().register(new CompatTickHandler());
     }
 
     public void onClientModLoading() {}

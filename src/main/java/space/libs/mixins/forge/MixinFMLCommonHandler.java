@@ -14,9 +14,11 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.EventBus;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
-import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.common.util.EnumHelper;
 import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,7 +27,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import space.libs.interfaces.IFMLCommonHandler;
 import space.libs.interfaces.IScheduledTickHandler;
-import space.libs.util.TickRegistry;
+import space.libs.util.cursedmixinextensions.annotations.Public;
+import space.libs.util.forge.TickRegistry;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -41,11 +44,8 @@ public abstract class MixinFMLCommonHandler implements IFMLCommonHandler {
 
     public List<IScheduledTickHandler> scheduledServerTicks = Lists.newArrayList();
 
-    @Dynamic
-    @Inject(method = "onPreClientTick", at = @At("HEAD"))
-    public void onPreClientTick(CallbackInfo ci) {
-        this.rescheduleTicks(Side.CLIENT);
-    }
+    @Public
+    private static TickEvent.Type WORLDLOAD;
 
     @Dynamic
     @Inject(method = "handleServerStarted", at = @At("TAIL"))
@@ -54,9 +54,55 @@ public abstract class MixinFMLCommonHandler implements IFMLCommonHandler {
     }
 
     @Dynamic
+    @Inject(method = "onPostServerTick", at = @At("TAIL"))
+    public void onPostServerTick(CallbackInfo ci) {
+        tickEnd(EnumSet.of(TickEvent.Type.SERVER), Side.SERVER);
+    }
+
+    @Dynamic
     @Inject(method = "onPreServerTick", at = @At("HEAD"))
     public void onPreServerTick(CallbackInfo ci) {
         this.rescheduleTicks(Side.SERVER);
+        tickStart(EnumSet.of(TickEvent.Type.SERVER), Side.SERVER);
+    }
+
+    @Dynamic
+    @Inject(method = "onPostClientTick", at = @At("TAIL"))
+    public void onPostClientTick(CallbackInfo ci) {
+        tickEnd(EnumSet.of(TickEvent.Type.CLIENT), Side.CLIENT);
+    }
+
+    @Dynamic
+    @Inject(method = "onPreClientTick", at = @At("HEAD"))
+    public void onPreClientTick(CallbackInfo ci) {
+        this.rescheduleTicks(Side.CLIENT);
+        tickStart(EnumSet.of(TickEvent.Type.CLIENT), Side.CLIENT);
+    }
+
+    @Dynamic
+    @Inject(method = "onRenderTickStart", at = @At("HEAD"))
+    public void onRenderTickStart(float timer, CallbackInfo ci) {
+        tickStart(EnumSet.of(TickEvent.Type.RENDER), Side.CLIENT, timer);
+    }
+
+    @Dynamic
+    @Inject(method = "onRenderTickEnd", at = @At("TAIL"))
+    public void onRenderTickEnd(float timer, CallbackInfo ci) {
+        tickEnd(EnumSet.of(TickEvent.Type.RENDER), Side.CLIENT, timer);
+    }
+
+    @Dynamic
+    @Inject(method = "onPlayerPreTick", at = @At("HEAD"))
+    public void onPlayerPreTick(EntityPlayer player, CallbackInfo ci) {
+        Side side = player instanceof EntityPlayerMP ? Side.SERVER : Side.CLIENT;
+        tickStart(EnumSet.of(TickEvent.Type.PLAYER), side, player);
+    }
+
+    @Dynamic
+    @Inject(method = "onPlayerPostTick", at = @At("TAIL"))
+    public void onPlayerPostTick(EntityPlayer player, CallbackInfo ci) {
+        Side side = player instanceof EntityPlayerMP ? Side.SERVER : Side.CLIENT;
+        tickEnd(EnumSet.of(TickEvent.Type.PLAYER), side, player);
     }
 
     public void rescheduleTicks(Side side) {
@@ -95,6 +141,7 @@ public abstract class MixinFMLCommonHandler implements IFMLCommonHandler {
     public void original$onPostWorldTick(World world) {}
 
     public void onPostWorldTick(Object world) {
+        tickEnd(EnumSet.of(TickEvent.Type.WORLD), Side.SERVER, world);
         if (world instanceof World) {
             this.original$onPostWorldTick((World) world);
         }
@@ -104,6 +151,7 @@ public abstract class MixinFMLCommonHandler implements IFMLCommonHandler {
     public void original$onPreWorldTick(World world) {}
 
     public void onPreWorldTick(Object world) {
+        tickStart(EnumSet.of(TickEvent.Type.WORLD), Side.SERVER, world);
         if (world instanceof World) {
             this.original$onPreWorldTick((World) world);
         }
@@ -111,8 +159,18 @@ public abstract class MixinFMLCommonHandler implements IFMLCommonHandler {
 
     public void onWorldLoadTick(World[] worlds) {
         rescheduleTicks(Side.SERVER);
-        for (World w : worlds) {
-            bus().post(new WorldEvent.Load(w));
+        try {
+            WORLDLOAD = addEnum();
+            for (World w : worlds) {
+                tickStart(EnumSet.of(WORLDLOAD), Side.SERVER, w);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
+
+    @Public
+    private static TickEvent.Type addEnum() {
+        return EnumHelper.addEnum(TickEvent.Type.class, "WORLDLOAD", new Class[0], new Object[0]);
     }
 }
