@@ -1,12 +1,11 @@
 package space.libs.mixins.entity;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.passive.EntityOcelot;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import space.libs.interfaces.IPlayer;
 
-@Mixin(EntityPlayer.class)
-public abstract class MixinEntityPlayer extends MixinEntityLivingBase implements IPlayer {
+@Mixin(EntityOcelot.class)
+public abstract class MixinEntityOcelot extends MixinEntityLiving {
 
     @Shadow
     public abstract String getCommandSenderName();
@@ -16,7 +15,4 @@ public abstract class MixinEntityPlayer extends MixinEntityLivingBase implements
     public String func_70023_ak() {
         return this.getCommandSenderName();
     }
-
-    public void func_71035_c(String msg) {}
-
 }

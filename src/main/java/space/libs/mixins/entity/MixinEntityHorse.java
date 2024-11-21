@@ -10,13 +10,22 @@ import java.util.UUID;
 
 @SuppressWarnings("unused")
 @Mixin(EntityHorse.class)
-public abstract class MixinEntityHorse {
+public abstract class MixinEntityHorse extends MixinEntityLiving {
+
+    @Shadow
+    public abstract String getCommandSenderName();
 
     @Shadow
     public abstract String func_152119_ch();
 
     @Shadow
     public abstract void func_152120_b(String uuid);
+
+    /** getEntityName */
+    @Override
+    public String func_70023_ak() {
+        return this.getCommandSenderName();
+    }
 
     /** setOwnerName */
     public void func_110213_b(String name) {
