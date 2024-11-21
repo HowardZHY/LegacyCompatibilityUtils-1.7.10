@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.util.ChatComponentText;
 import org.spongepowered.asm.mixin.Mixin;
-import space.libs.mixins.MixinEntityPlayer;
+import space.libs.mixins.entity.MixinEntityPlayer;
 
 @Mixin(EntityPlayerSP.class)
 public class MixinEntityPlayerSP extends MixinEntityPlayer {
