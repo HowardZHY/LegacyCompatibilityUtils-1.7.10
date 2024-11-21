@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import space.libs.mixins.entity.MixinEntityPlayer;
 
 @Mixin(EntityPlayerSP.class)
-public class MixinEntityPlayerSP extends MixinEntityPlayer {
+public abstract class MixinEntityPlayerSP extends MixinEntityPlayer {
 
     @Override
     public void func_71035_c(String msg) {

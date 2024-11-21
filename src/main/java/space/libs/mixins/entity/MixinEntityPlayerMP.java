@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import space.libs.mixins.entity.MixinEntityPlayer;
 
 @Mixin(EntityPlayerMP.class)
-public class MixinEntityPlayerMP extends MixinEntityPlayer {
+public abstract class MixinEntityPlayerMP extends MixinEntityPlayer {
 
     @Shadow
     public NetHandlerPlayServer playerNetServerHandler;

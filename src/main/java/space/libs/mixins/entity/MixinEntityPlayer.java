@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import space.libs.interfaces.IPlayer;
 
 @Mixin(EntityPlayer.class)
-public abstract class MixinEntityPlayer extends MixinEntityLivingBase implements IPlayer {
+public abstract class MixinEntityPlayer extends MixinEntity implements IPlayer {
 
     @Shadow
     public abstract String getCommandSenderName();
