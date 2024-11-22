@@ -3,6 +3,7 @@ package space.libs.mixins;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -19,6 +20,9 @@ public abstract class MixinBlock implements IBlock {
 
     @Shadow
     public abstract boolean isOpaqueCube();
+
+    @Shadow
+    public abstract boolean canPlaceBlockAt(World worldIn, int x, int y, int z);
 
     @ShadowConstructor
     protected void Block(Material materialIn) {}
@@ -46,6 +50,10 @@ public abstract class MixinBlock implements IBlock {
 
     public boolean func_71926_d() {
         return this.isOpaqueCube();
+    }
+
+    public boolean func_71930_b(World worldIn, int x, int y, int z) {
+        return this.canPlaceBlockAt(worldIn, x, y, z);
     }
 
     /** Legacy Block Fields */
@@ -137,7 +145,7 @@ public abstract class MixinBlock implements IBlock {
     @Public private static Block field_72064_bT;
     @Public private static Block field_72065_as;
     @Public private static Block field_72066_bS;
-    @Public private static Block field_72067_ar;
+    @Public private static BlockFire field_72067_ar;
     @Public private static Block field_72068_bR;
     @Public private static Block field_72070_bY;
     @Public private static Block field_72071_ax;
