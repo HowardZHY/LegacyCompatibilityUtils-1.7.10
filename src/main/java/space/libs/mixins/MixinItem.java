@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import space.libs.util.cursedmixinextensions.annotations.NewConstructor;
 import space.libs.util.cursedmixinextensions.annotations.Public;
-import space.libs.util.cursedmixinextensions.annotations.ShadowSuperConstructor;
+import space.libs.util.cursedmixinextensions.annotations.ShadowConstructor;
 
 @SuppressWarnings("all")
 @Mixin(value = Item.class, priority = 200)
@@ -25,12 +25,12 @@ public class MixinItem implements IItem {
         throw new AbstractMethodError();
     }
 
-    @ShadowSuperConstructor
-    public void Object() {}
+    @ShadowConstructor
+    public void Item() {}
 
     @NewConstructor
     public void Item(int id) {
-        Object();
+        Item();
         this.field_77779_bT = 256 + id;
         try {
             System.out.println("Old Register Item :");
