@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import space.libs.core.CompatLibCore;
 import space.libs.util.cursedmixinextensions.annotations.NewConstructor;
 import space.libs.util.cursedmixinextensions.annotations.Public;
 import space.libs.util.cursedmixinextensions.annotations.ShadowConstructor;
@@ -24,6 +25,9 @@ public abstract class MixinBlock implements IBlock {
     @Shadow
     public abstract boolean canPlaceBlockAt(World worldIn, int x, int y, int z);
 
+    @Shadow
+    public abstract String getUnlocalizedName();
+
     @ShadowConstructor
     protected void Block(Material materialIn) {}
 
@@ -35,6 +39,13 @@ public abstract class MixinBlock implements IBlock {
         }
         field_71973_m[id] = this.getBlockInstance();
         this.field_71990_ca = id;
+        try {
+            CompatLibCore.LOGGER.info("Old Register Block ID : " + this.field_71990_ca);
+            CompatLibCore.LOGGER.info("Name : " + this.getUnlocalizedName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //TODO?
     }
 
     @SuppressWarnings("all")

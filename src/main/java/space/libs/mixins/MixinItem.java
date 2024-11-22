@@ -9,13 +9,14 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import space.libs.core.CompatLibCore;
 import space.libs.util.cursedmixinextensions.annotations.NewConstructor;
 import space.libs.util.cursedmixinextensions.annotations.Public;
 import space.libs.util.cursedmixinextensions.annotations.ShadowConstructor;
 
 @SuppressWarnings("all")
 @Mixin(value = Item.class, priority = 200)
-public class MixinItem implements IItem {
+public abstract class MixinItem implements IItem {
 
     @Shadow
     public static @Final RegistryNamespaced itemRegistry;
@@ -25,6 +26,9 @@ public class MixinItem implements IItem {
         throw new AbstractMethodError();
     }
 
+    @Shadow
+    public abstract String getUnlocalizedName();
+
     @ShadowConstructor
     public void Item() {}
 
@@ -33,9 +37,8 @@ public class MixinItem implements IItem {
         Item();
         this.field_77779_bT = 256 + id;
         try {
-            System.out.println("Old Register Item :");
-            System.out.println("ID : " + this.field_77779_bT);
-            System.out.println("Name : " + getItemById(field_77779_bT).getUnlocalizedName());
+            CompatLibCore.LOGGER.info("Old Register Item ID : " + this.field_77779_bT);
+            CompatLibCore.LOGGER.info("Name : " + this.getUnlocalizedName());
         } catch (Exception e) {
             e.printStackTrace();
         }
