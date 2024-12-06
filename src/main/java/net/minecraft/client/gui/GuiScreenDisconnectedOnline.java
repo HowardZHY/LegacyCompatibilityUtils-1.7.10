@@ -1,11 +1,11 @@
 package net.minecraft.client.gui;
 
-import java.util.List;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.IChatComponent;
+
+import java.util.List;
 
 @SuppressWarnings("all")
 @SideOnly(Side.CLIENT)

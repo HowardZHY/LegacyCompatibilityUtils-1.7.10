@@ -1,8 +1,6 @@
 package space.libs.mixins.nbt;
 
-import net.minecraft.nbt.INBTBase;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagEnd;
+import net.minecraft.nbt.*;
 import org.spongepowered.asm.mixin.Mixin;
 
 import java.io.DataInput;

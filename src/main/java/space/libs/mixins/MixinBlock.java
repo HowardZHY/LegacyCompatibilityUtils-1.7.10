@@ -55,6 +55,7 @@ public abstract class MixinBlock implements IBlock {
     /** 1.6 blockID */
     public int field_71990_ca;
 
+    @SuppressWarnings("all")
     public Block getBlockInstance() {
         return (Block) (Object) this;
     }

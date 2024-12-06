@@ -2,9 +2,10 @@ package net.minecraft.client.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.net.URI;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.net.URI;
 
 @SuppressWarnings("all")
 @SideOnly(Side.CLIENT)
