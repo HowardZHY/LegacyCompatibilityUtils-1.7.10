@@ -30,6 +30,7 @@
     "MixinAxisAlignedBB",
     "MixinBlock",
     "MixinBlockFire",
+    "MixinBlocks",
     "MixinChunkCache",
     "MixinCommandBase",
     "MixinEnchantmentDamage",

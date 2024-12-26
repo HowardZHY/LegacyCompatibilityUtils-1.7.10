@@ -57,7 +57,7 @@ public abstract class MixinItem implements IItem {
      * @reason 1.6 item id
      */
     /*@Overwrite
-    @Public private static int getIdFromItem(Item item) {
+    Public static int getIdFromItem(Item item) {
         if (item == null) {
             return 0;
         } else {

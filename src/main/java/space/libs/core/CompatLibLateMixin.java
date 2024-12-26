@@ -46,7 +46,7 @@ public class CompatLibLateMixin implements ILateMixinLoader {
             CompatLib.LOGGER.info("Found iChunUtil. Disabling Update Checker & Get Patrons...");
             mixins.add("ichun.MixinModVersionChecker");
             mixins.add("ichun.MixinThreadGetPatrons");
-            if (loadedMods.contains("MobDismemberment")) {
+            if (CompatLibDebug.DEBUG && loadedMods.contains("MobDismemberment")) {
                 mixins.add("mobdis.MixinEntityHelper");
                 mixins.add("mobdis.MixinModelGib");
                 mixins.add("mobdis.MixinTickHandlerClient");
