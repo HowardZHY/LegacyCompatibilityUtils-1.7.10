@@ -40,6 +40,8 @@ public class CompatLib {
         //FMLCommonHandler.instance().bus().register(new CompatTickHandler());
     }
 
-    public void onClientModLoading() {}
+    public void onClientModLoading() {
+        //unused atm
+    }
 
 }
