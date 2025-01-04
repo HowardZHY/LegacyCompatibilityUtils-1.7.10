@@ -8,14 +8,14 @@ import space.libs.util.cursedmixinextensions.annotations.ShadowConstructor;
 
 @SuppressWarnings("unused")
 @Mixin(KeyBinding.class)
-public abstract class MixinKeybinding {
+public abstract class MixinKeyBinding {
 
     @ShadowConstructor
-    public void Keybinding(String description, int keyCode, String category) {}
+    public void KeyBinding(String description, int keyCode, String category) {}
 
     @NewConstructor
-    public void Keybinding(String desc, int key) {
-        this.Keybinding(desc, key, "key.categories.gameplay");
+    public void KeyBinding(String desc, int key) {
+        this.KeyBinding(desc, key, "key.categories.gameplay");
     }
 
     @Shadow

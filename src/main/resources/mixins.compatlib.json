@@ -14,7 +14,7 @@
     "client.MixinGuiMainMenu",
     "client.MixinGuiSelectWorld",
     "client.MixinGuiYesNo",
-    "client.MixinKeybinding",
+    "client.MixinKeyBinding",
     "client.MixinMinecraft",
     "client.MixinOpenGlHelper",
     "client.MixinOptions",
