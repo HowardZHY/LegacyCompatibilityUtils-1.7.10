@@ -48,10 +48,10 @@ public class ClassTransformers implements IClassTransformer {
         @Override
         public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
             if (desc.equals("Lcpw/mods/fml/common/network/Player;")) {
-                desc = "Lspace/libs/interfaces/IPlayer;";
+                return super.visitField(access, name, "Lspace/libs/interfaces/IPlayer;", signature, value);
             }
             if (desc.equals("Lnet/minecraftforge/event/EventBus;")) {
-                desc = "Lcpw/mods/fml/common/eventhandler/EventBus;";
+                return super.visitField(access, name, "Lcpw/mods/fml/common/eventhandler/EventBus;", signature, value);
             }
             return super.visitField(access, name, desc, signature, value);
         }
