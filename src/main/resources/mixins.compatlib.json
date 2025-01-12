@@ -15,6 +15,7 @@
     "client.MixinGuiSelectWorld",
     "client.MixinGuiYesNo",
     "client.MixinKeyBinding",
+    "client.MixinMCGame",
     "client.MixinMinecraft",
     "client.MixinOpenGlHelper",
     "client.MixinOptions",

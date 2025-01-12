@@ -2,6 +2,7 @@ package space.libs.asm;
 
 import java.util.Arrays;
 
+@SuppressWarnings("unused")
 public class ClassNameList {
 
     public static boolean Startswith(String name) {
