@@ -8,6 +8,7 @@
   "client": [
     "client.MixinAbstractClientPlayer",
     "client.MixinDefaultResourcePack",
+    "client.MixinEntityPlayerSP",
     "client.MixinGameSettings",
     "client.MixinGuiConfirmOpenLink",
     "client.MixinGuiEditSign",
@@ -25,7 +26,8 @@
     "client.MixinShaderGroup",
     "client.MixinTextureUtil",
     "client.MixinThreadDownloadImageData",
-    "client.MixinTileEntitySkullRenderer"
+    "client.MixinTileEntitySkullRenderer",
+    "client.MixinUtil"
   ],
   "mixins": [
     "MixinAxisAlignedBB",
@@ -45,10 +47,8 @@
     "MixinServerCommandManager",
     "MixinServerConfigurationManager",
     "MixinTileEntitySkull",
-    "MixinUtil",
     "MixinVec3",
     "MixinWorld",
-    "client.MixinEntityPlayerSP",
     "entity.MixinEntity",
     "entity.MixinEntityHorse",
     "entity.MixinEntityItem",

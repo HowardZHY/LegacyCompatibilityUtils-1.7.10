@@ -1,4 +1,4 @@
-package space.libs.mixins;
+package space.libs.mixins.client;
 
 import net.minecraft.util.Util;
 import org.spongepowered.asm.mixin.Mixin;
