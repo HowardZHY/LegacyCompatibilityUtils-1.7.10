@@ -8,11 +8,10 @@ import net.minecraft.server.management.BanList;
 import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.stats.StatisticsFile;
 import net.minecraft.world.WorldSettings;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import space.libs.CompatLib;
 
 import java.util.Iterator;
 import java.util.List;
@@ -21,9 +20,6 @@ import java.util.Set;
 @SuppressWarnings("all")
 @Mixin(ServerConfigurationManager.class)
 public abstract class MixinServerConfigurationManager {
-
-    @Shadow
-    private static @Final Logger logger = LogManager.getLogger();
 
     @Shadow
     private @Final MinecraftServer mcServer;
@@ -155,7 +151,7 @@ public abstract class MixinServerConfigurationManager {
             GameProfile profile = this.func_72361_f(name).getGameProfile();
             return profile;
         } catch (Exception e) {
-            logger.error("[CompatLib] Cannot get offline player profile by name: " + name);
+            CompatLib.LOGGER.error("[ServerConfigurationManager] Cannot get offline player profile by name: " + name);
             e.printStackTrace();
             return null;
         }

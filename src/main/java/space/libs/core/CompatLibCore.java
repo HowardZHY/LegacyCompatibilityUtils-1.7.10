@@ -1,6 +1,7 @@
 package space.libs.core;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
+import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.launch.MixinBootstrap;
@@ -15,7 +16,17 @@ public class CompatLibCore implements IFMLLoadingPlugin {
 
     public static final Logger LOGGER = LogManager.getLogger("CompatLibCore");
 
-    public CompatLibCore() {}
+    public static boolean BUKKIT = false;
+
+    public CompatLibCore() {
+        try {
+            byte[] bukkit = Launch.classLoader.getClassBytes("org.bukkit.craftbukkit.util.Versioning");
+        } catch (Exception ignored) {
+            return;
+        }
+        CompatLibCore.LOGGER.info("Running in Hybrid Server...");
+        BUKKIT = true;
+    }
 
     static {
         MixinBootstrap.init();
