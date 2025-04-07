@@ -76,6 +76,9 @@
     "nbt.MixinNBTTagList",
     "nbt.MixinNBTTagLong",
     "nbt.MixinNBTTagShort",
-    "nbt.MixinNBTTagString"
+    "nbt.MixinNBTTagString",
+    "network.MixinC00Handshake",
+    "network.MixinNetHandlerHandshakeTCP",
+    "network.MixinNetworkManager"
   ]
 }

@@ -18,6 +18,13 @@ public class ClassTransformers implements IClassTransformer {
             r.accept(v, 0);
             return w.toByteArray();
         }
+        /*if (name.equals("cpw.mods.fml.common.registry.GameData")) {
+            ClassReader r = new ClassReader(bytes);
+            ClassWriter w = new ClassWriter(r, 0);
+            ClassVisitor v = new GameDataVisitor(w);
+            r.accept(v, 0);
+            return w.toByteArray();
+        }*/
         if (ClassNameList.Contains(name) || ClassNameList.Startswith(name)) {
             return bytes;
         }

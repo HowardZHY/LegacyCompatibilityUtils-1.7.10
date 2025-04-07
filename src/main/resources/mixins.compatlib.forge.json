@@ -9,7 +9,11 @@
   ],
   "mixins": [
     "MixinFMLCommonHandler",
+    "MixinFMLHandshakeServerState2",
+    "MixinFMLHandshakeServerState3",
+    "MixinFMLProxyPacket",
     "MixinLanguageRegistry",
+    "MixinNetworkDispatcher",
     "MixinTickEventType"
   ]
 }

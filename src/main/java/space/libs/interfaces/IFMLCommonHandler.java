@@ -2,6 +2,8 @@ package space.libs.interfaces;
 
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.handshake.client.C00Handshake;
 import net.minecraft.world.World;
 
 import java.util.EnumSet;
@@ -16,4 +18,5 @@ public interface IFMLCommonHandler {
 
     void onWorldLoadTick(World[] worlds);
 
+    boolean handleServerHandshake(C00Handshake packet, NetworkManager manager);
 }
