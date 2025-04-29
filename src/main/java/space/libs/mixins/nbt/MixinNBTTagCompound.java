@@ -53,8 +53,8 @@ public class MixinNBTTagCompound extends MixinNBTBase implements INBTBase {
     }
 
     @Public
-    private static NBTBase func_150293_a(byte paramByte, String paramString, DataInput input, int depth) {
-        NBTBase nbtbase = NBTBase.func_150284_a(paramByte);
+    private static NBTBase func_150293_a(byte b, String s, DataInput input, int depth) {
+        NBTBase nbtbase = NBTBase.createNewByType(b);
         INBTBase accessor = (INBTBase) nbtbase;
         try {
             accessor.func_74735_a(input, depth);
@@ -62,7 +62,7 @@ public class MixinNBTTagCompound extends MixinNBTBase implements INBTBase {
             CrashReport crashreport = CrashReport.makeCrashReport(exception, "Loading NBT data");
             CrashReportCategory crashreportcategory = crashreport.makeCategory("NBT Tag");
             crashreportcategory.addCrashSection("Tag name", "[UNNAMED TAG]");
-            crashreportcategory.addCrashSection("Tag type", Byte.valueOf(paramByte));
+            crashreportcategory.addCrashSection("Tag type", Byte.valueOf(b));
             throw new ReportedException(crashreport);
         }
         return nbtbase;

@@ -2,7 +2,8 @@
   "required": true,
   "minVersion": "0.7",
   "package": "space.libs.mixins.forge",
-  "plugin": "space.libs.core.CompatLibLateMixinPlugin",
+  "refmap": "mixins.compatlib.forge.refmap.json",
+  "plugin": "space.libs.core.CompatLibMixinPlugin",
   "compatibilityLevel": "JAVA_8",
   "client": [
     "MixinFMLClientHandler"

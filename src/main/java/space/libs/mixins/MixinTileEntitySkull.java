@@ -6,11 +6,12 @@ import net.minecraft.util.StringUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
+@SuppressWarnings("unused")
 @Mixin(TileEntitySkull.class)
 public class MixinTileEntitySkull {
 
     @Shadow
-    private int field_145908_a;
+    private int skullType;
 
     @Shadow
     private GameProfile field_152110_j = null;
@@ -18,7 +19,7 @@ public class MixinTileEntitySkull {
     public String field_145909_j = "";
 
     public void func_145905_a(int i, String name) {
-        this.field_145908_a = i;
+        this.skullType = i;
         this.field_145909_j = name;
         if (!StringUtils.isNullOrEmpty(name)) {
             this.field_152110_j = new GameProfile(null, name);

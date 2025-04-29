@@ -12,9 +12,6 @@ public abstract class MixinCommandBase {
     @Shadow
     private static IAdminCommand theAdmin;
 
-    @Shadow
-    public static void func_152374_a(ICommandSender sender, ICommand command, int p_152374_2_, String msgFormat, Object ... msgParams) {}
-
     /** notifyAdmins */
     @Public
     private static void func_71522_a(ICommandSender sender, String msgFormat, Object... paramVarArgs) {

@@ -34,7 +34,7 @@ public abstract class MixinEntityHorse extends MixinEntityLiving {
             String uuid = player.getUniqueID().toString();
             this.func_152120_b(uuid);
         } else {
-            System.out.println("[CompatLib] A Mod tried to set horse owner as someone not online. This is unsupported.");
+            System.out.println("[CompatLib] A Legacy Mod tried to set horse owner as someone not online. This is unsupported.");
         }
     }
 
@@ -43,7 +43,7 @@ public abstract class MixinEntityHorse extends MixinEntityLiving {
         String name;
         try {
             UUID uuid = UUID.fromString(func_152119_ch());
-            EntityPlayer player = MinecraftServer.getServer().getEntityWorld().func_152378_a(uuid);
+            EntityPlayer player = MinecraftServer.getServer().getEntityWorld().getPlayerEntityByUUID(uuid);
             name = player.getCommandSenderName();
         } catch (Exception e) {
             System.out.println("[CompatLib] Cannot get horse owner's name. Return owner's uuid instead.");

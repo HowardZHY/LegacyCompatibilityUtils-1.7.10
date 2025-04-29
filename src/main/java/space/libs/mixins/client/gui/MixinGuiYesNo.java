@@ -1,4 +1,4 @@
-package space.libs.mixins.client;
+package space.libs.mixins.client.gui;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiYesNo;
@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import space.libs.CompatLib;
 import space.libs.util.cursedmixinextensions.annotations.NewConstructor;
-import space.libs.util.cursedmixinextensions.annotations.ShadowConstructor;
 import space.libs.util.cursedmixinextensions.annotations.ShadowSuperConstructor;
 
 @Mixin(GuiYesNo.class)
@@ -22,10 +21,10 @@ public class MixinGuiYesNo {
     protected GuiYesNoCallback parentScreen;
 
     @Shadow
-    protected String field_146351_f;
+    protected String messageLine1;
 
     @Shadow
-    private String field_146354_r;
+    private String messageLine2;
 
     @Shadow
     protected String confirmButtonText;
@@ -34,7 +33,7 @@ public class MixinGuiYesNo {
     protected String cancelButtonText;
 
     @Shadow
-    protected int field_146357_i;
+    protected int parentButtonClickedId;
 
     public GuiScreen field_146355_a;
 
@@ -47,9 +46,9 @@ public class MixinGuiYesNo {
         } catch (ClassCastException e) {
             CompatLib.LOGGER.warn("Legacy Mod Custom GUI " + p_i1082_2_ + "/" + p_i1082_3_ + " Doesn't Implement GuiYesNoCallback");
         }
-        this.field_146351_f = p_i1082_2_;
-        this.field_146354_r = p_i1082_3_;
-        this.field_146357_i = p_i1082_4_;
+        this.messageLine1 = p_i1082_2_;
+        this.messageLine2 = p_i1082_3_;
+        this.parentButtonClickedId = p_i1082_4_;
         this.confirmButtonText = I18n.format("gui.yes");
         this.cancelButtonText = I18n.format("gui.no");
     }
@@ -63,11 +62,11 @@ public class MixinGuiYesNo {
         } catch (ClassCastException e) {
             CompatLib.LOGGER.warn("Legacy Mod Custom GUI " + p_i1083_2_ + "/" + p_i1083_3_ + " Doesn't Implement GuiYesNoCallback");
         }
-        this.field_146351_f = p_i1083_2_;
-        this.field_146354_r = p_i1083_3_;
+        this.messageLine1 = p_i1083_2_;
+        this.messageLine2 = p_i1083_3_;
         this.confirmButtonText = p_i1083_4_;
         this.cancelButtonText = p_i1083_5_;
-        this.field_146357_i = p_i1083_6_;
+        this.parentButtonClickedId = p_i1083_6_;
     }
 
     @ShadowSuperConstructor
@@ -76,7 +75,7 @@ public class MixinGuiYesNo {
     @Inject(method = "actionPerformed", at = @At("HEAD"), cancellable = true)
     protected void actionPerformed(GuiButton button, CallbackInfo ci) {
         if (this.parentScreen == null) {
-            this.field_146355_a.confirmClicked(button.id == 0, this.field_146357_i);
+            this.field_146355_a.confirmClicked(button.id == 0, this.parentButtonClickedId);
             ci.cancel();
         }
     }

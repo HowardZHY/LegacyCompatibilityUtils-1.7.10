@@ -1,4 +1,4 @@
-package space.libs.mixins.client;
+package space.libs.mixins.client.gui;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -40,7 +40,7 @@ public abstract class MixinGuiMainMenu extends GuiScreen {
 
     public void func_130020_g() {
         if (this.field_96141_q) {
-            logger.warn("MCO/Realms Availability Checker is not valid anymore.");
+            logger.warn("MCO/Realms Availability Checker is INVALID anymore!");
             if (field_96139_s) {
                 func_130022_h();
             }

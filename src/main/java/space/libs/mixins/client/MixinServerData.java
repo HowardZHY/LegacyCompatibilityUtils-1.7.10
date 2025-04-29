@@ -1,6 +1,6 @@
 package space.libs.mixins.client;
 
-import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.multiplayer.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -11,17 +11,17 @@ public abstract class MixinServerData {
     public boolean field_82823_k;
 
     @Shadow
-    public void func_152584_a(ServerData.ServerResourceMode mode) {}
+    public void setResourceMode(ServerData.ServerResourceMode mode) {}
 
     @Shadow
-    public abstract ServerData.ServerResourceMode func_152586_b();
+    public abstract ServerData.ServerResourceMode getResourceMode();
 
     /** setAcceptsTextures */
     public void func_78838_a(boolean enabled) {
         if (!enabled) {
-            this.func_152584_a(ServerData.ServerResourceMode.DISABLED);
+            this.setResourceMode(ServerData.ServerResourceMode.DISABLED);
         } else {
-            this.func_152584_a(ServerData.ServerResourceMode.ENABLED);
+            this.setResourceMode(ServerData.ServerResourceMode.ENABLED);
         }
     }
 
@@ -37,7 +37,7 @@ public abstract class MixinServerData {
 
     /** getAcceptsTextures */
     public boolean func_147408_b() {
-        return this.func_152586_b() != ServerData.ServerResourceMode.DISABLED;
+        return this.getResourceMode() != ServerData.ServerResourceMode.DISABLED;
     }
 
     // unknown

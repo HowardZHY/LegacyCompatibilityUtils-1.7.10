@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import java.util.HashMap;
 import java.util.List;
 
+@SuppressWarnings("all")
 @Pseudo
 @Mixin(targets = "mobdis.client.core.TickHandlerClient", remap = false)
 public class MixinTickHandlerClient {
@@ -28,7 +29,7 @@ public class MixinTickHandlerClient {
         )
     )
     public Object worldTick(List<Entity> list, int i) {
-        Entity ent = Minecraft.getMinecraft().theWorld.loadedEntityList.get(i);
+        Entity ent = (Entity) Minecraft.getMinecraft().theWorld.loadedEntityList.get(i);
         if ((ent instanceof AbstractClientPlayer) && !ent.isEntityAlive() && !this.dismemberTimeout.containsKey(ent)) {
             this.dismemberTimeout.put((EntityLivingBase)ent, 2);
         }

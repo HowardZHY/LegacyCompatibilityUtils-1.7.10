@@ -1,23 +1,24 @@
 package space.libs.mixins;
 
 import com.mojang.authlib.GameProfile;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.BanList;
 import net.minecraft.server.management.ServerConfigurationManager;
+import net.minecraft.server.management.UserListOps;
+import net.minecraft.server.management.UserListWhitelist;
 import net.minecraft.stats.StatisticsFile;
-import net.minecraft.world.WorldSettings;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import net.minecraft.world.*;
+import org.spongepowered.asm.mixin.*;
 import space.libs.CompatLib;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 @Mixin(ServerConfigurationManager.class)
 public abstract class MixinServerConfigurationManager {
 
@@ -25,60 +26,84 @@ public abstract class MixinServerConfigurationManager {
     private @Final MinecraftServer mcServer;
 
     @Shadow
-    private WorldSettings.GameType gameType;
-
-    @Shadow
     public @Final List<EntityPlayerMP> playerEntityList;
 
     @Shadow
-    public abstract boolean func_152596_g(GameProfile profile);
-
-    /** remove */
-    @Shadow
-    public void func_152597_c(GameProfile profile) {}
-
-    /** add */
-    @Shadow
-    public void func_152601_d(GameProfile profile) {}
+    private @Final BanList bannedIPs;
 
     @Shadow
-    public abstract StatisticsFile func_152602_a(EntityPlayer player);
+    private @Final UserListOps ops;
 
     @Shadow
-    public void func_152605_a(GameProfile profile) {}
+    private @Final UserListWhitelist whiteListedPlayers;
 
     @Shadow
-    public abstract boolean func_152607_e(GameProfile profile);
+    private WorldSettings.GameType gameType;
+
+    /** func_152596_g */
+    @Shadow
+    public abstract boolean canSendCommands(GameProfile profile);
+
+    /** func_152597_c */
+    @Shadow
+    public void removePlayerFromWhitelist(GameProfile profile) {}
+
+    /** func_152601_d */
+    @Shadow
+    public void addWhitelistedPlayer(GameProfile profile) {}
+
+    /** func_156202_a */
+    @Shadow
+    public abstract StatisticsFile getPlayerStatsFile(EntityPlayer player);
+
+    /** func_156205_a */
+    @Shadow
+    public void addOp(GameProfile profile) {}
+
+    /** func_156207_e */
+    @Shadow
+    public abstract boolean canJoin(GameProfile profile);
+
+    /** func_152610_b */
+    @Shadow
+    public void removeOp(GameProfile profile) {}
 
     @Shadow
-    public void func_152610_b(GameProfile profile) {}
+    public abstract void func_152604_a(WorldSettings.GameType type);
 
+    /** isPlayerOpped */
     public boolean func_72353_e(String name) {
-        try {
-            return this.func_152596_g(this.getProfileFromName(name));
-        } catch (Exception e) {
+        GameProfile profile = this.getProfileFromName(name);
+        if (profile != null) {
+            return this.canSendCommands(profile);
+        } else {
             return false;
         }
     }
 
     /** setGameType */
-    public void func_72357_a(WorldSettings.GameType par1EnumGameType) {
-        this.gameType = par1EnumGameType;
-    }
-
-    public void func_72359_h(String name) {
-        try {
-            this.func_152610_b(this.getProfileFromName(name));
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void func_72357_a(WorldSettings.GameType type) {
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+            ServerConfigurationManager This = (ServerConfigurationManager) (Object) this;
+            This.func_152604_a(type);
+        } else {
+            this.gameType = type;
         }
     }
 
+    /** addToWhiteList */
+    public void func_72359_h(String name) {
+        GameProfile profile = this.getProfileFromName(name);
+        if (profile != null) {
+            this.addWhitelistedPlayer(profile);
+        }
+    }
+
+    /** removeOP **/
     public void func_72360_c(String name) {
-        try {
-            this.func_152601_d(this.getProfileFromName(name));
-        } catch (Exception e) {
-            e.printStackTrace();
+        GameProfile profile = this.ops.getGameProfileFromName(name);
+        if (profile != null) {
+            this.removeOp(profile);
         }
     }
 
@@ -94,66 +119,90 @@ public abstract class MixinServerConfigurationManager {
         return entityplayermp;
     }
 
+    /** isAllowedToLogin **/
     public boolean func_72370_d(String name) {
         try {
-            return this.func_152607_e(this.getProfileFromName(name));
+            return this.canJoin(this.getProfileFromName(name));
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public Set func_72376_i() {
-        throw new UnsupportedOperationException();
+    /** getOps **/
+    public Set<String> func_72376_i() {
+        try {
+            throw new UnsupportedOperationException("Server");
+        } catch (Exception e) {
+            CompatLib.LOGGER.warn("Getting Legacy OPList.");
+            e.printStackTrace();
+        }
+        return Arrays.stream(this.ops.getKeys()).collect(Collectors.toSet());
     }
 
     public void func_72379_i(String name) {
-        try {
-            this.func_152597_c(this.getProfileFromName(name));
-        } catch (Exception e) {
-            e.printStackTrace();
+        GameProfile profile = this.whiteListedPlayers.func_152706_a(name);
+        if (profile != null) {
+            this.removePlayerFromWhitelist(profile);
         }
     }
 
+    /** addOp */
     public void func_72386_b(String name) {
-        try {
-            this.func_152605_a(this.getProfileFromName(name));
-        } catch (Exception e) {
-            e.printStackTrace();
+        GameProfile profile = this.getProfileFromName(name);
+        if (profile != null) {
+            this.addOp(profile);
         }
     }
 
-    public Set func_72388_h() {
-        throw new UnsupportedOperationException();
+    /** getWhiteListedPlayers **/
+    public Set<?> func_72388_h() {
+        try {
+            throw new UnsupportedOperationException("Server");
+        } catch (Exception e) {
+            CompatLib.LOGGER.warn("Getting Legacy WhiteList.");
+            e.printStackTrace();
+        }
+        return Arrays.stream(this.whiteListedPlayers.getKeys()).collect(Collectors.toSet());
     }
 
+    /** getBannedPlayers */
     public BanList func_72390_e() {
-        throw new UnsupportedOperationException();
+        try {
+            throw new UnsupportedOperationException();
+        } catch (Exception e) {
+            CompatLib.LOGGER.error("Legacy BanList is unsupported.");
+            e.printStackTrace();
+        }
+        return this.bannedIPs;
     }
 
     /** getPlayerListAsString */
     public String func_72398_c() {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for (int i = 0; i < this.playerEntityList.size(); i++) {
             if (i > 0)
-                s = s + ", ";
-            s = s + ((EntityPlayerMP)this.playerEntityList.get(i)).getCommandSenderName();
+                s.append(", ");
+            s.append(this.playerEntityList.get(i).getCommandSenderName());
         }
-        return s;
+        return s.toString();
     }
 
     public StatisticsFile func_148538_i(String p_148538_1_) {
-        return this.func_152602_a(this.func_72361_f(p_148538_1_));
+        return this.getPlayerStatsFile(this.func_72361_f(p_148538_1_));
     }
 
     public GameProfile getProfileFromName(String name) {
-        try {
-            GameProfile profile = this.func_72361_f(name).getGameProfile();
-            return profile;
-        } catch (Exception e) {
-            CompatLib.LOGGER.error("[ServerConfigurationManager] Cannot get offline player profile by name: " + name);
-            e.printStackTrace();
+        EntityPlayerMP player = this.func_72361_f(name);
+        if (player == null) {
+            CompatLib.LOGGER.error("[ServerConfigurationManager] Cannot get offline player by name: " + name);
             return null;
+        } else {
+            GameProfile profile = player.getGameProfile();
+            if (profile == null) {
+                CompatLib.LOGGER.error("[ServerConfigurationManager] Cannot get offline player profile by name: " + name);
+            }
+            return profile;
         }
     }
 }

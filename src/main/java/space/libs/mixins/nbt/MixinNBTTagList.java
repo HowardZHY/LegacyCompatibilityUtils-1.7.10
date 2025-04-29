@@ -29,7 +29,7 @@ public class MixinNBTTagList extends MixinNBTBase {
             int j = input.readInt();
             this.tagList = new ArrayList();
             for (int k = 0; k < j; k++) {
-                NBTBase nbtbase = NBTBase.func_150284_a(this.tagType);
+                NBTBase nbtbase = NBTBase.createNewByType(this.tagType);
                 INBTBase accessor = (INBTBase) nbtbase;
                 accessor.func_74735_a(input, depth + 1);
                 this.tagList.add(nbtbase);
