@@ -9,7 +9,6 @@ import org.spongepowered.asm.launch.MixinBootstrap;
 import java.util.ArrayList;
 import java.util.Map;
 
-@SuppressWarnings("all")
 @IFMLLoadingPlugin.TransformerExclusions({"space.libs.asm", "space.libs.core", "space.libs.util.cursedmixinextensions", "org.joml"})
 @IFMLLoadingPlugin.SortingIndex(Integer.MIN_VALUE + 2)
 public class CompatLibCore implements IFMLLoadingPlugin {
@@ -18,6 +17,7 @@ public class CompatLibCore implements IFMLLoadingPlugin {
 
     public static boolean BUKKIT = false;
 
+    @SuppressWarnings("unused")
     public CompatLibCore() {
         try {
             byte[] bukkit = Launch.classLoader.getClassBytes("org.bukkit.craftbukkit.util.Versioning");
