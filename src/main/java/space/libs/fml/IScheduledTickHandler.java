@@ -10,7 +10,7 @@
  *     cpw - implementation
  */
 
-package space.libs.interfaces;
+package space.libs.fml;
 
 @SuppressWarnings("all")
 public interface IScheduledTickHandler extends ITickHandler

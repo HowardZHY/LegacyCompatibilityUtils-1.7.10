@@ -54,7 +54,7 @@ public abstract class MixinCompressedStreamTools {
             return (NBTBase) new NBTTagEnd();
         }
         p_150664_0_.readUTF();
-        NBTBase nbtbase = NBTBase.func_150284_a(b0);
+        NBTBase nbtbase = NBTBase.createNewByType(b0);
         INBTBase accessor = (INBTBase) nbtbase;
         try {
             accessor.func_74735_a(p_150664_0_, p_150664_1_);

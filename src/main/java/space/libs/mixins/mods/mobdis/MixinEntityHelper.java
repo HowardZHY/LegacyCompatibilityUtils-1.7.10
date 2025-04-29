@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@SuppressWarnings("all")
 @Pseudo
 @Mixin(targets = "mobdis.common.core.EntityHelper", remap = false)
 public abstract class MixinEntityHelper {

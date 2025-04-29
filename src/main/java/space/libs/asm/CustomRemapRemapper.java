@@ -35,6 +35,7 @@ import java.util.Set;
 
 import static com.google.common.io.Resources.getResource;
 
+@SuppressWarnings("all")
 public class CustomRemapRemapper extends Remapper {
 
     private BiMap<String, String> classNameBiMap;
@@ -49,13 +50,12 @@ public class CustomRemapRemapper extends Remapper {
 
     private LaunchClassLoader classLoader;
 
-    public static String DEFAULT_MAPPINGS = "compatlib.srg";
-
-    public CustomRemapRemapper() {
+    public CustomRemapRemapper(String mappings) {
         classNameBiMap = ImmutableBiMap.of();
-        this.setup((LaunchClassLoader) this.getClass().getClassLoader(), DEFAULT_MAPPINGS);
+        this.setup((LaunchClassLoader) this.getClass().getClassLoader(), mappings);
     }
 
+    @SuppressWarnings("all")
     public void setup(LaunchClassLoader classLoader, String deobfFileName) {
         this.classLoader = classLoader;
         try {
@@ -64,7 +64,7 @@ public class CustomRemapRemapper extends Remapper {
             List<String> srgList = srgSource.readLines();
             rawMethodMaps = Maps.newHashMap();
             rawFieldMaps = Maps.newHashMap();
-            Builder<String, String> builder = ImmutableBiMap.builder();
+            Builder<String, String> builder = ImmutableBiMap.<String,String>builder();
             Splitter splitter = Splitter.on(CharMatcher.anyOf(": ")).omitEmptyStrings().trimResults();
             for (String line : srgList)
             {
@@ -258,7 +258,7 @@ public class CustomRemapRemapper extends Remapper {
     }
 
     public void mergeSuperMaps(String name, String superName, String[] interfaces) {
-//      System.out.printf("Computing super maps for %s: %s %s\n", name, superName, Arrays.asList(interfaces));
+        //System.out.printf("Computing super maps for %s: %s %s\n", name, superName, Arrays.asList(interfaces));
         if (classNameBiMap == null || classNameBiMap.isEmpty()) {
             return;
         }
@@ -291,13 +291,14 @@ public class CustomRemapRemapper extends Remapper {
         }
         methodNameMaps.put(name, ImmutableMap.copyOf(methodMap));
         fieldNameMaps.put(name, ImmutableMap.copyOf(fieldMap));
-//      System.out.printf("Maps: %s %s\n", name, methodMap);
+        //System.out.printf("Maps: %s %s\n", name, methodMap);
     }
 
     public Set<String> getObfedClasses() {
         return ImmutableSet.copyOf(classNameBiMap.keySet());
     }
 
+    @SuppressWarnings("all")
     public String getStaticFieldType(String oldType, String oldName, String newType, String newName) {
         String fType = getFieldType(oldType, oldName);
         if (oldType.equals(newType)) {

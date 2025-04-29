@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
+@SuppressWarnings("unused")
 @Mixin(TileEntitySkullRenderer.class)
 public abstract class MixinTileEntitySkullRenderer extends TileEntitySpecialRenderer {
 

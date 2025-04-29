@@ -14,7 +14,7 @@ import space.libs.util.cursedmixinextensions.annotations.Public;
 
 import static net.minecraft.client.entity.AbstractClientPlayer.getLocationSkin;
 
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 @Mixin(value = AbstractClientPlayer.class, priority = 200)
 public abstract class MixinAbstractClientPlayer extends EntityPlayer {
 
@@ -51,7 +51,7 @@ public abstract class MixinAbstractClientPlayer extends EntityPlayer {
     /** getSkinUrl */
     @Public
     private static String func_110300_d(String name) {
-        return String.format("https://mineskin.eu/skin/%s.png", new Object[] {StringUtils.stripControlCodes(name)});
+        return String.format("https://mineskin.eu/skin/%s.png", StringUtils.stripControlCodes(name));
     } //mirror url
 
     /** getDownloadImage */
@@ -87,7 +87,7 @@ public abstract class MixinAbstractClientPlayer extends EntityPlayer {
     /** getCapeUrl */
     @Public
     private static String func_110308_e(String name) {
-        return String.format("http://skins.minecraft.net/MinecraftCloaks/%s.png", new Object[] {StringUtils.stripControlCodes(name)});
+        return String.format("http://skins.minecraft.net/MinecraftCloaks/%s.png", StringUtils.stripControlCodes(name));
     } // won't work anymore
 
     /** getTextureSkin */

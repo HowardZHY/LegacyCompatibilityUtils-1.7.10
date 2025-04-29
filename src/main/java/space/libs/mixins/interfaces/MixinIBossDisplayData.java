@@ -10,9 +10,9 @@ import org.spongepowered.asm.mixin.Shadow;
 public interface MixinIBossDisplayData {
 
     @Shadow
-    IChatComponent func_145748_c_();
+    IChatComponent getFormattedCommandSenderName();
 
     default String func_70023_ak() {
-        return func_145748_c_().getUnformattedText();
+        return getFormattedCommandSenderName().getUnformattedText();
     }
 }

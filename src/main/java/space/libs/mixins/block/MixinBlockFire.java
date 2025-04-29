@@ -1,9 +1,10 @@
-package space.libs.mixins;
+package space.libs.mixins.block;
 
 import net.minecraft.block.BlockFire;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import space.libs.mixins.block.MixinBlock;
 
 @Mixin(BlockFire.class)
 public abstract class MixinBlockFire extends MixinBlock {

@@ -14,10 +14,10 @@ public abstract class MixinMinecraftServer {
     private ServerConfigurationManager serverConfigManager;
 
     @Shadow
-    public abstract EnumDifficulty func_147135_j();
+    public abstract EnumDifficulty getDifficulty();
 
     @Shadow
-    public void func_147139_a(EnumDifficulty difficulty) {}
+    public void setDifficultyForAllWorlds(EnumDifficulty difficulty) {}
 
     /** setConfigurationManager */
     public void func_71210_a(ServerConfigurationManager manager) {
@@ -26,11 +26,11 @@ public abstract class MixinMinecraftServer {
 
     /** setDifficultyForAllWorlds */
     public void func_71226_c(int difficulty) {
-        this.func_147139_a(EnumDifficulty.getDifficultyEnum(difficulty));
+        this.setDifficultyForAllWorlds(EnumDifficulty.getDifficultyEnum(difficulty));
     }
 
     /** getDifficulty */
     public int func_71232_g() {
-        return this.func_147135_j().getDifficultyId();
+        return this.getDifficulty().getDifficultyId();
     }
 }

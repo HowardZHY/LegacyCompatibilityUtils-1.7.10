@@ -321,7 +321,7 @@ public abstract class MixinItem implements IItem {
         field_77750_aQ = Items.compass;
         field_77751_aT = Items.glowstone_dust;
         field_77752_aS = Items.clock;
-        field_77753_aV = Items.cooked_fished;
+        field_77753_aV = Items.cooked_fish;
         field_77754_aU = Items.fish;
         field_77755_aX = Items.bone;
         field_77756_aW = Items.dye;

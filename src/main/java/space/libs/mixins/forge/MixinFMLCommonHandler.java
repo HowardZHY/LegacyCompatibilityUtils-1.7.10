@@ -26,9 +26,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import space.libs.interfaces.IFMLCommonHandler;
-import space.libs.interfaces.IScheduledTickHandler;
+import space.libs.fml.IScheduledTickHandler;
 import space.libs.util.cursedmixinextensions.annotations.Public;
-import space.libs.util.forge.TickRegistry;
+import space.libs.fml.TickRegistry;
 
 import java.util.EnumSet;
 import java.util.List;

@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import space.libs.CompatLib;
 
 import java.util.UUID;
 
@@ -24,10 +25,11 @@ public abstract class MixinEntityTameable implements IEntityOwnableName {
         String name;
         try {
             UUID uuid = UUID.fromString(func_152113_b());
-            EntityPlayer player = MinecraftServer.getServer().getEntityWorld().func_152378_a(uuid);
+            EntityPlayer player = MinecraftServer.getServer().getEntityWorld().getPlayerEntityByUUID(uuid);
             name = player.getCommandSenderName();
         } catch (Exception e) {
-            System.out.println("[CompatLib] Cannot get tamable entity owner's name. Return owner's uuid instead.");
+            CompatLib.LOGGER.error("Cannot get tamable entity owner's name. Return owner's uuid instead.");
+            e.printStackTrace();
             return this.func_152113_b();
         }
         return name;
@@ -40,7 +42,7 @@ public abstract class MixinEntityTameable implements IEntityOwnableName {
             String uuid = player.getUniqueID().toString();
             this.func_152115_b(uuid);
         } else {
-            System.out.println("[CompatLib] A Mod tried to set tamable entity owner as someone not online. This is unsupported.");
+            CompatLib.LOGGER.warn("A Legacy Mod tried to set tamable entity owner as someone not online. This is unsupported.");
         }
     }
 

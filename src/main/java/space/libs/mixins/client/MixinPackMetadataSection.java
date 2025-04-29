@@ -1,14 +1,11 @@
 package space.libs.mixins.client;
 
 import net.minecraft.client.resources.data.PackMetadataSection;
-import net.minecraft.util.IChatComponent;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import space.libs.util.cursedmixinextensions.annotations.NewConstructor;
-import space.libs.util.cursedmixinextensions.annotations.ShadowConstructor;
-import space.libs.util.cursedmixinextensions.annotations.ShadowSuperConstructor;
+import net.minecraft.util.*;
+import org.spongepowered.asm.mixin.*;
+import space.libs.util.cursedmixinextensions.annotations.*;
 
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 @Mixin(PackMetadataSection.class)
 public abstract class MixinPackMetadataSection {
 
@@ -23,7 +20,7 @@ public abstract class MixinPackMetadataSection {
 
     @NewConstructor
     public void PackMetadataSection(String p_i1034_1_, int p_i1034_2_) {
-        this.PackMetadataSection(IChatComponent.Serializer.func_150699_a(p_i1034_1_), p_i1034_2_); // Is this correct?
+        this.PackMetadataSection(IChatComponent.Serializer.jsonToComponent(p_i1034_1_), p_i1034_2_); // Is this correct?
     }
 
     /** getPackDescription */
