@@ -28,14 +28,10 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
 import org.objectweb.asm.commons.RemappingClassAdapter;
 
-public class RemapTransformer implements IClassTransformer
-{
+@SuppressWarnings("unused")
+public class RemapTransformer implements IClassTransformer {
 
-    public RemapTransformer instance;
-
-    public RemapTransformer() {
-        instance = this;
-    }
+    public RemapTransformer() {}
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] bytes) {
