@@ -10,7 +10,7 @@
  *     cpw - implementation
  */
 
-package space.libs.util.forge;
+package space.libs.fml;
 
 import java.util.List;
 import java.util.PriorityQueue;
@@ -19,7 +19,6 @@ import java.util.concurrent.atomic.AtomicLong;
 import com.google.common.collect.Queues;
 
 import cpw.mods.fml.relauncher.Side;
-import space.libs.interfaces.*;
 
 public class TickRegistry {
 
@@ -39,6 +38,7 @@ public class TickRegistry {
         }
 
         private long next;
+
         public IScheduledTickHandler ticker;
 
         public boolean scheduledNow(long tickCounter) {
@@ -46,11 +46,13 @@ public class TickRegistry {
         }
     }
 
-    private static PriorityQueue<TickQueueElement> clientTickHandlers = Queues.newPriorityQueue();
-    private static PriorityQueue<TickQueueElement> serverTickHandlers = Queues.newPriorityQueue();
+    public static PriorityQueue<TickQueueElement> clientTickHandlers = Queues.newPriorityQueue();
 
-    private static AtomicLong clientTickCounter = new AtomicLong();
-    private static AtomicLong serverTickCounter = new AtomicLong();
+    public static PriorityQueue<TickQueueElement> serverTickHandlers = Queues.newPriorityQueue();
+
+    public static AtomicLong clientTickCounter = new AtomicLong();
+
+    public static AtomicLong serverTickCounter = new AtomicLong();
 
     public static void registerScheduledTickHandler(IScheduledTickHandler handler, Side side) {
         getQueue(side).add(new TickQueueElement(handler, getCounter(side).get()));
@@ -60,11 +62,11 @@ public class TickRegistry {
      * @param side the side to get the tick queue for
      * @return the queue for the effective side
      */
-    private static PriorityQueue<TickQueueElement> getQueue(Side side) {
+    public static PriorityQueue<TickQueueElement> getQueue(Side side) {
         return side.isClient() ? clientTickHandlers : serverTickHandlers;
     }
 
-    private static AtomicLong getCounter(Side side) {
+    public static AtomicLong getCounter(Side side) {
         return side.isClient() ? clientTickCounter : serverTickCounter;
     }
 
@@ -72,6 +74,7 @@ public class TickRegistry {
         registerScheduledTickHandler(new SingleIntervalHandler(handler), side);
     }
 
+    @SuppressWarnings("all")
     public static void updateTickQueue(List<IScheduledTickHandler> ticks, Side side) {
         synchronized (ticks) {
             ticks.clear();

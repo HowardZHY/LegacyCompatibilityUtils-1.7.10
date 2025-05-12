@@ -10,7 +10,7 @@
  *     cpw - implementation
  */
 
-package space.libs.interfaces;
+package space.libs.fml;
 
 import cpw.mods.fml.common.gameevent.TickEvent;
 

@@ -10,11 +10,9 @@
  *     cpw - implementation
  */
 
-package space.libs.util.forge;
+package space.libs.fml;
 
 import cpw.mods.fml.common.gameevent.TickEvent;
-import space.libs.interfaces.IScheduledTickHandler;
-import space.libs.interfaces.ITickHandler;
 
 import java.util.EnumSet;
 

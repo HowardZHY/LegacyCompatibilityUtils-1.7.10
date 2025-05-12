@@ -10,7 +10,7 @@
  *     cpw - implementation
  */
 
-package space.libs.util.forge;
+package space.libs.fml;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -25,7 +25,6 @@ import org.lwjgl.input.Mouse;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import cpw.mods.fml.relauncher.Side;
-import space.libs.interfaces.ITickHandler;
 
 @SuppressWarnings("all")
 @SideOnly(Side.CLIENT)
