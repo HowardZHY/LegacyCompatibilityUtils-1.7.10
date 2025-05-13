@@ -31,6 +31,8 @@ import org.objectweb.asm.commons.RemappingClassAdapter;
 @SuppressWarnings("unused")
 public class RemapTransformer implements IClassTransformer {
 
+    public static String DEFAULT_MAPPINGS = "compatlib.srg";
+
     public RemapTransformer() {}
 
     @Override

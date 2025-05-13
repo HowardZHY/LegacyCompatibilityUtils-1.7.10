@@ -19,7 +19,7 @@ public class CustomRemappingAdapter extends RemappingClassAdapter {
     public static CustomRemappingAdapter INSTANCE;
 
     public CustomRemappingAdapter(ClassVisitor cv) {
-        super(cv, new CustomRemapRemapper());
+        super(cv, new CustomRemapRemapper(RemapTransformer.DEFAULT_MAPPINGS));
         INSTANCE = this;
     }
 
@@ -38,12 +38,12 @@ public class CustomRemappingAdapter extends RemappingClassAdapter {
 
     @Override
     protected MethodVisitor createRemappingMethodAdapter(int access, String newDesc, MethodVisitor mv) {
-        return new StaticFixingMethodVisitor(access, newDesc, mv, remapper);
+        return new FixingMethodVisitor(access, newDesc, mv, remapper);
     }
 
-    public class StaticFixingMethodVisitor extends RemappingMethodAdapter {
+    public class FixingMethodVisitor extends RemappingMethodAdapter {
 
-        public StaticFixingMethodVisitor(int access, String desc, MethodVisitor mv, Remapper remapper) {
+        public FixingMethodVisitor(int access, String desc, MethodVisitor mv, Remapper remapper) {
             super(access, desc, mv, remapper);
         }
 
@@ -51,20 +51,25 @@ public class CustomRemappingAdapter extends RemappingClassAdapter {
         public void visitFieldInsn(int opcode, String originalType, String originalName, String desc) {
             // This method solves the problem of a static field reference changing type. In all probability it is a
             // compatible change, however we need to fix up the desc to point at the new type
-            String type = remapper.mapType(originalType);
-            String fieldName = remapper.mapFieldName(originalType, originalName, desc);
-            String newDesc = remapper.mapDesc(desc);
+            String type = getRemapper().mapType(originalType);
+            String fieldName = getRemapper().mapFieldName(originalType, originalName, desc);
+            String newDesc = getRemapper().mapDesc(desc);
             if (opcode == Opcodes.GETSTATIC) // && type.startsWith("net/minecraft/") && newDesc.startsWith("Lnet/minecraft/"))
             {
                 String replDesc = getRemapper().getStaticFieldType(originalType, originalName, type, fieldName);
                 if (replDesc != null) {
-                    newDesc = remapper.mapDesc(replDesc);
+                    newDesc = getRemapper().mapDesc(replDesc);
                 }
             }
             // super.super
             if (mv != null) {
                 mv.visitFieldInsn(opcode, type, fieldName, newDesc);
             }
+        }
+
+        @Override
+        public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
+            super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
         }
     }
 }
