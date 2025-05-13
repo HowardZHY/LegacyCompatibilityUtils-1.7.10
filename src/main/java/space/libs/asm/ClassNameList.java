@@ -21,6 +21,7 @@ public class ClassNameList {
     public static String[] WHITELIST = {
         "baritone",
         "club.sk1er.patcher",
+        "cofh",
         "com.jcraft",
         "com.llamalad7",
         "com.mojang",
@@ -43,7 +44,7 @@ public class ClassNameList {
         "gg.essential",
         "gnu.trove",
         "groovy",
-        "intermediary.",
+        "intermediary",
         "io.github.legacymoddingmc",
         "io.netty",
         "it.unimi",

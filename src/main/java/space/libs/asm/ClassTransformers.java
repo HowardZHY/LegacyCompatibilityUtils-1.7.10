@@ -13,7 +13,7 @@ public class ClassTransformers implements IClassTransformer {
         }
         if (name.equals("cpw.mods.fml.common.FMLModContainer")) {
             ClassReader r = new ClassReader(bytes);
-            ClassWriter w = new ClassWriter(r, 0);
+            ClassWriter w = new ClassWriter(r, ClassWriter.COMPUTE_MAXS);
             ClassVisitor v = new FMLModContainerVisitor(w);
             r.accept(v, 0);
             return w.toByteArray();
@@ -23,14 +23,14 @@ public class ClassTransformers implements IClassTransformer {
         }
         ClassReader cr = new ClassReader(bytes);
         ClassWriter cw = new ClassWriter(cr, 0);
-        ClassVisitor cv = new CV(cw);
+        ClassVisitor cv = new EventVisitor(cw);
         cr.accept(cv, 0);
         return cw.toByteArray();
     }
 
-    public static class CV extends ClassVisitor {
+    public static class EventVisitor extends ClassVisitor {
 
-        public CV(ClassVisitor cv) {
+        public EventVisitor(ClassVisitor cv) {
             super(Opcodes.ASM5, cv);
         }
 
@@ -59,12 +59,12 @@ public class ClassTransformers implements IClassTransformer {
         @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             MethodVisitor mv = super.visitMethod(access, name, desc, signature, exceptions);
-            return new MV(mv);
+            return new EventMethodVisitor(mv);
         }
 
-        public static class MV extends MethodVisitor {
+        public static class EventMethodVisitor extends MethodVisitor {
 
-            public MV(MethodVisitor mv) {
+            public EventMethodVisitor(MethodVisitor mv) {
                 super(Opcodes.ASM5, mv);
             }
 
