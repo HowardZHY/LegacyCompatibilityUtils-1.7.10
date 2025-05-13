@@ -72,6 +72,11 @@ unimined.minecraft {
             catchAWNamespaceAssertion()
         }
     }
+
+    runs.config("client") {
+        jvmArgs("-Dfml.coreMods.load=space.libs.core.CompatLibCore ")
+        jvmArgs("-Dmixin.debug.export=true")
+    }
 }
 
 def mixinProviderSpecNoClassifer = "io.github.legacymoddingmc:unimixins:0.1.16"
@@ -91,6 +96,7 @@ processResources {}
 jar {
     manifest {
         attributes([
+            "FMLAT": "compatlib_at.cfg",
             "FMLCorePlugin": "space.libs.core.CompatLibCore",
             "FMLCorePluginContainsFMLMod": "true",
             "ForceLoadAsMod": "true",
@@ -116,6 +122,20 @@ tasks.jar {
 }
 
 tasks.shadowJar {}
+
+tasks.remapShadowJar {
+    manifest {
+        attributes([
+            "FMLAT": "compatlib_at.cfg",
+            "FMLCorePlugin": "space.libs.core.CompatLibCore",
+            "FMLCorePluginContainsFMLMod": "true",
+            "ForceLoadAsMod": "true",
+            "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+            "MixinConfigs": "mixins.compatlib.json",
+            "Manifest-Version": 1.0
+        ])
+    }
+}
 
 tasks.build {
     dependsOn(tasks.remapShadowJar)
