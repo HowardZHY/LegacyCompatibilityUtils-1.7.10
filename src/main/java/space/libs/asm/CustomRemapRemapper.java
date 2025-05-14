@@ -182,8 +182,7 @@ public class CustomRemapRemapper extends Remapper {
             return classNameBiMap.get(typeName);
         }
         int dollarIdx = typeName.lastIndexOf('$');
-        if (dollarIdx > -1)
-        {
+        if (dollarIdx > -1) {
             return map(typeName.substring(0, dollarIdx)) + "$" + typeName.substring(dollarIdx + 1);
         }
         return typeName;
@@ -193,7 +192,6 @@ public class CustomRemapRemapper extends Remapper {
         if (classNameBiMap == null || classNameBiMap.isEmpty()) {
             return typeName;
         }
-
         if (classNameBiMap.containsValue(typeName)) {
             return classNameBiMap.inverse().get(typeName);
         }
@@ -220,7 +218,6 @@ public class CustomRemapRemapper extends Remapper {
             if (!fieldNameMaps.containsKey(className)) {
                 negativeCacheFields.add(className);
             }
-
             if (CompatLibDebug.DEBUG) {
                 CompatLibCore.LOGGER.info("Field map for " + className + " : " + fieldNameMaps.get(className));
             }
