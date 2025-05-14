@@ -41,6 +41,7 @@
     "MixinSaveHandler",
     "MixinServerCommandManager",
     "MixinServerConfigurationManager",
+    "MixinStatBase",
     "MixinTileEntitySkull",
     "MixinWorld",
     "block.MixinBlock",
