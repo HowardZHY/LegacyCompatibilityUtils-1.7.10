@@ -1,5 +1,8 @@
 CL: cpw/mods/fml/client/registry/KeyBindingRegistry space/libs/fml/client/KeyBindingRegistry
 CL: cpw/mods/fml/client/registry/KeyBindingRegistry$KeyHandler space/libs/fml/client/KeyBindingRegistry$KeyHandler
+CL: cpw/mods/fml/common/IChatListener space/libs/fml/IChatListener
+CL: cpw/mods/fml/common/ICraftingHandler space/libs/fml/ICraftingHandler
+CL: cpw/mods/fml/common/IPickupNotifier space/libs/fml/IPickupNotifier
 CL: cpw/mods/fml/common/IScheduledTickHandler space/libs/fml/IScheduledTickHandler
 CL: cpw/mods/fml/common/ITickHandler space/libs/fml/ITickHandler
 CL: cpw/mods/fml/common/SingleIntervalHandler space/libs/fml/SingleIntervalHandler
