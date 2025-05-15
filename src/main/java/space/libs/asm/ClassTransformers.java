@@ -11,12 +11,14 @@ public class ClassTransformers implements IClassTransformer {
         if (name == null || bytes == null) {
             return bytes;
         }
-        if (name.equals("cpw.mods.fml.common.FMLModContainer")) {
-            ClassReader r = new ClassReader(bytes);
-            ClassWriter w = new ClassWriter(r, ClassWriter.COMPUTE_MAXS);
-            ClassVisitor v = new FMLModContainerVisitor(w);
-            r.accept(v, 0);
-            return w.toByteArray();
+        if (name.startsWith("cpw")) {
+            if (name.equals("cpw.mods.fml.common.FMLModContainer")) {
+                ClassReader r = new ClassReader(bytes);
+                ClassWriter w = new ClassWriter(r, ClassWriter.COMPUTE_MAXS);
+                ClassVisitor v = new FMLModContainerVisitor(w);
+                r.accept(v, 0);
+                return w.toByteArray();
+            }
         }
         if (ClassNameList.Contains(name) || ClassNameList.Startswith(name)) {
             return bytes;
