@@ -14,6 +14,7 @@ package space.libs.fml.client;
 
 import com.google.common.collect.Maps;
 import net.minecraft.client.Minecraft;
+import space.libs.CompatLib;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -66,6 +67,10 @@ public class TextureFXManager {
         }
         holder.x = j;
         holder.y = k;
+    }
+
+    public void addNewTextureOverride(String textureToOverride, String overridingTexturePath, int location) {
+        CompatLib.LOGGER.warn("1.4.7 Mod?");
     }
 
     public static class TextureHolder {

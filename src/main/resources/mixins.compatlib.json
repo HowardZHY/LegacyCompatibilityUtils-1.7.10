@@ -25,7 +25,9 @@
     "client.MixinUtil",
     "client.gui.MixinGuiConfirmOpenLink",
     "client.gui.MixinGuiEditSign",
+    "client.gui.MixinGuiIngame",
     "client.gui.MixinGuiMainMenu",
+    "client.gui.MixinGuiNewChat",
     "client.gui.MixinGuiSelectWorld",
     "client.gui.MixinGuiYesNo"
   ],
@@ -44,6 +46,7 @@
     "MixinStatBase",
     "MixinTileEntitySkull",
     "MixinWorld",
+    "MixinWorldType",
     "block.MixinBlock",
     "block.MixinBlockFire",
     "block.MixinBlocks",

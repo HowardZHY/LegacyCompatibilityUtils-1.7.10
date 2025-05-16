@@ -33,12 +33,12 @@ public class CompatLib {
     }
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event) {}
+    public void preInit(FMLPreInitializationEvent event) {
+        FMLCommonHandler.instance().bus().register(new CompatEventHandler());
+    }
 
     @Mod.EventHandler
-    public void init(FMLInitializationEvent event) {
-        //FMLCommonHandler.instance().bus().register(new CompatTickHandler());
-    }
+    public void init(FMLInitializationEvent event) {}
 
     public void onClientModLoading() {
         //unused atm
