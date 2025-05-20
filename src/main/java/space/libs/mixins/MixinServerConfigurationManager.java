@@ -68,9 +68,6 @@ public abstract class MixinServerConfigurationManager {
     @Shadow
     public void removeOp(GameProfile profile) {}
 
-    @Shadow
-    public abstract void func_152604_a(WorldSettings.GameType type);
-
     /** isPlayerOpped */
     public boolean func_72353_e(String name) {
         GameProfile profile = this.getProfileFromName(name);
