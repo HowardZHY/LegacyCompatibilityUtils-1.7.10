@@ -3,10 +3,12 @@ CL: cpw/mods/fml/client/registry/KeyBindingRegistry$KeyHandler space/libs/fml/cl
 CL: cpw/mods/fml/common/IChatListener space/libs/fml/IChatListener
 CL: cpw/mods/fml/common/ICraftingHandler space/libs/fml/ICraftingHandler
 CL: cpw/mods/fml/common/IPickupNotifier space/libs/fml/IPickupNotifier
+CL: cpw/mods/fml/common/IPlayerTracker space/libs/fml/IPlayerTracker
 CL: cpw/mods/fml/common/IScheduledTickHandler space/libs/fml/IScheduledTickHandler
 CL: cpw/mods/fml/common/ITickHandler space/libs/fml/ITickHandler
 CL: cpw/mods/fml/common/SingleIntervalHandler space/libs/fml/SingleIntervalHandler
 CL: cpw/mods/fml/common/TickType cpw/mods/fml/common/gameevent/TickEvent$Type
+CL: cpw/mods/fml/common/network/EntitySpawnPacket space/libs/fml/EntitySpawnPacket
 CL: cpw/mods/fml/common/registry/TickRegistry space/libs/fml/TickRegistry
 CL: net/minecraft/client/renderer/texture/IconRegister net/minecraft/client/renderer/texture/IIconRegister
 CL: net/minecraft/entity/ai/attributes/Attribute net/minecraft/entity/ai/attributes/IAttribute
