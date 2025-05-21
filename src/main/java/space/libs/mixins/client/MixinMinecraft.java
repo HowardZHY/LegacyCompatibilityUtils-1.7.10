@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft {
 
@@ -64,6 +64,7 @@ public abstract class MixinMinecraft {
     }
 
     /** readImage */
+    @SuppressWarnings("all")
     public ByteBuffer func_110439_b(File par1File) throws IOException {
         BufferedImage bufferedimage = ImageIO.read(par1File);
         int[] aint = bufferedimage.getRGB(0, 0, bufferedimage.getWidth(), bufferedimage.getHeight(), (int[])null, 0, bufferedimage.getWidth());
@@ -88,7 +89,9 @@ public abstract class MixinMinecraft {
                 field.setAccessible(true);
                 field.set(toolkit, p_147105_0_);
             }
-        } catch (Exception exception) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
