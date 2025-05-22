@@ -6,10 +6,13 @@
   "plugin": "space.libs.core.CompatLibMixinPlugin",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "MixinFMLClientHandler"
+    "MixinFMLClientHandler",
+    "MixinRenderingRegistry"
   ],
   "mixins": [
+    "MixinEntityRegistry",
     "MixinFMLCommonHandler",
+    "MixinGameRegistry",
     "MixinLanguageRegistry",
     "MixinNetworkRegistry",
     "MixinTickEventType"

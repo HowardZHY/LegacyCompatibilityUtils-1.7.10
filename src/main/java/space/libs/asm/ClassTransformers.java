@@ -1,7 +1,8 @@
 package space.libs.asm;
 
 import net.minecraft.launchwrapper.IClassTransformer;
-import org.objectweb.asm.*;
+import org.spongepowered.asm.lib.*;
+import org.spongepowered.asm.transformers.MixinClassWriter;
 
 @SuppressWarnings("unused")
 public class ClassTransformers implements IClassTransformer {
@@ -14,17 +15,24 @@ public class ClassTransformers implements IClassTransformer {
         if (name.startsWith("cpw")) {
             if (name.equals("cpw.mods.fml.common.FMLModContainer")) {
                 ClassReader r = new ClassReader(bytes);
-                ClassWriter w = new ClassWriter(r, ClassWriter.COMPUTE_MAXS);
+                ClassWriter w = new MixinClassWriter(r, ClassWriter.COMPUTE_MAXS);
                 ClassVisitor v = new FMLModContainerVisitor(w);
                 r.accept(v, 0);
                 return w.toByteArray();
+            }
+            if (name.equals("cpw.mods.fml.common.ModContainerFactory")) {
+                ClassReader reader = new ClassReader(bytes);
+                ClassWriter writer = new MixinClassWriter(reader, ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+                ClassVisitor visitor = new ModContainerFactoryVisitor(writer);
+                reader.accept(visitor, ClassReader.EXPAND_FRAMES);
+                return writer.toByteArray();
             }
         }
         if (ClassNameList.Contains(name) || ClassNameList.Startswith(name)) {
             return bytes;
         }
         ClassReader cr = new ClassReader(bytes);
-        ClassWriter cw = new ClassWriter(cr, 0);
+        ClassWriter cw = new MixinClassWriter(cr, 0);
         ClassVisitor cv = new EventVisitor(cw);
         cr.accept(cv, 0);
         return cw.toByteArray();
@@ -158,6 +166,58 @@ public class ClassTransformers implements IClassTransformer {
                     mv.visitFieldInsn(Opcodes.PUTFIELD, "cpw/mods/fml/common/FMLModContainer", "minecraftAccepted", "Lcpw/mods/fml/common/versioning/VersionRange;");
                 }
                 super.visitInsn(opcode);
+            }
+        }
+    }
+
+    public static class ModContainerFactoryVisitor extends ClassVisitor {
+
+        public ModContainerFactoryVisitor(ClassVisitor visitor) {
+            super(Opcodes.ASM5, visitor);
+        }
+
+        @Override
+        public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
+            MethodVisitor mv = super.visitMethod(access, name, desc, signature, exceptions);
+            if ("build".equals(name) && "(Lcpw/mods/fml/common/discovery/asm/ASMModParser;Ljava/io/File;Lcpw/mods/fml/common/discovery/ModCandidate;)Lcpw/mods/fml/common/ModContainer;".equals(desc)) {
+                return new BuildMethodVisitor(mv, access, name, desc);
+            }
+            return mv;
+        }
+
+        public static class BuildMethodVisitor extends MethodVisitor {
+
+            Label continueLabel = new Label();
+
+            public BuildMethodVisitor(MethodVisitor mv, int access, String name, String desc) {
+                super(Opcodes.ASM5, mv);
+            }
+
+            @Override
+            public void visitCode() {
+                super.visitCode();
+                int classNameLocal = 4;
+                visitVarInsn(Opcodes.ALOAD, 1);
+                visitMethodInsn(Opcodes.INVOKEVIRTUAL, "cpw/mods/fml/common/discovery/asm/ASMModParser", "getASMType", "()Lorg/objectweb/asm/Type;", false);
+                visitMethodInsn(Opcodes.INVOKEVIRTUAL, "org/objectweb/asm/Type", "getClassName", "()Ljava/lang/String;", false);
+                visitVarInsn(Opcodes.ASTORE, classNameLocal);
+                visitVarInsn(Opcodes.ALOAD, 1);
+                visitVarInsn(Opcodes.ALOAD, 3);
+                visitMethodInsn(Opcodes.INVOKEVIRTUAL, "cpw/mods/fml/common/discovery/ModCandidate", "getRememberedBaseMods", "()Ljava/util/List;", false);
+                visitMethodInsn(Opcodes.INVOKEVIRTUAL, "cpw/mods/fml/common/discovery/asm/ASMModParser", "isBaseMod", "(Ljava/util/List;)Z", false);
+                visitJumpInsn(Opcodes.IFEQ, continueLabel);
+                visitVarInsn(Opcodes.ALOAD, classNameLocal);
+                visitMethodInsn(Opcodes.INVOKESTATIC, "space/libs/util/forge/ModLoadingUtils", "find", "(Ljava/lang/String;)Z", false);
+                visitJumpInsn(Opcodes.IFEQ, continueLabel);
+                visitTypeInsn(Opcodes.NEW, "cpw/mods/fml/common/modloader/ModLoaderModContainer");
+                visitInsn(Opcodes.DUP);
+                visitVarInsn(Opcodes.ALOAD, classNameLocal);
+                visitVarInsn(Opcodes.ALOAD, 2);
+                visitVarInsn(Opcodes.ALOAD, 1);
+                visitMethodInsn(Opcodes.INVOKEVIRTUAL, "cpw/mods/fml/common/discovery/asm/ASMModParser", "getBaseModProperties", "()Ljava/util/Properties;", false);
+                visitMethodInsn(Opcodes.INVOKESPECIAL, "cpw/mods/fml/common/modloader/ModLoaderModContainer", "<init>", "(Ljava/lang/String;Ljava/io/File;Ljava/util/Properties;)V", false);
+                visitInsn(Opcodes.ARETURN);
+                visitLabel(continueLabel);
             }
         }
     }

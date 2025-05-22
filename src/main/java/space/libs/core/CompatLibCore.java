@@ -5,6 +5,7 @@ import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.launch.MixinBootstrap;
+import space.libs.util.forge.ModLoadingUtils;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -36,6 +37,7 @@ public class CompatLibCore implements IFMLLoadingPlugin {
 
     @Override
     public String[] getASMTransformerClass() {
+        ModLoadingUtils.init();
         ArrayList<String> transformersList = new ArrayList<>();
         transformersList.add("space.libs.asm.ClassTransformers");
         transformersList.add("space.libs.asm.RemapTransformer");

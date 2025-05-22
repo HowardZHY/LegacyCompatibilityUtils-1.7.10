@@ -14,21 +14,19 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.EventBus;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.EnumHelper;
-import org.spongepowered.asm.mixin.Dynamic;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import space.libs.interfaces.IFMLCommonHandler;
-import space.libs.fml.IScheduledTickHandler;
-import space.libs.util.cursedmixinextensions.annotations.Public;
-import space.libs.fml.TickRegistry;
+import space.libs.fml.*;
+import space.libs.interfaces.*;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -43,9 +41,6 @@ public abstract class MixinFMLCommonHandler implements IFMLCommonHandler {
     public List<IScheduledTickHandler> scheduledClientTicks = Lists.newArrayList();
 
     public List<IScheduledTickHandler> scheduledServerTicks = Lists.newArrayList();
-
-    @Public
-    private static TickEvent.Type WORLDLOAD;
 
     @Dynamic
     @Inject(method = "handleServerStarted", at = @At("TAIL"))
@@ -105,6 +100,21 @@ public abstract class MixinFMLCommonHandler implements IFMLCommonHandler {
         tickEnd(EnumSet.of(TickEvent.Type.PLAYER), side, player);
     }
 
+    @Inject(method = "firePlayerItemPickupEvent", at = @At("HEAD"))
+    public void firePlayerItemPickupEvent(EntityPlayer player, EntityItem item, CallbackInfo ci) {
+        IGameRegistry.INSTANCE.onPickupNotify(player, item);
+    }
+
+    @Inject(method = "firePlayerCraftingEvent", at = @At("HEAD"))
+    public void firePlayerCraftingEvent(EntityPlayer player, ItemStack crafted, IInventory craftMatrix, CallbackInfo ci) {
+        IGameRegistry.INSTANCE.onItemCraft(player, crafted, craftMatrix);
+    }
+
+    @Inject(method = "firePlayerSmeltedEvent", at = @At("HEAD"))
+    public void firePlayerSmeltedEvent(EntityPlayer player, ItemStack smelted, CallbackInfo ci) {
+        IGameRegistry.INSTANCE.onItemSmelt(player, smelted);
+    }
+
     public void rescheduleTicks(Side side) {
         TickRegistry.updateTickQueue(side.isClient() ? scheduledClientTicks : scheduledServerTicks, side);
     }
@@ -160,7 +170,6 @@ public abstract class MixinFMLCommonHandler implements IFMLCommonHandler {
     public void onWorldLoadTick(World[] worlds) {
         rescheduleTicks(Side.SERVER);
         try {
-            WORLDLOAD = addEnum();
             for (World w : worlds) {
                 tickStart(EnumSet.of(WORLDLOAD), Side.SERVER, w);
             }
@@ -169,8 +178,4 @@ public abstract class MixinFMLCommonHandler implements IFMLCommonHandler {
         }
     }
 
-    @Public
-    private static TickEvent.Type addEnum() {
-        return EnumHelper.addEnum(TickEvent.Type.class, "WORLDLOAD", new Class[0], new Object[0]);
-    }
 }
