@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.multiplayer.NetClientHandler;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.settings.KeyBinding;
@@ -16,6 +17,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.NetServerHandler;
+import net.minecraft.network.packet.NetHandler;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -104,14 +109,14 @@ public abstract class BaseMod implements cpw.mods.fml.common.modloader.BaseModPr
     @Override
     public void clientChat(String text) {}
 
-    /*@SideOnly(CLIENT)
+    @SideOnly(CLIENT)
     public void clientConnect(NetClientHandler handler) {}
 
     @SideOnly(CLIENT)
     public void clientDisconnect(NetClientHandler handler) {}
 
     @Override
-    public void receiveCustomPacket(Packet250CustomPayload packet) {}*/
+    public void receiveCustomPacket(Packet250CustomPayload packet) {}
 
     @SideOnly(CLIENT)
     public void registerAnimation(Minecraft game) {}
@@ -123,6 +128,11 @@ public abstract class BaseMod implements cpw.mods.fml.common.modloader.BaseModPr
     public boolean renderWorldBlock(RenderBlocks renderer, IBlockAccess world, int x, int y, int z, Block block, int modelID) {
         return false;
     }
+    @Override
+    public void serverConnect(NetHandler handler) {}
+
+    @Override
+    public void serverCustomPayload(NetServerHandler handler, Packet250CustomPayload packet) {}
 
     @Override
     public void serverDisconnect() {}
@@ -136,18 +146,18 @@ public abstract class BaseMod implements cpw.mods.fml.common.modloader.BaseModPr
         return getName() + " " + getVersion();
     }
 
-    //@Override
-    //public void serverChat(NetServerHandler source, String message) {}
+    @Override
+    public void serverChat(NetServerHandler source, String message) {}
 
     @Override
     public void onClientLogin(EntityPlayer player) {}
 
-    //@Override
-    //public void onClientLogout(INetworkManager mgr) {}
+    @Override
+    public void onClientLogout(INetworkManager manager) {}
 
     public Entity spawnEntity(int entityId, World world, double scaledX, double scaledY, double scaledZ) {
         return null;
     }
 
-    //public void clientCustomPayload(NetClientHandler handler, Packet250CustomPayload packet) {}
+    public void clientCustomPayload(NetClientHandler handler, Packet250CustomPayload packet) {}
 }

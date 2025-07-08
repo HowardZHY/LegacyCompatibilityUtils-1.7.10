@@ -12,7 +12,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.multiplayer.NetClientHandler;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.settings.KeyBinding;
@@ -28,6 +30,10 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.NetServerHandler;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet1Login;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.stats.Achievement;
 import net.minecraft.tileentity.TileEntity;
@@ -35,11 +41,15 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
+import space.libs.fml.client.TextureFXManager;
+import space.libs.fml.network.PacketDispatcher;
 import space.libs.interfaces.IGameRegistry;
+import space.libs.interfaces.INetworkRegistry;
 import space.libs.interfaces.IRenderingRegistry;
 import space.libs.interfaces.IStatBase;
 import space.libs.util.BiomeUtils;
 
+import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -154,9 +164,9 @@ public class ModLoader {
         ModLoaderHelper.registerTrade(profession, entry);
     }
 
-    /*public static void clientSendPacket(Packet packet) {
+    public static void clientSendPacket(Packet packet) {
         PacketDispatcher.sendPacketToServer(packet);
-    }*/
+    }
 
     public static boolean dispenseEntity(World world, double x, double y, double z, int xVel, int zVel, ItemStack item) {
         return false;
@@ -222,10 +232,10 @@ public class ModLoader {
         // Implemented elsewhere
     }
 
-    /*@SideOnly(CLIENT)
+    @SideOnly(CLIENT)
     public static BufferedImage loadImage(RenderEngine render, String path) throws Exception {
-        return TextureFXManager.instance().loadImageFromTexturePack(renderEngine, path);
-    }*/
+        return TextureFXManager.instance().loadImageFromTexturePack(render, path);
+    }
 
     public static void onItemPickup(EntityPlayer player, ItemStack item) {
         // Call in from elsewhere. Unimplemented here.
@@ -246,19 +256,19 @@ public class ModLoader {
         // Another Empty?
     }
 
-    /*public static void receivePacket(Packet250CustomPayload packet) {
-    // Implemented elsewhere?
-    }*/
+    public static void receivePacket(Packet250CustomPayload packet) {
+        // Implemented elsewhere?
+    }
 
     @SideOnly(CLIENT)
     public static KeyBinding[] registerAllKeys(KeyBinding[] keys) {
         return keys;
     }
 
-    /*@SideOnly(CLIENT)
+    @SideOnly(CLIENT)
     public static void registerAllTextureOverrides(RenderEngine cache) {
-
-    }*/
+        // 1.5.2
+    }
 
     public static void registerBlock(Block block) {
         GameRegistry.registerBlock(block, block.getUnlocalizedName()); // Correct?
@@ -286,7 +296,7 @@ public class ModLoader {
     }
 
     public static void registerPacketChannel(BaseMod mod, String channel) {
-        //NetworkRegistry.INSTANCE.registerChannel(ModLoaderHelper.buildPacketHandlerFor(mod), channel);
+        INetworkRegistry.RegisterChannel(ModLoaderHelper.buildPacketHandlerFor(mod), channel);
     }
 
     public static void registerTileEntity(Class<? extends TileEntity> tileEntityClass, String id) {
@@ -337,25 +347,24 @@ public class ModLoader {
         // Configuration is handled elsewhere
     }
 
-    /*
     public static void sendPacket(Packet packet) {
         PacketDispatcher.sendPacketToServer(packet);
-    }*/
-
-    public static void serverChat(String text) {
-        //TOD
     }
 
-    /*
+    public static void serverChat(String text) {
+        //TOD?
+    }
+
     public static void serverLogin(NetClientHandler handler, Packet1Login loginPacket) {
-        //TOD
+        //TOD?
     }
 
     public static void serverSendPacket(NetServerHandler handler, Packet packet) {
-        if (handler != null) {
+        //Impl will be complicated
+        /*if (handler != null) {
             PacketDispatcher.sendPacketToPlayer(packet, (Player)handler.getPlayer());
-        }
-    }*/
+        }*/
+    }
 
     public static void serverOpenWindow(EntityPlayerMP player, Container container, int ID, int x, int y, int z) {
         ModLoaderHelper.openGui(ID, player, container, x, y, z);

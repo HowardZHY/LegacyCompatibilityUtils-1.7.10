@@ -16,6 +16,10 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.NetServerHandler;
+import net.minecraft.network.packet.NetHandler;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -47,21 +51,21 @@ public interface BaseModProxy {
 
     void takenFromFurnace(EntityPlayer player, ItemStack item);
 
-    //public abstract void onClientLogout(INetworkManager manager);
+    void onClientLogout(INetworkManager manager);
 
     void onClientLogin(EntityPlayer player);
 
     void serverDisconnect();
 
-    //public abstract void serverConnect(NetHandler handler);
+    void serverConnect(NetHandler handler);
 
-    //public abstract void receiveCustomPacket(Packet250CustomPayload packet);
+    void receiveCustomPacket(Packet250CustomPayload packet);
 
     void clientChat(String text);
 
     void onItemPickup(EntityPlayer player, ItemStack item);
 
-    //public abstract void serverCustomPayload(NetServerHandler handler, Packet250CustomPayload packet);
+    void serverCustomPayload(NetServerHandler handler, Packet250CustomPayload packet);
 
-    //public abstract void serverChat(NetServerHandler source, String message);
+    void serverChat(NetServerHandler source, String message);
 }

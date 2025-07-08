@@ -21,6 +21,7 @@ public abstract class MixinEntityTameable implements IEntityOwnableName {
     public abstract void func_152115_b(String uuid);
 
     /** getOwnerName */
+    @Override
     public String func_70905_p() {
         String name;
         try {

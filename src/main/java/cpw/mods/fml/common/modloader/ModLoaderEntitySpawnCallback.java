@@ -16,7 +16,7 @@ import com.google.common.base.Function;
 import cpw.mods.fml.common.network.internal.FMLMessage;
 import cpw.mods.fml.common.registry.EntityRegistry.EntityRegistration;
 import net.minecraft.entity.Entity;
-import space.libs.fml.EntitySpawnPacket;
+import space.libs.fml.network.EntitySpawnPacket;
 
 @SuppressWarnings("unused")
 public class ModLoaderEntitySpawnCallback implements Function<FMLMessage.EntitySpawnMessage, Entity> {

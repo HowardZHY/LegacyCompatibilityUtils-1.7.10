@@ -214,8 +214,8 @@ public class ClassTransformers implements IClassTransformer {
                 visitVarInsn(Opcodes.ALOAD, classNameLocal);
                 visitVarInsn(Opcodes.ALOAD, 2);
                 visitVarInsn(Opcodes.ALOAD, 1);
-                visitMethodInsn(Opcodes.INVOKEVIRTUAL, "cpw/mods/fml/common/discovery/asm/ASMModParser", "getBaseModProperties", "()Ljava/util/Properties;", false);
-                visitMethodInsn(Opcodes.INVOKESPECIAL, "cpw/mods/fml/common/modloader/ModLoaderModContainer", "<init>", "(Ljava/lang/String;Ljava/io/File;Ljava/util/Properties;)V", false);
+                visitMethodInsn(Opcodes.INVOKEVIRTUAL, "cpw/mods/fml/common/discovery/asm/ASMModParser", "getBaseModProperties", "()Ljava/lang/String;", false);
+                visitMethodInsn(Opcodes.INVOKESPECIAL, "cpw/mods/fml/common/modloader/ModLoaderModContainer", "<init>", "(Ljava/lang/String;Ljava/io/File;Ljava/lang/String;)V", false);
                 visitInsn(Opcodes.ARETURN);
                 visitLabel(continueLabel);
             }

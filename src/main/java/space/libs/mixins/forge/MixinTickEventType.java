@@ -18,13 +18,17 @@ import java.util.EnumSet;
 
 import static cpw.mods.fml.common.gameevent.TickEvent.Type.*;
 
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 @Mixin(value = TickEvent.Type.class, remap = false)
 public class MixinTickEventType {
 
     public EnumSet<TickEvent.Type> partnerTicks() {
-        if ((TickEvent.Type) (Object) this == CLIENT) return EnumSet.of(RENDER);
-        if ((TickEvent.Type) (Object) this == RENDER) return EnumSet.of(CLIENT);
+        if (this.Instance() == CLIENT) return EnumSet.of(RENDER);
+        if (this.Instance() == RENDER) return EnumSet.of(CLIENT);
         return EnumSet.noneOf(TickEvent.Type.class);
+    }
+
+    public TickEvent.Type Instance() {
+        return (TickEvent.Type) (Object) this;
     }
 }

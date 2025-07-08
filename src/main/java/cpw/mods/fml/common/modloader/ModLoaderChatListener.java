@@ -12,7 +12,10 @@
 
 package cpw.mods.fml.common.modloader;
 
-import space.libs.fml.IChatListener;
+import net.minecraft.network.NetServerHandler;
+import net.minecraft.network.packet.NetHandler;
+import net.minecraft.network.packet.Packet3Chat;
+import space.libs.fml.network.IChatListener;
 
 public class ModLoaderChatListener implements IChatListener {
 
@@ -20,5 +23,17 @@ public class ModLoaderChatListener implements IChatListener {
 
     public ModLoaderChatListener(BaseModProxy mod) {
         this.mod = mod;
+    }
+
+    @Override
+    public Packet3Chat serverChat(NetHandler handler, Packet3Chat message) {
+        mod.serverChat((NetServerHandler)handler, message.field_73476_b);
+        return message;
+    }
+
+    @Override
+    public Packet3Chat clientChat(NetHandler handler, Packet3Chat message) {
+        mod.clientChat(message.field_73476_b);
+        return message;
     }
 }

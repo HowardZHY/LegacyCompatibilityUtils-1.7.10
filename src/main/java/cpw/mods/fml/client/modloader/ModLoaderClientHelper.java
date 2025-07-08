@@ -27,13 +27,17 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.multiplayer.NetClientHandler;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.NetHandler;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.src.BaseMod;
-import space.libs.fml.EntitySpawnPacket;
+import space.libs.fml.network.EntitySpawnPacket;
 import space.libs.fml.client.KeyBindingRegistry;
 
 import java.util.*;
@@ -124,12 +128,12 @@ public class ModLoaderClientHelper implements IModLoaderSidedHelper {
         return ((net.minecraft.src.BaseMod)mod).spawnEntity(er.getModEntityId(), client.theWorld, input.getScaled(1), input.getScaled(2), input.getScaled(3));
     }
 
-    /*@Override
+    @Override
     public void sendClientPacket(BaseModProxy mod, Packet250CustomPayload packet) {
-        ((net.minecraft.src.BaseMod)mod).clientCustomPayload(client.field_71439_g.field_71174_a, packet);
+        //((net.minecraft.src.BaseMod)mod).clientCustomPayload(client.thePlayer.sendQueue, packet);
     }
 
-    private Map<INetworkManager,NetHandler> managerLookups = new MapMaker().weakKeys().weakValues().makeMap();
+    public Map<INetworkManager,NetHandler> managerLookups = new MapMaker().weakKeys().weakValues().makeMap();
 
     @Override
     public void clientConnectionOpened(NetHandler netClientHandler, INetworkManager manager, BaseModProxy mod) {
@@ -144,5 +148,5 @@ public class ModLoaderClientHelper implements IModLoaderSidedHelper {
             return true;
         }
         return false;
-    }*/
+    }
 }

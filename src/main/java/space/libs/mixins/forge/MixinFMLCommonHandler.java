@@ -19,6 +19,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.NetHandler;
+import net.minecraft.network.packet.Packet131MapData;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.*;
@@ -115,10 +117,12 @@ public abstract class MixinFMLCommonHandler implements IFMLCommonHandler {
         IGameRegistry.INSTANCE.onItemSmelt(player, smelted);
     }
 
+    @Override
     public void rescheduleTicks(Side side) {
         TickRegistry.updateTickQueue(side.isClient() ? scheduledClientTicks : scheduledServerTicks, side);
     }
 
+    @Override
     public void tickStart(EnumSet<TickEvent.Type> ticks, Side side, Object ... data) {
         List<IScheduledTickHandler> scheduledTicks = side.isClient() ? scheduledClientTicks : scheduledServerTicks;
         if (scheduledTicks.size()==0) {
@@ -133,6 +137,7 @@ public abstract class MixinFMLCommonHandler implements IFMLCommonHandler {
         }
     }
 
+    @Override
     public void tickEnd(EnumSet<TickEvent.Type> ticks, Side side, Object ... data) {
         List<IScheduledTickHandler> scheduledTicks = side.isClient() ? scheduledClientTicks : scheduledServerTicks;
         if (scheduledTicks.size()==0) {
@@ -167,6 +172,7 @@ public abstract class MixinFMLCommonHandler implements IFMLCommonHandler {
         }
     }
 
+    @Override
     public void onWorldLoadTick(World[] worlds) {
         rescheduleTicks(Side.SERVER);
         try {
@@ -177,5 +183,7 @@ public abstract class MixinFMLCommonHandler implements IFMLCommonHandler {
             e.printStackTrace();
         }
     }
+
+    public void handleTinyPacket(NetHandler handler, Packet131MapData mapData) {}
 
 }

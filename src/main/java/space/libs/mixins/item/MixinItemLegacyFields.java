@@ -1,72 +1,15 @@
-package space.libs.mixins;
+package space.libs.mixins.item;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
-import net.minecraft.util.RegistryNamespaced;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import space.libs.core.CompatLibCore;
-import space.libs.util.cursedmixinextensions.annotations.NewConstructor;
 import space.libs.util.cursedmixinextensions.annotations.Public;
-import space.libs.util.cursedmixinextensions.annotations.ShadowConstructor;
 
-@SuppressWarnings("all")
-@Mixin(value = Item.class, priority = 200)
-public abstract class MixinItem implements IItem {
-
-    @Shadow
-    public static @Final RegistryNamespaced itemRegistry;
-
-    @Shadow
-    public static Item getItemById(int p_150899_0_) {
-        throw new AbstractMethodError();
-    }
-
-    @Shadow
-    public abstract String getUnlocalizedName();
-
-    @ShadowConstructor
-    public void Item() {}
-
-    @NewConstructor
-    public void Item(int id) {
-        Item();
-        this.field_77779_bT = 256 + id;
-        try {
-            CompatLibCore.LOGGER.info("Old Register Item ID : " + this.field_77779_bT);
-            CompatLibCore.LOGGER.info("Name : " + this.getUnlocalizedName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // TODO?
-    }
-
-    /** 1.6 itemID */
-    public int field_77779_bT;
-
-    public void setItemID(int id) {
-        this.field_77779_bT = id;
-    }
-
-    /**
-     * @author HowardZHY
-     * @reason 1.6 item id
-     */
-    /*@Overwrite
-    Public static int getIdFromItem(Item item) {
-        if (item == null) {
-            return 0;
-        } else {
-            IItem accessor = (IItem) item;
-            int id = itemRegistry.getIDForObject(item);
-            accessor.setItemID(id);
-            return id;
-        }
-    }*/
+@Mixin(value = Item.class, priority = 4040)
+public abstract class MixinItemLegacyFields {
 
     /** Legacy Item Fields */
     @Public private static Item field_77669_D;

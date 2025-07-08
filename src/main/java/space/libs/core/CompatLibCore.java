@@ -4,7 +4,7 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.spongepowered.asm.launch.MixinBootstrap;
+import org.spongepowered.asm.mixin.Mixins;
 import space.libs.util.forge.ModLoadingUtils;
 
 import java.util.ArrayList;
@@ -18,10 +18,13 @@ public class CompatLibCore implements IFMLLoadingPlugin {
 
     public static boolean BUKKIT = false;
 
-    @SuppressWarnings("unused")
     public CompatLibCore() {
+        Launch.classLoader.registerTransformer("space.libs.asm.EarliestTransformer");
         try {
             byte[] bukkit = Launch.classLoader.getClassBytes("org.bukkit.craftbukkit.util.Versioning");
+            if (bukkit == null) {
+                return;
+            }
         } catch (Exception ignored) {
             return;
         }
@@ -30,13 +33,13 @@ public class CompatLibCore implements IFMLLoadingPlugin {
     }
 
     static {
-        MixinBootstrap.init();
-        org.spongepowered.asm.mixin.Mixins.addConfiguration("mixins.compatlib.forge.json");
-        org.spongepowered.asm.mixin.Mixins.addConfiguration("mixins.compatlib.json");
+        LOGGER.info("Initializing CompatLib Core Class...");
     }
 
     @Override
     public String[] getASMTransformerClass() {
+        Mixins.addConfiguration("mixins.compatlib.forge.json");
+        Mixins.addConfiguration("mixins.compatlib.json");
         ModLoadingUtils.init();
         ArrayList<String> transformersList = new ArrayList<>();
         transformersList.add("space.libs.asm.ClassTransformers");

@@ -3,13 +3,14 @@ package net.minecraft.util;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 public class AABBPool {
+
     public final int field_72306_a;
 
     public final int field_72304_b;
 
-    public final List field_72305_c = new ArrayList();
+    public final List<AxisAlignedBB> field_72305_c = new ArrayList<>();
 
     public int field_72302_d;
 
@@ -22,14 +23,14 @@ public class AABBPool {
         this.field_72304_b = paramInt2;
     }
 
-    public AxisAlignedBB func_72299_a(double paramDouble1, double paramDouble2, double paramDouble3, double paramDouble4, double paramDouble5, double paramDouble6) {
+    public AxisAlignedBB func_72299_a(double x1, double y1, double z1, double x2, double y2, double z2) {
         AxisAlignedBB axisAlignedBB;
         if (this.field_72302_d >= this.field_72305_c.size()) {
-            axisAlignedBB = new AxisAlignedBB(paramDouble1, paramDouble2, paramDouble3, paramDouble4, paramDouble5, paramDouble6);
+            axisAlignedBB = new AxisAlignedBB(x1, y1, z1, x2, y2, z2);
             this.field_72305_c.add(axisAlignedBB);
         } else {
-            axisAlignedBB = (AxisAlignedBB) this.field_72305_c.get(this.field_72302_d);
-            axisAlignedBB.setBounds(paramDouble1, paramDouble2, paramDouble3, paramDouble4, paramDouble5, paramDouble6);
+            axisAlignedBB = this.field_72305_c.get(this.field_72302_d);
+            axisAlignedBB.setBounds(x1, y1, z1, x2, y2, z2);
         }
         this.field_72302_d++;
         return axisAlignedBB;

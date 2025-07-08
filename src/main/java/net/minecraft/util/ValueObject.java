@@ -3,7 +3,7 @@ package net.minecraft.util;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 public abstract class ValueObject {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder("{");

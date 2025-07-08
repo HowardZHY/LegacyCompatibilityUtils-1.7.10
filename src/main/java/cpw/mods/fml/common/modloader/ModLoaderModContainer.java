@@ -15,21 +15,21 @@ package cpw.mods.fml.common.modloader;
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.collect.*;
-import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.*;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.discovery.ASMDataTable;
 import cpw.mods.fml.common.discovery.ASMDataTable.ASMData;
 import cpw.mods.fml.common.discovery.ContainerType;
 import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.versioning.ArtifactVersion;
-import cpw.mods.fml.common.versioning.DefaultArtifactVersion;
-import cpw.mods.fml.common.versioning.VersionRange;
+import cpw.mods.fml.common.versioning.*;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.command.ICommand;
+import space.libs.CompatLib;
+import space.libs.fml.network.FMLNetworkHandler;
 import space.libs.interfaces.IGameRegistry;
+import space.libs.interfaces.INetworkRegistry;
 import space.libs.util.forge.ModLoadingUtils;
 import space.libs.fml.TickRegistry;
 
@@ -38,12 +38,12 @@ import java.lang.reflect.*;
 import java.security.cert.Certificate;
 import java.util.*;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "UnstableApiUsage"})
 public class ModLoaderModContainer implements ModContainer {
 
     public BaseModProxy mod;
 
-    private File modSource;
+    public File modSource;
 
     public Set<ArtifactVersion> requirements = Sets.newHashSet();
 
@@ -51,39 +51,38 @@ public class ModLoaderModContainer implements ModContainer {
 
     public ArrayList<ArtifactVersion> dependants = Lists.newArrayList();
 
-    private ContainerType sourceType;
+    public ContainerType sourceType;
 
-    private ModMetadata metadata;
+    public ModMetadata metadata;
 
-    private ProxyInjector sidedProxy;
+    public ProxyInjector sidedProxy;
 
-    private BaseModTicker gameTickHandler;
+    public BaseModTicker gameTickHandler;
 
-    private BaseModTicker guiTickHandler;
+    public BaseModTicker guiTickHandler;
 
-    private String modClazzName;
+    public String modClazzName;
 
-    private String modId;
+    public String modId;
 
-    @SuppressWarnings("all")
-    private EventBus bus;
+    public EventBus bus;
 
-    private LoadController controller;
+    public LoadController controller;
 
-    private boolean enabled = true;
+    public boolean enabled = true;
 
-    private String sortingProperties;
+    public String sortingProperties;
 
-    private ArtifactVersion processedVersion;
+    public ArtifactVersion processedVersion;
 
-    private boolean isNetworkMod;
+    public boolean isNetworkMod;
 
     public List<ICommand> serverCommands = Lists.newArrayList();
 
     public ModLoaderModContainer(String className, File modSource, String sortingProperties) {
         this.modClazzName = className;
         this.modSource = modSource;
-        this.modId = className.contains(".") ? className.substring(className.lastIndexOf('.')+1) : className;
+        this.modId = className.contains(".") ? className.substring(className.lastIndexOf('.') + 1) : className;
         this.sortingProperties = Strings.isNullOrEmpty(sortingProperties) ? "" : sortingProperties;
     }
 
@@ -91,13 +90,13 @@ public class ModLoaderModContainer implements ModContainer {
      * We only instantiate this for "not mod mods"
      */
     public ModLoaderModContainer(BaseModProxy instance) {
-        this.mod=instance;
+        this.mod = instance;
         this.gameTickHandler = new BaseModTicker(instance, false);
         this.guiTickHandler = new BaseModTicker(instance, true);
     }
 
     @SuppressWarnings("all")
-    private void configureMod(Class<? extends BaseModProxy> modClazz, ASMDataTable asmData) {
+    public void configureMod(Class<? extends BaseModProxy> modClazz, ASMDataTable asmData) {
         File configDir = Loader.instance().getConfigDir();
         File modConfig = new File(configDir, String.format("%s.cfg", getModId()));
         Properties props = new Properties();
@@ -263,11 +262,11 @@ public class ModLoaderModContainer implements ModContainer {
     /**
      * Find all the BaseMods in the system
      */
-    @SuppressWarnings("all")
+    @SuppressWarnings("unchecked")
     public static <A extends BaseModProxy> List<A> findAll(Class<A> clazz) {
-        ArrayList<A> modList = new ArrayList<A>();
+        ArrayList<A> modList = new ArrayList<>();
         for (ModContainer mc : Loader.instance().getActiveModList()) {
-            if (mc instanceof ModLoaderModContainer && mc.getMod()!=null) {
+            if (mc instanceof ModLoaderModContainer && mc.getMod() != null) {
                 modList.add((A)((ModLoaderModContainer)mc).mod);
             }
         }
@@ -342,7 +341,6 @@ public class ModLoaderModContainer implements ModContainer {
         this.enabled = enabled;
     }
 
-    @SuppressWarnings("all")
     @Override
     public boolean registerBus(EventBus bus, LoadController controller) {
         if (this.enabled) {
@@ -352,6 +350,7 @@ public class ModLoaderModContainer implements ModContainer {
             bus.register(this);
             return true;
         } else {
+            FMLLog.warning("Basemod %s wasn't enabled?", getModId());
             return false;
         }
     }
@@ -359,8 +358,7 @@ public class ModLoaderModContainer implements ModContainer {
     /**
      * Lifecycle mod events
      */
-    @SuppressWarnings("deprecation")
-    @SubscribeEvent
+    @Subscribe
     public void constructMod(FMLConstructionEvent event) {
         try {
             ModClassLoader modClassLoader = event.getModClassLoader();
@@ -370,27 +368,28 @@ public class ModLoaderModContainer implements ModContainer {
             this.guiTickHandler = new BaseModTicker(ticks.clone(), true);
             Class<? extends BaseModProxy> modClazz = ModLoadingUtils.loadBaseModClass(modClassLoader, modClazzName);
             configureMod(modClazz, event.getASMHarvestedData());
-            isNetworkMod = false; //FMLNetworkHandler.instance().registerNetworkMod(this, modClazz, event.getASMHarvestedData());
+            isNetworkMod = FMLNetworkHandler.instance().registerNetworkMod(this, modClazz, event.getASMHarvestedData());
             ModLoaderNetworkHandler dummyHandler = null;
-            //if (!isNetworkMod) {
-                //FMLLog.fine("Injecting dummy network mod handler for BaseMod %s", getModId());
-                //dummyHandler = new ModLoaderNetworkHandler(this);
-                //FMLNetworkHandler.instance().registerNetworkMod(dummyHandler);
-            //}
+            if (!isNetworkMod) {
+                FMLLog.fine("Injecting dummy network mod handler for BaseMod %s", getModId());
+                dummyHandler = new ModLoaderNetworkHandler(this);
+                FMLNetworkHandler.instance().registerNetworkMod(dummyHandler);
+            }
             Constructor<? extends BaseModProxy> ctor = modClazz.getConstructor();
             ctor.setAccessible(true);
             mod = modClazz.newInstance();
-            //if (dummyHandler != null) {
-            //    dummyHandler.setBaseMod(mod);
-            //}
+            if (dummyHandler != null) {
+                dummyHandler.setBaseMod(mod);
+            }
             ProxyInjector.inject(this, event.getASMHarvestedData(), FMLCommonHandler.instance().getSide(), new ILanguageAdapter.JavaAdapter());
         } catch (Exception e) {
+            CompatLib.LOGGER.error(e);
             controller.errorOccurred(this, e);
             Throwables.propagateIfPossible(e);
         }
     }
 
-    @SubscribeEvent
+    @Subscribe
     public void preInit(FMLPreInitializationEvent event) {
         try {
             this.gameTickHandler.setMod(mod);
@@ -401,15 +400,16 @@ public class ModLoaderModContainer implements ModContainer {
             GameRegistry.registerFuelHandler(ModLoaderHelper.buildFuelHelper(mod));
             IGameRegistry.INSTANCE.registerCraftingHandle(ModLoaderHelper.buildCraftingHelper(mod));
             IGameRegistry.INSTANCE.registerPickupHandle(ModLoaderHelper.buildPickupHelper(mod));
-            //NetworkRegistry.INSTANCE.registerChatListener(ModLoaderHelper.buildChatListener(mod));
-            //NetworkRegistry.INSTANCE.registerConnectionHandler(ModLoaderHelper.buildConnectionHelper(mod));
+            INetworkRegistry.RegisterChatListener(ModLoaderHelper.buildChatListener(mod));
+            INetworkRegistry.RegisterConnectionHandler(ModLoaderHelper.buildConnectionHelper(mod));
         } catch (Exception e) {
+            CompatLib.LOGGER.error(e);
             controller.errorOccurred(this, e);
             Throwables.propagateIfPossible(e);
         }
     }
 
-    @SubscribeEvent
+    @Subscribe
     public void init(FMLInitializationEvent event) {
         try {
             mod.load();
@@ -419,7 +419,7 @@ public class ModLoaderModContainer implements ModContainer {
         }
     }
 
-    @SubscribeEvent
+    @Subscribe
     public void postInit(FMLPostInitializationEvent event) {
         try {
             mod.modsLoaded();
@@ -429,12 +429,12 @@ public class ModLoaderModContainer implements ModContainer {
         }
     }
 
-    @SubscribeEvent
+    @Subscribe
     public void loadComplete(FMLLoadCompleteEvent complete) {
         ModLoaderHelper.finishModLoading(this);
     }
 
-    @SubscribeEvent
+    @Subscribe
     public void serverStarting(FMLServerStartingEvent evt) {
         for (ICommand cmd : serverCommands) {
             evt.registerServerCommand(cmd);

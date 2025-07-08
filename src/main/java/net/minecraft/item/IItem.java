@@ -2,6 +2,8 @@ package net.minecraft.item;
 
 public interface IItem {
 
-    void setItemID(int id);
+    boolean IsLegacyItem();
+
+    void SetLegacyID(int id);
 
 }

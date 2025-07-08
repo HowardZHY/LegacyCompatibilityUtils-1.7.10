@@ -11,12 +11,9 @@
  *     HowardZHY - Prevent ClassNotFound
  */
 
-package cpw.mods.fml.common.network;
+package space.libs.fml.network;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 @SuppressWarnings("all")
 @Retention(RetentionPolicy.RUNTIME)
@@ -33,7 +30,7 @@ public @interface NetworkMod
     boolean serverSideRequired() default false;
     /**
      * A list of Packet250 network channels to register for this mod - these channels
-     * will be universal and will require a universal packethandler to handle them
+     * will be universal and will require a universal packet handler to handle them
      */
     String[] channels() default {};
     /**
@@ -46,17 +43,19 @@ public @interface NetworkMod
      * - this packet handler will be universal and handle both client and server
      * requests.
      */
-    Class<?> packetHandler() default NULL.class;
+    Class<? extends IPacketHandler> packetHandler() default NULL.class;
 
     /**
      * A tiny packet handler implementation based on net.minecraft.network.packet.Packet131MapData for "small"
      * data packet loads.
      */
-    Class<?> tinyPacketHandler() default NULL.class;
+    Class<? extends ITinyPacketHandler> tinyPacketHandler() default NULL.class;
+
     /**
      * A connection handler implementation for this network mod
      */
-    Class<?> connectionHandler() default NULL.class;
+    Class<? extends IConnectionHandler> connectionHandler() default NULL.class;
+
     /**
      * A packet handler and channels to register for the client side
      */
@@ -70,9 +69,8 @@ public @interface NetworkMod
     /**
      * Special dummy class for handling stupid annotation default values
      * @author cpw
-     *
      */
-    static interface NULL {};
+    static interface NULL extends IPacketHandler, IConnectionHandler, ITinyPacketHandler {};
 
     /**
      * A marker for a method that will be offered the client's version string
@@ -81,19 +79,19 @@ public @interface NetworkMod
      * if the version can be accepted.
      * It can only be applied to the {@link NetworkMod} annotated class.
      * @author cpw
-     *
      */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
     public @interface VersionCheckHandler { }
 
     /**
-     * Bundles together a packet handler and it's associated channels for the sided packet handlers
+     * Bundles together a packet handler, and it's associated channels for the sided packet handlers
      * @author cpw
-     *
      */
     public @interface SidedPacketHandler {
+
         String[] channels();
-        Class<?> packetHandler();
+
+        Class<? extends IPacketHandler> packetHandler();
     }
 }

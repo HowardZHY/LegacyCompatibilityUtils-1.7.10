@@ -7,11 +7,15 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "MixinFMLClientHandler",
-    "MixinRenderingRegistry"
+    "MixinForgeHooksClient",
+    "MixinRenderingRegistry",
+    "MixinRenderPlayerEventSetArmorModel"
   ],
   "mixins": [
+    "MixinBonemealEvent",
     "MixinEntityRegistry",
     "MixinFMLCommonHandler",
+    "MixinFMLControlledNamespacedRegistry",
     "MixinGameRegistry",
     "MixinLanguageRegistry",
     "MixinNetworkRegistry",

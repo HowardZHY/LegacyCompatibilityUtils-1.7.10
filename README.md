@@ -22,6 +22,8 @@ A Relocated https://github.com/FabricCompatibilityLayers/CursedMixinExtensions
 
 # Notice
 
+You must set startupOptimizations=false in FalseTweaks config and noNukeBaseMod=true in Hodgepodge config if you have Basemods.
+
 If anyone is interested at making another runtime deobf remapper or knows how to fix SpongeVanilla's on 1.7.10, feel free to open a topic in Github Discussion.
 
 Submit an issue if you met incompatibilities.

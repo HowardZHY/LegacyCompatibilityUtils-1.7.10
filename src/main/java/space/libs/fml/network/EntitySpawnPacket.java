@@ -1,4 +1,4 @@
-package space.libs.fml;
+package space.libs.fml.network;
 
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.network.internal.FMLMessage;

@@ -46,9 +46,9 @@ public abstract class ModLoadingUtils {
     public static void ensurePublicAccessFor(AccessTransformer at, String modClazzName) {
         try {
             Class<?> c = Class.forName("cpw.mods.fml.common.asm.transformers.AccessTransformer$Modifier");
-            Constructor<?> ctor = c.getConstructor();
+            Constructor<?> ctor = c.getDeclaredConstructor(AccessTransformer.class);
             ctor.setAccessible(true);
-            Object instance = ctor.newInstance();
+            Object instance = ctor.newInstance(at);
             Method m = c.getDeclaredMethod("setTargetAccess", String.class);
             m.setAccessible(true);
             m.invoke(instance, "public");

@@ -8,15 +8,17 @@ import net.minecraft.util.ReportedException;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import net.minecraft.nbt.INBTBase;
+import space.libs.util.MappedName;
 import space.libs.util.cursedmixinextensions.annotations.Public;
 
 import java.io.DataInput;
 import java.io.IOException;
 import java.util.Map;
 
-@SuppressWarnings("all")
+@SuppressWarnings({"rawtypes", "unchecked", "unused"})
 @Mixin(NBTTagCompound.class)
 public class MixinNBTTagCompound extends MixinNBTBase implements INBTBase {
+
     @Shadow
     private Map tagMap;
 
@@ -32,6 +34,11 @@ public class MixinNBTTagCompound extends MixinNBTBase implements INBTBase {
             NBTBase nBTBase = func_150293_a(b, str, input, depth + 1);
             this.tagMap.put(str, nBTBase);
         }
+    }
+
+    @MappedName(value = "setCompoundTag", until = "1.6.4")
+    public void func_74766_a(String key, NBTTagCompound value) {
+        this.tagMap.put(key, ((INBTBase) value).func_74738_o(key));
     }
 
     @Public
@@ -62,7 +69,7 @@ public class MixinNBTTagCompound extends MixinNBTBase implements INBTBase {
             CrashReport crashreport = CrashReport.makeCrashReport(exception, "Loading NBT data");
             CrashReportCategory crashreportcategory = crashreport.makeCategory("NBT Tag");
             crashreportcategory.addCrashSection("Tag name", "[UNNAMED TAG]");
-            crashreportcategory.addCrashSection("Tag type", Byte.valueOf(b));
+            crashreportcategory.addCrashSection("Tag type", b);
             throw new ReportedException(crashreport);
         }
         return nbtbase;

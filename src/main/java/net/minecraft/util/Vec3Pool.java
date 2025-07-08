@@ -3,34 +3,36 @@ package net.minecraft.util;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 public class Vec3Pool {
+
     public final int field_72351_a;
 
     public final int field_72349_b;
 
-    public final List field_72350_c = new ArrayList();
+    public final List<Vec3> field_72350_c = new ArrayList<>();
 
     public int field_72347_d;
 
     public int field_72348_e;
 
     public int field_72346_f;
+
     public Vec3Pool(int i, int j) {
         this.field_72351_a = i;
         this.field_72349_b = j;
     }
 
-    public Vec3 func_72345_a(double paramDouble1, double paramDouble2, double paramDouble3) {
+    public Vec3 func_72345_a(double x, double y, double z) {
         Vec3 vec3;
         if (func_82589_e())
-            return new Vec3(paramDouble1, paramDouble2, paramDouble3);
+            return new Vec3(x, y, z);
         if (this.field_72347_d >= this.field_72350_c.size()) {
-            vec3 = new Vec3(paramDouble1, paramDouble2, paramDouble3);
+            vec3 = new Vec3(x, y, z);
             this.field_72350_c.add(vec3);
         } else {
-            vec3 = (Vec3) this.field_72350_c.get(this.field_72347_d);
-            vec3.setComponents(paramDouble1, paramDouble2, paramDouble3);
+            vec3 = this.field_72350_c.get(this.field_72347_d);
+            vec3.setComponents(x, y, z);
         }
         this.field_72347_d++;
         return vec3;
@@ -66,7 +68,7 @@ public class Vec3Pool {
         return this.field_72347_d;
     }
 
-    private boolean func_82589_e() {
+    public boolean func_82589_e() {
         return (this.field_72349_b < 0 || this.field_72351_a < 0);
     }
 }

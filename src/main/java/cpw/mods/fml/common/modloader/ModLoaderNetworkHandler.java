@@ -12,13 +12,14 @@
 
 package cpw.mods.fml.common.modloader;
 
-public class ModLoaderNetworkHandler //extends NetworkModHandler
-{
+import space.libs.fml.network.NetworkModHandler;
+
+public class ModLoaderNetworkHandler extends NetworkModHandler {
 
     public BaseModProxy baseMod;
 
-    public ModLoaderNetworkHandler(ModLoaderModContainer mlmc) {
-        //super(mlmc, null);
+    public ModLoaderNetworkHandler(ModLoaderModContainer mod) {
+        super(mod, null);
     }
 
     public void setBaseMod(BaseModProxy baseMod) {

@@ -28,6 +28,8 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
 import org.objectweb.asm.commons.RemappingClassAdapter;
 
+import java.util.Locale;
+
 @SuppressWarnings("unused")
 public class RemapTransformer implements IClassTransformer {
 
@@ -35,6 +37,10 @@ public class RemapTransformer implements IClassTransformer {
 
     public RemapTransformer() {}
 
+    /**
+     * @implNote Exclude OBF and OF base classes.
+     * @implNote Try to fix duplicate method if Basemod try support some Forge thing
+     */
     @Override
     public byte[] transform(String name, String transformedName, byte[] bytes) {
         if (name == null || bytes == null) {
@@ -44,7 +50,16 @@ public class RemapTransformer implements IClassTransformer {
             return bytes;
         }
         if (!name.contains(".")) {
-            return bytes; // Exclude Obf and OptiFine base classes
+            if (name.length() < 4) {
+                if (name.equals(name.toLowerCase(Locale.US))) {
+                    return bytes;
+                }
+            }
+            ClassReader r = new ClassReader(bytes);
+            ClassWriter w = new ClassWriter(r, ClassWriter.COMPUTE_MAXS);
+            ClassVisitor v = new DuplicateMethodVisitor(w);
+            r.accept(v, ClassReader.SKIP_FRAMES);
+            bytes = w.toByteArray();
         }
         ClassReader reader = new ClassReader(bytes);
         ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS);

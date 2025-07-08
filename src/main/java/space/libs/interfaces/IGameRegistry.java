@@ -15,7 +15,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface IGameRegistry {
 
-    @SuppressWarnings("all")
     IGameRegistry INSTANCE = (IGameRegistry) new GameRegistry();
 
     List<ICraftingHandler> getCraftingHandlers();
@@ -37,5 +36,13 @@ public interface IGameRegistry {
     void onItemSmelt(EntityPlayer player, ItemStack item);
 
     void onPickupNotify(EntityPlayer player, EntityItem item);
+
+    void onLoginLegacy(EntityPlayer player);
+
+    void onLogoutLegacy(EntityPlayer player);
+
+    void onChangedDimensionLegacy(EntityPlayer player);
+
+    void onRespawnLegacy(EntityPlayer player);
 
 }

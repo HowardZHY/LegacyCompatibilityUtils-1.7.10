@@ -15,7 +15,10 @@ package cpw.mods.fml.common.modloader;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import space.libs.fml.EntitySpawnPacket;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.NetHandler;
+import net.minecraft.network.packet.Packet250CustomPayload;
+import space.libs.fml.network.EntitySpawnPacket;
 
 public interface IModLoaderSidedHelper {
 
@@ -25,10 +28,10 @@ public interface IModLoaderSidedHelper {
 
     Entity spawnEntity(BaseModProxy mod, EntitySpawnPacket input, EntityRegistry.EntityRegistration registration);
 
-    //void sendClientPacket(BaseModProxy mod, Packet250CustomPayload packet);
+    void sendClientPacket(BaseModProxy mod, Packet250CustomPayload packet);
 
-    //void clientConnectionOpened(NetHandler netClientHandler, INetworkManager manager, BaseModProxy mod);
+    void clientConnectionOpened(NetHandler netClientHandler, INetworkManager manager, BaseModProxy mod);
 
-    //boolean clientConnectionClosed(INetworkManager manager, BaseModProxy mod);
+    boolean clientConnectionClosed(INetworkManager manager, BaseModProxy mod);
 
 }

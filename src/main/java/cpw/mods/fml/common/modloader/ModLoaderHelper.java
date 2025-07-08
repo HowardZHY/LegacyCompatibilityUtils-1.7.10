@@ -28,6 +28,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.src.TradeEntry;
 import space.libs.fml.*;
+import space.libs.fml.network.IChatListener;
+import space.libs.fml.network.IConnectionHandler;
+import space.libs.fml.network.IPacketHandler;
 import space.libs.interfaces.IEntityRegistry;
 import space.libs.interfaces.IFMLCommonHandler;
 
@@ -96,9 +99,9 @@ public class ModLoaderHelper {
         }
     }
 
-    /*public static IPacketHandler buildPacketHandlerFor(BaseModProxy mod) {
+    public static IPacketHandler buildPacketHandlerFor(BaseModProxy mod) {
         return new ModLoaderPacketHandler(mod);
-    }*/
+    }
 
     public static IWorldGenerator buildWorldGenHelper(BaseModProxy mod) {
         return new ModLoaderWorldGenerator(mod);
@@ -118,9 +121,9 @@ public class ModLoaderHelper {
         }
     }
 
-    /*public static IConnectionHandler buildConnectionHelper(BaseModProxy mod) {
+    public static IConnectionHandler buildConnectionHelper(BaseModProxy mod) {
         return new ModLoaderConnectionHandler(mod);
-    }*/
+    }
 
     public static IPickupNotifier buildPickupHelper(BaseModProxy mod) {
         return new ModLoaderPickupNotifier(mod);

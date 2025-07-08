@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'xyz.wagyourtail.unimined' version '1.4.1'
     id 'com.github.johnrengelman.shadow' version "8.1.1"
+    id 'idea'
 }
 
 group 'space.libs'
@@ -100,7 +101,6 @@ jar {
             "FMLCorePlugin": "space.libs.core.CompatLibCore",
             "FMLCorePluginContainsFMLMod": "true",
             "ForceLoadAsMod": "true",
-            "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
             "MixinConfigs": "mixins.compatlib.json",
             "Manifest-Version": 1.0
         ])
@@ -130,7 +130,6 @@ tasks.remapShadowJar {
             "FMLCorePlugin": "space.libs.core.CompatLibCore",
             "FMLCorePluginContainsFMLMod": "true",
             "ForceLoadAsMod": "true",
-            "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
             "MixinConfigs": "mixins.compatlib.json",
             "Manifest-Version": 1.0
         ])

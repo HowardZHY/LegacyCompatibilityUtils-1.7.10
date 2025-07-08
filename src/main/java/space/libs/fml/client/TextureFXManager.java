@@ -4,7 +4,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
- * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
  *
  * Contributors:
  *     cpw - implementation
@@ -14,6 +14,7 @@ package space.libs.fml.client;
 
 import com.google.common.collect.Maps;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderEngine;
 import space.libs.CompatLib;
 
 import java.awt.*;
@@ -37,6 +38,10 @@ public class TextureFXManager {
 
     public static TextureFXManager instance() {
         return INSTANCE;
+    }
+
+    public BufferedImage loadImageFromTexturePack(RenderEngine renderEngine, String path) throws RuntimeException {
+        throw new UnsupportedOperationException();
     }
 
     public void fixTransparency(BufferedImage loadedImage, String textureName) {

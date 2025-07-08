@@ -153,7 +153,7 @@ public abstract class MixinServerConfigurationManager {
     }
 
     /** getWhiteListedPlayers **/
-    public Set<?> func_72388_h() {
+    public Set<String> func_72388_h() {
         try {
             throw new UnsupportedOperationException("Server");
         } catch (Exception e) {
@@ -185,8 +185,8 @@ public abstract class MixinServerConfigurationManager {
         return s.toString();
     }
 
-    public StatisticsFile func_148538_i(String p_148538_1_) {
-        return this.getPlayerStatsFile(this.func_72361_f(p_148538_1_));
+    public StatisticsFile func_148538_i(String name) {
+        return this.getPlayerStatsFile(this.func_72361_f(name));
     }
 
     public GameProfile getProfileFromName(String name) {
