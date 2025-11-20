@@ -14,16 +14,7 @@ public class EarliestTransformer implements IClassTransformer {
             return bytes;
         }
         if (name.equals("net.minecraftforge.common.config.Configuration")) {
-            try {
-                ClassReader classReader = new ClassReader(bytes);
-                ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
-                ClassVisitor classVisitor = new ConfigurationVisitor(classWriter);
-                classReader.accept(classVisitor, ClassReader.EXPAND_FRAMES);
-                return classWriter.toByteArray();
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
-            }
+            return TransformerUtils.transform(bytes, ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES, ConfigurationVisitor.class, ClassReader.EXPAND_FRAMES);
         } else {
             return bytes;
         }
@@ -249,4 +240,5 @@ public class EarliestTransformer implements IClassTransformer {
             }
         }
     }
+
 }

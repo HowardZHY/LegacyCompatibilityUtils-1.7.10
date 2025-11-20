@@ -2,7 +2,7 @@ package space.libs.asm;
 
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.spongepowered.asm.lib.*;
-import org.spongepowered.asm.transformers.MixinClassWriter;
+import space.libs.asm.visitors.DragonAPIVisitor;
 
 @SuppressWarnings("unused")
 public class ClassTransformers implements IClassTransformer {
@@ -14,28 +14,23 @@ public class ClassTransformers implements IClassTransformer {
         }
         if (name.startsWith("cpw")) {
             if (name.equals("cpw.mods.fml.common.FMLModContainer")) {
-                ClassReader r = new ClassReader(bytes);
-                ClassWriter w = new MixinClassWriter(r, ClassWriter.COMPUTE_MAXS);
-                ClassVisitor v = new FMLModContainerVisitor(w);
-                r.accept(v, 0);
-                return w.toByteArray();
+                return TransformerUtils.transformSafe(bytes, ClassWriter.COMPUTE_MAXS, FMLModContainerVisitor.class, 0);
+            } else {
+                if (name.equals("cpw.mods.fml.common.ModContainerFactory")) {
+                    return TransformerUtils.transformSafe(bytes, ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES,
+                        ModContainerFactoryVisitor.class, ClassReader.EXPAND_FRAMES);
+                }
             }
-            if (name.equals("cpw.mods.fml.common.ModContainerFactory")) {
-                ClassReader reader = new ClassReader(bytes);
-                ClassWriter writer = new MixinClassWriter(reader, ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
-                ClassVisitor visitor = new ModContainerFactoryVisitor(writer);
-                reader.accept(visitor, ClassReader.EXPAND_FRAMES);
-                return writer.toByteArray();
+        } else {
+            if ("Reika.DragonAPI.Instantiable.Data.Maps.MultiMap".equals(name)) {
+                return TransformerUtils.transformSafe(bytes, ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES, DragonAPIVisitor.class, ClassReader.EXPAND_FRAMES);
             }
         }
-        if (ClassNameList.Contains(name) || ClassNameList.Startswith(name)) {
+        if (ClassNameList.Contains(name) || ClassNameList.StartsWith(name)) {
             return bytes;
+        } else {
+            return TransformerUtils.transformSafe(bytes, 0, EventVisitor.class, 0);
         }
-        ClassReader cr = new ClassReader(bytes);
-        ClassWriter cw = new MixinClassWriter(cr, 0);
-        ClassVisitor cv = new EventVisitor(cw);
-        cr.accept(cv, 0);
-        return cw.toByteArray();
     }
 
     public static class EventVisitor extends ClassVisitor {

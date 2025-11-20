@@ -27,6 +27,7 @@ package space.libs.asm;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
 import org.objectweb.asm.commons.RemappingClassAdapter;
+import space.libs.asm.visitors.DuplicateMethodVisitor;
 
 import java.util.Locale;
 
@@ -46,7 +47,7 @@ public class RemapTransformer implements IClassTransformer {
         if (name == null || bytes == null) {
             return bytes;
         }
-        if (ClassNameList.Contains(name) || ClassNameList.Startswith(name)) {
+        if (ClassNameList.Contains(name) || ClassNameList.StartsWith(name)) {
             return bytes;
         }
         if (!name.contains(".")) {

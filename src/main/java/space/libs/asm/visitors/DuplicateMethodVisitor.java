@@ -1,4 +1,4 @@
-package space.libs.asm;
+package space.libs.asm.visitors;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;

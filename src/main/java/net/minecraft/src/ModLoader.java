@@ -8,32 +8,22 @@ import cpw.mods.fml.common.modloader.*;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.*;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockDispenser;
+import net.minecraft.block.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.NetClientHandler;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.RenderEngine;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.ICommand;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.inventory.*;
+import net.minecraft.item.*;
 import net.minecraft.network.NetServerHandler;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet1Login;
-import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.network.packet.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.stats.Achievement;
 import net.minecraft.tileentity.TileEntity;
@@ -43,20 +33,14 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
 import space.libs.fml.client.TextureFXManager;
 import space.libs.fml.network.PacketDispatcher;
-import space.libs.interfaces.IGameRegistry;
-import space.libs.interfaces.INetworkRegistry;
-import space.libs.interfaces.IRenderingRegistry;
-import space.libs.interfaces.IStatBase;
+import space.libs.interfaces.*;
 import space.libs.util.BiomeUtils;
 
 import java.awt.image.BufferedImage;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
-import static cpw.mods.fml.relauncher.Side.CLIENT;
-import static cpw.mods.fml.relauncher.Side.SERVER;
+import static cpw.mods.fml.relauncher.Side.*;
 
 @SuppressWarnings({"deprecation", "unused"})
 public class ModLoader {
@@ -224,14 +208,15 @@ public class ModLoader {
         return (FMLClientHandler.instance().getClient().currentScreen != null); //&& (FMLClientHandler.instance().getClient().currentScreen.equals(gui)));
     }
 
-    public static boolean isModLoaded(String modname) {
-        return Loader.isModLoaded(modname);
+    public static boolean isModLoaded(String name) {
+        return Loader.isModLoaded(name);
     }
 
     public static void loadConfig() {
         // Implemented elsewhere
     }
 
+    @SuppressWarnings("RedundantThrows")
     @SideOnly(CLIENT)
     public static BufferedImage loadImage(RenderEngine render, String path) throws Exception {
         return TextureFXManager.instance().loadImageFromTexturePack(render, path);
