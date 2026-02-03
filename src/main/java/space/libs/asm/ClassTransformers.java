@@ -22,7 +22,7 @@ public class ClassTransformers implements IClassTransformer {
                 }
             }
         } else {
-            if ("Reika.DragonAPI.Instantiable.Data.Maps.MultiMap".equals(name)) {
+            if (name.startsWith("R") && "Reika.DragonAPI.Instantiable.Data.Maps.MultiMap".equals(name)) {
                 return TransformerUtils.transformSafe(bytes, ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES, DragonAPIVisitor.class, ClassReader.EXPAND_FRAMES);
             }
         }
