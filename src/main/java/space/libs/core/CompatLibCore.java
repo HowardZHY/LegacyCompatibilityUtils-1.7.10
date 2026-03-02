@@ -8,8 +8,7 @@ import org.spongepowered.asm.mixin.Mixins;
 import space.libs.util.ModDetector;
 import space.libs.util.forge.ModLoadingUtils;
 
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 
 @IFMLLoadingPlugin.TransformerExclusions({"space.libs.asm", "space.libs.core", "space.libs.util.cursedmixinextensions", "org.joml"})
 @IFMLLoadingPlugin.SortingIndex(Integer.MIN_VALUE + 2)

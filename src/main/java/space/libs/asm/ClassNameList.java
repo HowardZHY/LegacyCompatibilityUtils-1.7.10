@@ -57,6 +57,7 @@ public class ClassNameList {
             "com.ibm.",
             "com.jcraft",
             "com.llamalad",
+            "com.midnight",
             "com.mojang",
             "com.mumfrey.lite",
             "com.replaymod",

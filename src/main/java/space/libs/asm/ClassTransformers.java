@@ -1,7 +1,7 @@
 package space.libs.asm;
 
 import net.minecraft.launchwrapper.IClassTransformer;
-import org.spongepowered.asm.lib.*;
+import org.objectweb.asm.*;
 import space.libs.asm.visitors.DragonAPIVisitor;
 
 @SuppressWarnings("unused")

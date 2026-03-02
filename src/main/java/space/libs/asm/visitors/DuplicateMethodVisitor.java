@@ -1,12 +1,9 @@
 package space.libs.asm.visitors;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.*;
 import space.libs.core.CompatLibCore;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class DuplicateMethodVisitor extends ClassVisitor {
 

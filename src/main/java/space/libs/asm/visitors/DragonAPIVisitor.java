@@ -1,6 +1,6 @@
 package space.libs.asm.visitors;
 
-import org.spongepowered.asm.lib.*;
+import org.objectweb.asm.*;
 
 import static org.spongepowered.asm.lib.Opcodes.*;
 
