@@ -7,16 +7,16 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @SuppressWarnings("all")
 @Pseudo
-@Mixin(targets = "net.EternIsles.assist.armorEffects")
-public class MixinArmorEffects {
+@Mixin(targets = "net.EternIsles.assist.armorEffects", remap = false)
+public abstract class MixinArmorEffects {
 
     /** Fix Eternal Isles Crash */
-    @ModifyConstant(method = "<clinit>", constant = @Constant(stringValue = "ag"), remap = false)
+    @ModifyConstant(method = "<clinit>", constant = @Constant(stringValue = "ag"))
     private static String isImmuneToFire(String old) {
         return "ae";
     }
 
-    @ModifyConstant(method = "<clinit>", constant = @Constant(stringValue = "bd"), remap = false)
+    @ModifyConstant(method = "<clinit>", constant = @Constant(stringValue = "bd"))
     private static String isJumping(String old) {
         return "bc";
     }

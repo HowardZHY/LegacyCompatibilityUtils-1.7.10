@@ -5,6 +5,7 @@ import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Mixins;
+import space.libs.util.ModDetector;
 import space.libs.util.forge.ModLoadingUtils;
 
 import java.util.ArrayList;
@@ -20,16 +21,10 @@ public class CompatLibCore implements IFMLLoadingPlugin {
 
     public CompatLibCore() {
         Launch.classLoader.registerTransformer("space.libs.asm.EarliestTransformer");
-        try {
-            byte[] bukkit = Launch.classLoader.getClassBytes("org.bukkit.craftbukkit.util.Versioning");
-            if (bukkit == null) {
-                return;
-            }
-        } catch (Exception ignored) {
-            return;
+        if (ModDetector.hasClassBytes("org.bukkit.craftbukkit.util.Versioning")) {
+            CompatLibCore.LOGGER.info("Running in Hybrid Server...");
+            BUKKIT = true;
         }
-        CompatLibCore.LOGGER.info("Running in Hybrid Server...");
-        BUKKIT = true;
     }
 
     static {

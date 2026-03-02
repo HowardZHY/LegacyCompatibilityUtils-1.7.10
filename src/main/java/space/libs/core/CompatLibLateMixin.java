@@ -5,11 +5,9 @@ import com.gtnewhorizon.gtnhmixins.LateMixin;
 import space.libs.CompatLib;
 import space.libs.util.ModDetector;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "SpellCheckingInspection"})
 @LateMixin
 public class CompatLibLateMixin implements ILateMixinLoader {
 
@@ -33,6 +31,9 @@ public class CompatLibLateMixin implements ILateMixinLoader {
             ModDetector.AOA2 = true;
             CompatLib.LOGGER.info("Found AoA2. Disabling Update Checker...");
             mixins.add("aoa.MixinUpdateChecker");
+            if (ModDetector.hasClassBytes("net.nevermine.item.blueprint.GardenciaBlueprint")) {
+                mixins.add("aoa.MixinChunkProviderGardencia");
+            }
         } else {
             CompatLib.LOGGER.info("AoA2 was not found.");
         }
