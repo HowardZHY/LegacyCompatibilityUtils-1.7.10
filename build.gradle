@@ -85,6 +85,7 @@ def mixinProviderSpec = "${mixinProviderSpecNoClassifer}:dev"
 
 dependencies {
     implementation(mixinProviderSpec)
+//    shade("org.mozilla:rhino:1.7.7.2")
     shade("org.joml:joml:1.10.5")
     compileOnly("org.ow2.asm:asm-commons:9.6")
     compileOnly("curse.maven:ichunutil-229060:2338149-deobf")
@@ -121,7 +122,9 @@ tasks.jar {
 //    enabled = false
 }
 
-tasks.shadowJar {}
+tasks.shadowJar {
+//    relocate("org/mozilla/javascript", "sun/org/mozilla/javascript/internal")
+}
 
 tasks.remapShadowJar {
     manifest {

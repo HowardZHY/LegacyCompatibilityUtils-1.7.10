@@ -380,7 +380,10 @@ public class ModLoaderModContainer implements ModContainer {
             if (dummyHandler != null) {
                 dummyHandler.setBaseMod(mod);
             }
-            ProxyInjector.inject(this, event.getASMHarvestedData(), FMLCommonHandler.instance().getSide(), new ILanguageAdapter.JavaAdapter());
+            ASMDataTable data = event.getASMHarvestedData();
+            if (data.getAnnotationsFor(this) != null) {
+                ProxyInjector.inject(this, data, FMLCommonHandler.instance().getSide(), new ILanguageAdapter.JavaAdapter());
+            }
         } catch (Exception e) {
             CompatLib.LOGGER.error(e);
             controller.errorOccurred(this, e);

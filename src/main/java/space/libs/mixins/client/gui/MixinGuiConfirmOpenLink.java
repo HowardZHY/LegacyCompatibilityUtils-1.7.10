@@ -7,7 +7,7 @@ import space.libs.util.cursedmixinextensions.annotations.ShadowConstructor;
 
 @SuppressWarnings("unused")
 @Mixin(GuiConfirmOpenLink.class)
-public class MixinGuiConfirmOpenLink {
+public class MixinGuiConfirmOpenLink extends MixinGuiYesNo {
 
     @Final
     @Mutable

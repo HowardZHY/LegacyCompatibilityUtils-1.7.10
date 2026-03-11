@@ -192,9 +192,9 @@ public abstract class MixinBlockLegacyFields {
         field_71939_E = Blocks.sand;
         field_71940_F = Blocks.gravel;
         field_71941_G = Blocks.gold_ore;
-        field_71942_A = Blocks.flowing_water; //BlockFluid
+        field_71942_A = Blocks.flowing_water;
         field_71943_B = Blocks.water;
-        field_71944_C = Blocks.flowing_lava; //BlockFluid
+        field_71944_C = Blocks.flowing_lava;
         field_71945_L = Blocks.sponge;
         field_71946_M = Blocks.glass;
         field_71947_N = Blocks.lapis_ore;

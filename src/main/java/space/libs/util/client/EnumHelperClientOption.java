@@ -1,4 +1,4 @@
-package space.libs.util;
+package space.libs.util.client;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

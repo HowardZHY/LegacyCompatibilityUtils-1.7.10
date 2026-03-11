@@ -40,6 +40,7 @@ CL: net/minecraft/entity/player/EnumStatus net/minecraft/entity/player/EntityPla
 CL: net/minecraft/item/EnumArmorMaterial net/minecraft/item/ItemArmor$ArmorMaterial
 CL: net/minecraft/item/EnumToolMaterial net/minecraft/item/Item$ToolMaterial
 CL: net/minecraft/util/Icon net/minecraft/util/IIcon
+CL: net/minecraft/util/WeightedRandomItem net/minecraft/util/WeightedRandom$Item
 CL: net/minecraftforge/common/Configuration net/minecraftforge/common/config/Configuration
 CL: net/minecraftforge/common/EnumHelper net/minecraftforge/common/util/EnumHelper
 CL: net/minecraftforge/common/ForgeDirection net/minecraftforge/common/util/ForgeDirection

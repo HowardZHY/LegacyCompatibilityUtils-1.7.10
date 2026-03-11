@@ -14,7 +14,7 @@ import org.objectweb.asm.commons.*;
 
 public class CustomRemappingAdapter extends RemappingClassAdapter {
 
-    public static DefaultRemapper[] INSTANCES = new DefaultRemapper[16];
+    public static DefaultRemapper[] INSTANCES = new DefaultRemapper[128];
 
     public static CustomRemappingAdapter Default(ClassVisitor cv) {
         return new CustomRemappingAdapter(cv, new DefaultRemapper(), 1);
@@ -40,7 +40,10 @@ public class CustomRemappingAdapter extends RemappingClassAdapter {
     }
 
     public CustomRemapper getCustomRemapper() {
-        return (CustomRemapper) INSTANCES[10];
+        if (id < 10) {
+            throw new UnsupportedOperationException();
+        }
+        return (CustomRemapper) INSTANCES[id];
     }
 
     @Override

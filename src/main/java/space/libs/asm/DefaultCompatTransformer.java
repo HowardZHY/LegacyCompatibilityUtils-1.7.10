@@ -29,8 +29,6 @@ import org.objectweb.asm.*;
 import space.libs.asm.remap.CustomRemappingAdapter;
 import space.libs.asm.visitors.DuplicateMethodVisitor;
 
-import java.util.Locale;
-
 @SuppressWarnings("unused")
 public class DefaultCompatTransformer implements IClassTransformer {
 
@@ -47,12 +45,11 @@ public class DefaultCompatTransformer implements IClassTransformer {
             return bytes;
         }
         if (!name.contains(".")) {
-            if (name.length() < 4) {
-                if (name.equals(name.toLowerCase(Locale.US))) {
-                    return bytes;
-                }
+            if (TransformerUtils.isVanillaClass(name)) {
+                return bytes;
+            } else {
+                bytes = TransformerUtils.transformSafe(bytes, ClassWriter.COMPUTE_MAXS, DuplicateMethodVisitor.class, ClassReader.SKIP_FRAMES);
             }
-            bytes = TransformerUtils.transformSafe(bytes, ClassWriter.COMPUTE_MAXS, DuplicateMethodVisitor.class, ClassReader.SKIP_FRAMES);
         }
         ClassReader reader = new ClassReader(bytes);
         ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS);

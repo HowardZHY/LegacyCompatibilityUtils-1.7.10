@@ -10,7 +10,7 @@ import space.libs.util.cursedmixinextensions.annotations.Public;
 
 @SuppressWarnings("unused")
 @Mixin(GuiSelectWorld.class)
-public class MixinGuiSelectWorld {
+public class MixinGuiSelectWorld extends MixinGuiScreen {
 
     @Shadow
     public static GuiYesNo func_152129_a(GuiYesNoCallback p_152129_0_, String p_152129_1_, int p_152129_2_) {

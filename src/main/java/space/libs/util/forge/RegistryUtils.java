@@ -89,6 +89,13 @@ public class RegistryUtils {
         }
     }
 
+    public static boolean is17Block(int id) {
+        if (id > 159) {
+            return (id < 165 || id == 174 || id == 175);
+        }
+        return false;
+    }
+
     static {
         try {
             BlocksLists = Block.class.getDeclaredField("field_71973_m");

@@ -1,4 +1,4 @@
-package space.libs.mixins;
+package space.libs.mixins.world;
 
 import com.google.common.collect.ObjectArrays;
 import com.google.common.collect.Sets;
@@ -25,17 +25,17 @@ public class MixinWorldType implements IWorldType {
     @Shadow
     private @Final int worldTypeId;
 
-    @Public @SuppressWarnings("all")
+    @Public
     private static BiomeGenBase[] base11Biomes = new BiomeGenBase[] { BiomeGenBase.desert, BiomeGenBase.forest, BiomeGenBase.extremeHills, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.taiga };
 
-    @Public @SuppressWarnings("all")
+    @Public
     private static BiomeGenBase[] base12Biomes = (BiomeGenBase[]) ObjectArrays.concat((Object[])base11Biomes, BiomeGenBase.jungle);
 
     public BiomeGenBase[] biomesForWorldType;
 
     @Inject(method = "<init>(ILjava/lang/String;I)V", at = @At("RETURN"))
     public void init(int id, String name, int version, CallbackInfo ci) {
-        setBiomesForWorldType();
+        this.setBiomesForWorldType();
     }
 
     public BiomeGenBase[] getBiomesForWorldType() {
@@ -44,7 +44,7 @@ public class MixinWorldType implements IWorldType {
 
     public void addNewBiome(BiomeGenBase biome) {
         if (this.biomesForWorldType == null) {
-            setBiomesForWorldType();
+            this.setBiomesForWorldType();
         }
         Set<BiomeGenBase> newBiomesForWorld = Sets.newLinkedHashSet(Arrays.asList(this.biomesForWorldType));
         newBiomesForWorld.add(biome);
@@ -55,7 +55,7 @@ public class MixinWorldType implements IWorldType {
 
     public void removeBiome(BiomeGenBase biome) {
         if (this.biomesForWorldType == null) {
-            setBiomesForWorldType();
+            this.setBiomesForWorldType();
         }
         Set<BiomeGenBase> newBiomesForWorld = Sets.newLinkedHashSet(Arrays.asList(this.biomesForWorldType));
         newBiomesForWorld.remove(biome);

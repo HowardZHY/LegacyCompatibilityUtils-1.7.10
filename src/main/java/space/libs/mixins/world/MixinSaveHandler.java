@@ -1,4 +1,4 @@
-package space.libs.mixins;
+package space.libs.mixins.world;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;

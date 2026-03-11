@@ -8,10 +8,10 @@ import space.libs.util.cursedmixinextensions.annotations.Public;
 
 @SuppressWarnings("all")
 @Mixin(Blocks.class)
-public class MixinBlocks {
+public abstract class MixinBlocks {
 
     /**
-     * @reason Field Type Changed
+     * @implNote Field Type Changed
      */
     @Public
     private static @Final Block field_150354_m = (Block) Block.blockRegistry.getObject("sand");

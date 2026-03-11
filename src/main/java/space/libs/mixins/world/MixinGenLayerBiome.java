@@ -1,4 +1,4 @@
-package space.libs.mixins;
+package space.libs.mixins.world;
 
 import net.minecraft.world.gen.layer.GenLayerBiome;
 import net.minecraftforge.common.BiomeManager;

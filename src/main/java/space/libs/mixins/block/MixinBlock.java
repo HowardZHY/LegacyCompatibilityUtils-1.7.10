@@ -6,9 +6,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import space.libs.core.CompatLibCore;
 import space.libs.fml.BlockProxy;
@@ -89,13 +91,21 @@ public abstract class MixinBlock implements BlockProxy, IBlock {
     @NewConstructor
     public void Block(int id, Material material) {
         Block(material);
-        if (id <= 0) {
-            this.SetLegacyBlockNoID("Block");
-            return;
-        }
-        this.SetLegacyBlock(id, "Block");
-        RegistryUtils.putBlock(GetBlockInstance(), this.field_71990_ca);
+        IBlock.InitLegacyBlock(GetBlockInstance(), id, "Block");
         //TODO?
+    }
+
+    @Inject(
+        method = "<init>(Lnet/minecraft/block/material/Material;)V",
+        at = @At(
+            value = "FIELD",
+            opcode = Opcodes.PUTFIELD,
+            target = "Lnet/minecraft/block/Block;blockMaterial:Lnet/minecraft/block/material/Material;",
+            shift = At.Shift.AFTER
+        )
+    )
+    protected void init(Material materialIn, CallbackInfo ci) {
+        this.field_72018_cp = materialIn;
     }
 
     @Inject(method = "setUnlocalizedName", at = @At("RETURN"))
@@ -135,18 +145,30 @@ public abstract class MixinBlock implements BlockProxy, IBlock {
         field_71973_m[id] = this.GetBlockInstance();
     }
 
+    @Override
     public void SetLegacyBlock(int id, String type) {
         this.LegacyBlock = true;
         if (field_71973_m[id] != null) {
-            throw new IllegalArgumentException("Block ID " + id + " is already occupied by " + field_71973_m[id] + " when adding " + this);
+            if (RegistryUtils.is17Block(id)) {
+                this.SetLegacyID(id + 1000);
+            } else {
+                throw new IllegalArgumentException("Block ID " + id + " is already occupied by " + field_71973_m[id] + " when adding " + this);
+            }
+        } else {
+            this.SetLegacyID(id);
+            CompatLibCore.LOGGER.info("Legacy Register " + type + " ID : " + this.field_71990_ca);
         }
-        this.SetLegacyID(id);
-        CompatLibCore.LOGGER.info("Legacy Register " + type + " ID : " + this.field_71990_ca);
     }
 
+    @Override
     public void SetLegacyBlockNoID(String type) {
         this.LegacyBlockNoID = true;
         CompatLibCore.LOGGER.warn("Legacy Register " + type + " Has Invalid ID : " + this.getClass());
+    }
+
+    @Override
+    public int GetLegacyID() {
+        return this.field_71990_ca;
     }
 
     @Override
@@ -169,11 +191,17 @@ public abstract class MixinBlock implements BlockProxy, IBlock {
     @MappedName(value = "blockID", until = "1.6.4")
     public int field_71990_ca;
 
+    @MappedName(value = "blockHardness", until = "1.6.4")
+    public float field_71989_cb;
+
     @MappedName(value = "blockResistance", until = "1.6.4")
     public float field_72029_cc;
 
     @MappedName(value = "stepSound", until = "1.6.4")
     public StepSound field_72020_cn;
+
+    @MappedName(value = "blockMaterial", until = "1.6.4")
+    public Material field_72018_cp;
 
     @MappedName(value = "unlocalizedName", until = "1.6.4")
     public String field_71968_b;
@@ -188,6 +216,7 @@ public abstract class MixinBlock implements BlockProxy, IBlock {
     }
 
     public Block func_71848_c(float hardness) {
+        this.field_71989_cb = hardness;
         return this.setHardness(hardness);
     }
 
