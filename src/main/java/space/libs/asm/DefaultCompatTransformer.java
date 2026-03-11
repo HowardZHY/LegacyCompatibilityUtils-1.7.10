@@ -26,17 +26,13 @@ package space.libs.asm;
 
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
-import org.objectweb.asm.commons.RemappingClassAdapter;
+import space.libs.asm.remap.CustomRemappingAdapter;
 import space.libs.asm.visitors.DuplicateMethodVisitor;
 
 import java.util.Locale;
 
 @SuppressWarnings("unused")
-public class RemapTransformer implements IClassTransformer {
-
-    public static String DEFAULT_MAPPINGS = "compatlib.srg";
-
-    public RemapTransformer() {}
+public class DefaultCompatTransformer implements IClassTransformer {
 
     /**
      * @implNote Exclude OBF and OF base classes.
@@ -56,16 +52,11 @@ public class RemapTransformer implements IClassTransformer {
                     return bytes;
                 }
             }
-            ClassReader r = new ClassReader(bytes);
-            ClassWriter w = new ClassWriter(r, ClassWriter.COMPUTE_MAXS);
-            ClassVisitor v = new DuplicateMethodVisitor(w);
-            r.accept(v, ClassReader.SKIP_FRAMES);
-            bytes = w.toByteArray();
+            bytes = TransformerUtils.transformSafe(bytes, ClassWriter.COMPUTE_MAXS, DuplicateMethodVisitor.class, ClassReader.SKIP_FRAMES);
         }
         ClassReader reader = new ClassReader(bytes);
         ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS);
-        RemappingClassAdapter remapAdapter = new CustomRemappingAdapter(writer);
-        reader.accept(remapAdapter, ClassReader.EXPAND_FRAMES);
+        reader.accept(CustomRemappingAdapter.Default(writer), ClassReader.EXPAND_FRAMES);
         return writer.toByteArray();
     }
 

@@ -155,7 +155,6 @@ public class ModLoaderHelper {
         return null;
     }
 
-    @SuppressWarnings("all")
     public static void buildEntityTracker(BaseModProxy mod, Class<? extends Entity> entityClass, int entityTypeId, int updateRange, int updateInterval, boolean sendVelocityInfo) {
         IEntityRegistry accessor = (IEntityRegistry) EntityRegistry.instance();
         EntityRegistry.EntityRegistration er = accessor.registerModLoader(mod, entityClass, entityTypeId, updateRange, updateInterval, sendVelocityInfo);

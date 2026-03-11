@@ -73,6 +73,7 @@ public class BaseModTicker implements ITickHandler {
         }
     }
 
+    @SuppressWarnings("UnusedAssignment")
     public void sendTick(EnumSet<TickEvent.Type> types, boolean end, Object... tickData) {
         for (TickEvent.Type type : types) {
             if (!ticks.contains(type)) {

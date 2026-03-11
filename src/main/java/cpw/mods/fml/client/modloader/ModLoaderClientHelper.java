@@ -48,8 +48,8 @@ import java.util.Map.Entry;
 public class ModLoaderClientHelper implements IModLoaderSidedHelper {
 
     public static int obtainBlockModelIdFor(BaseMod mod, boolean inventoryRenderer) {
-        int renderId=RenderingRegistry.getNextAvailableRenderId();
-        ModLoaderBlockRendererHandler bri=new ModLoaderBlockRendererHandler(renderId, inventoryRenderer, mod);
+        int renderId = RenderingRegistry.getNextAvailableRenderId();
+        ModLoaderBlockRendererHandler bri = new ModLoaderBlockRendererHandler(renderId, inventoryRenderer, mod);
         RenderingRegistry.registerBlockHandler(bri);
         return renderId;
     }
@@ -133,7 +133,7 @@ public class ModLoaderClientHelper implements IModLoaderSidedHelper {
         //((net.minecraft.src.BaseMod)mod).clientCustomPayload(client.thePlayer.sendQueue, packet);
     }
 
-    public Map<INetworkManager,NetHandler> managerLookups = new MapMaker().weakKeys().weakValues().makeMap();
+    public Map<INetworkManager, NetHandler> managerLookups = new MapMaker().weakKeys().weakValues().makeMap();
 
     @Override
     public void clientConnectionOpened(NetHandler netClientHandler, INetworkManager manager, BaseModProxy mod) {

@@ -298,7 +298,6 @@ public class ModLoaderModContainer implements ModContainer {
         return dependencies;
     }
 
-
     public String toString() {
         return modId;
     }
@@ -460,11 +459,11 @@ public class ModLoaderModContainer implements ModContainer {
 
     @Override
     public String getDisplayVersion() {
-        return metadata!=null ? metadata.version : getVersion();
+        return metadata != null ? metadata.version : getVersion();
     }
 
     public void addServerCommand(ICommand command) {
-        serverCommands .add(command);
+        serverCommands.add(command);
     }
 
     @Override

@@ -37,7 +37,7 @@ public class CompatLibCore implements IFMLLoadingPlugin {
         ModLoadingUtils.init();
         ArrayList<String> transformersList = new ArrayList<>();
         transformersList.add("space.libs.asm.ClassTransformers");
-        transformersList.add("space.libs.asm.RemapTransformer");
+        transformersList.add("space.libs.asm.DefaultCompatTransformer");
         // "space.libs.asm.GameDataTransformer"
         // "space.libs.asm.ReplaceTransformer"
         String[] transformers = new String[transformersList.size()];
@@ -46,7 +46,7 @@ public class CompatLibCore implements IFMLLoadingPlugin {
 
     @Override
     public String getModContainerClass() {
-        return null;
+        return "space.libs.core.CompatLibCoreContainer";
     }
 
     @Override
