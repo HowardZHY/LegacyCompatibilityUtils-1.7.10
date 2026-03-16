@@ -182,9 +182,6 @@ public abstract class RemapperBase extends Remapper {
 
     @Override
     public String mapFieldName(String owner, String name, String desc) {
-        if (this.noClasses()) {
-            return name;
-        }
         Map<String, String> fields = getFieldMap(owner);
         if (fields != null) {
             String mapped = fields.get(name + ':' + desc);
@@ -205,9 +202,6 @@ public abstract class RemapperBase extends Remapper {
 
     @Override
     public String mapMethodName(String owner, String name, String desc) {
-        if (this.noClasses()) {
-            return name;
-        }
         Map<String, String> methods = getMethodMap(owner);
         if (methods != null) {
             String mapped = methods.get(name + desc);
@@ -250,15 +244,14 @@ public abstract class RemapperBase extends Remapper {
         }
         if (DEBUG_REMAPPING && (!superName.startsWith("java") || !name.startsWith("java"))) {
             LOGGER.info("Computing super maps for " + name + " & " + superName);
-            LOGGER.info("Interfaces: " + Arrays.toString(interfaces));
+            //LOGGER.info("Interfaces: " + Arrays.toString(interfaces));
         }
         String[] parents = new String[interfaces.length + 1];
         parents[0] = superName;
         System.arraycopy(interfaces, 0, parents, 1, interfaces.length);
         for (String parent : parents) {
-            if ((this.legacy && !this.methodsMap.containsKey(parent)) ||
-                (!this.legacy && !this.fieldsMap.containsKey(parent))) {
-                loadSuperMaps(parent);
+            if (!this.fieldsMap.containsKey(parent) || !this.methodsMap.containsKey(parent)) {
+                this.loadSuperMaps(parent);
             }
         }
         Map<String, String> fields = Maps.newHashMap();
@@ -272,7 +265,6 @@ public abstract class RemapperBase extends Remapper {
             value = this.methodsMap.get(parentThing);
             if (value != null) {
                 methods.putAll(value);
-
             }
         }
         if (this.legacy) {

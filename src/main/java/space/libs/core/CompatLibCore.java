@@ -51,7 +51,7 @@ public class CompatLibCore implements IFMLLoadingPlugin {
 
     @Override
     public String getSetupClass() {
-        return null;
+        return "space.libs.core.CompatLibSetupHook";
     }
 
     @Override

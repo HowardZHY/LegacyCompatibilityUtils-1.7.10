@@ -111,24 +111,22 @@ public class CustomRemapper extends DefaultRemapper {
     @Override
     public void loadSuperMaps(String name) {
         try {
-            String superName = null;
-            String[] interfaces = new String[0];
-            byte[] classBytes = ClassPatchManager.INSTANCE.getPatchedResource(getRealName(name), map(name), classLoader);
-            if (classBytes != null) {
-                ClassReader cr = new ClassReader(classBytes);
-                superName = cr.getSuperName();
-                interfaces = cr.getInterfaces();
+            byte[] bytes = ClassPatchManager.INSTANCE.getPatchedResource(this.getRealName(name), this.map(name), this.classLoader);
+            if (bytes != null) {
+                ClassReader cr = new ClassReader(bytes);
+                String superName  = cr.getSuperName();
+                String[] interfaces = cr.getInterfaces();
+                String[] legacyInterfaces = new String[interfaces.length];
+                for (int i = 0; i < interfaces.length; i++) {
+                    legacyInterfaces[i] = getLegacyName(interfaces[i]);
+                }
+                if (DEBUG_REMAPPING && (!Strings.isNullOrEmpty(name)) && (!Strings.isNullOrEmpty(superName)) && !name.startsWith("java")) {
+                    LOGGER.info("Try finding super map for " + name + " to " + superName);
+                }
+                this.mergeSuperMaps(name, getLegacyName(superName), legacyInterfaces);
             }
-            String[] legacyInterfaces = new String[interfaces.length];
-            for (int i = 0; i < interfaces.length; i++) {
-                legacyInterfaces[i] = getLegacyName(interfaces[i]);
-            }
-            if (DEBUG_REMAPPING && (!Strings.isNullOrEmpty(name)) && (!Strings.isNullOrEmpty(superName)) && !name.startsWith("java")) {
-                LOGGER.info("Try finding super map for " + name + " to " + superName);
-            }
-            this.mergeSuperMaps(name, getLegacyName(superName), legacyInterfaces);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(name + " error " + e);
         }
     }
 
