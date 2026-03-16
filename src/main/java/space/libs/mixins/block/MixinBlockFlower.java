@@ -25,6 +25,11 @@ public abstract class MixinBlockFlower extends MixinBlockBush {
     public void BlockBush(int id, Material material) {}
 
     @NewConstructor
+    public void BlockFlower() {
+        BlockBush(Material.plants);
+    }
+
+    @NewConstructor
     public void BlockFlower(int id, Material material) {
         BlockBush(id, material);
     }

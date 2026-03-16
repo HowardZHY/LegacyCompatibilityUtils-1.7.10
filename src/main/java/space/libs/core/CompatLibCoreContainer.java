@@ -1,12 +1,11 @@
 package space.libs.core;
 
 import com.google.common.eventbus.EventBus;
-import cpw.mods.fml.common.DummyModContainer;
-import cpw.mods.fml.common.LoadController;
+import cpw.mods.fml.common.*;
 
 import static space.libs.util.ForgeUtils.*;
 
-@SuppressWarnings("all")
+@SuppressWarnings({"unused", "UnstableApiUsage"})
 public class CompatLibCoreContainer extends DummyModContainer {
 
     public CompatLibCoreContainer() {

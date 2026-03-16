@@ -71,6 +71,9 @@ public abstract class MixinBlock implements BlockProxy, IBlock {
     public abstract boolean isOpaqueCube();
 
     @Shadow
+    public abstract int damageDropped(int meta);
+
+    @Shadow
     public abstract boolean canPlaceBlockAt(World worldIn, int x, int y, int z);
 
     @Shadow

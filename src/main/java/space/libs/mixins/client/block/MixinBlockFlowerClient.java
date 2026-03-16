@@ -21,7 +21,7 @@ import java.util.List;
 public abstract class MixinBlockFlowerClient extends MixinBlockClient {
 
     @Inject(method = "getIcon", at = @At("HEAD"), cancellable = true)
-    public void getIcon(int side, int meta, CallbackInfoReturnable<IIcon> cir) {
+    public void GetIcon(int side, int meta, CallbackInfoReturnable<IIcon> cir) {
         if (IInstance().IsLegacyBlock()) {
             cir.setReturnValue(super.getIcon(side, meta));
         }
