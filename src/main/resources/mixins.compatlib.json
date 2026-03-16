@@ -106,6 +106,9 @@
     "world.MixinSaveHandler",
     "world.MixinWorld",
     "world.MixinWorldChunkManager",
+    "world.MixinWorldGenFlowers",
+    "world.MixinWorldGenMineable",
+    "world.MixinWorldGenTallGrass",
     "world.MixinWorldType"
   ]
 }

@@ -38,8 +38,11 @@ public abstract class MixinBlockLegacyFields {
     @Public private static Block field_71946_M;
     @Public private static Block field_71947_N;
     @Public private static Block field_71948_O;
+    @Public private static Block field_71949_H;
     @Public private static Block field_71950_I;
+    @Public private static Block field_71951_J;
     @Public private static BlockLeaves field_71952_K;
+    @Public private static Block field_71953_U;
     @Public private static Block field_71954_T;
     @Public private static Block field_71955_W;
     @Public private static BlockPistonBase field_71956_V;
@@ -100,6 +103,7 @@ public abstract class MixinBlockLegacyFields {
     @Public private static Block field_72047_aN;
     @Public private static Block field_72048_aO;
     @Public private static Block field_72049_aP;
+    @Public private static Block field_72050_aA;
     @Public private static Block field_72051_aB;
     @Public private static Block field_72052_aC;
     @Public private static Block field_72053_aD;
@@ -199,8 +203,11 @@ public abstract class MixinBlockLegacyFields {
         field_71946_M = Blocks.glass;
         field_71947_N = Blocks.lapis_ore;
         field_71948_O = Blocks.lapis_block;
+        field_71949_H = Blocks.iron_ore;
         field_71950_I = Blocks.coal_ore;
+        field_71951_J = Blocks.log;
         field_71952_K = Blocks.leaves;
+        field_71953_U = Blocks.detector_rail;
         field_71954_T = Blocks.golden_rail;
         field_71955_W = Blocks.web;
         field_71956_V = Blocks.sticky_piston;
@@ -261,6 +268,7 @@ public abstract class MixinBlockLegacyFields {
         field_72047_aN = Blocks.redstone_ore;
         field_72048_aO = Blocks.lit_redstone_ore;
         field_72049_aP = Blocks.unlit_redstone_torch;
+        field_72050_aA = Blocks.farmland;
         field_72051_aB = Blocks.furnace;
         field_72052_aC = Blocks.lit_furnace;
         field_72053_aD = Blocks.standing_sign;
