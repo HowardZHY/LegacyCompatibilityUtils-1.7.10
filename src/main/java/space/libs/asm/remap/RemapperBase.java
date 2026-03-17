@@ -36,6 +36,7 @@ public abstract class RemapperBase extends Remapper {
         this.fieldDescriptions = Maps.newHashMap();
         this.rawFieldMaps = Maps.newHashMap();
         this.rawMethodMaps = Maps.newHashMap();
+        this.packagesIn =ImmutableBiMap.builder();
         this.classesIn = ImmutableBiMap.builder();
         this.fieldsIn = ImmutableTable.builder();
         this.methodsIn = ImmutableTable.builder();
@@ -44,6 +45,7 @@ public abstract class RemapperBase extends Remapper {
         this.setup();
         this.rawFields = fieldsIn.build();
         this.rawMethods = methodsIn.build();
+        this.packagesBiMap = packagesIn.build();
         this.classesBiMap = classesIn.build();
         this.reverseClassMap = classesBiMap.inverse();
         if (deobfuscating) {
@@ -58,9 +60,11 @@ public abstract class RemapperBase extends Remapper {
     protected final URL mappings;
     public final Boolean legacy;
 
+    public final ImmutableBiMap<String, String> packagesBiMap;
     public final ImmutableBiMap<String, String> classesBiMap;
     public final ImmutableBiMap<String, String> reverseClassMap;
 
+    protected final ImmutableBiMap.Builder<String, String> packagesIn;
     protected final ImmutableBiMap.Builder<String, String> classesIn;
     protected final ImmutableTable.Builder<String, String, String> fieldsIn;
     protected final ImmutableTable.Builder<String, String, String> methodsIn;
@@ -125,9 +129,6 @@ public abstract class RemapperBase extends Remapper {
             if (!this.fieldsMap.containsKey(owner)) {
                 this.negativeFields.add(owner);
             }
-            /*if (DEBUG_REMAPPING && !owner.startsWith("java")) {
-                LOGGER.info("Field map for " + owner + " : " + fieldsMap.get(owner));
-            }*/
         }
         return this.fieldsMap.get(owner);
     }
@@ -142,11 +143,20 @@ public abstract class RemapperBase extends Remapper {
             if (!this.methodsMap.containsKey(owner)) {
                 this.negativeMethods.add(owner);
             }
-            /*if (DEBUG_REMAPPING && !owner.startsWith("java")) {
-                LOGGER.info("Method map for " + owner + " : " + methodsMap.get(owner));
-            }*/
         }
         return this.methodsMap.get(owner);
+    }
+
+    @Override
+    public String mapPackageName(String name) {
+        if (this.noPackages()) {
+            return name;
+        }
+        String mapped = this.packagesBiMap.get(name);
+        if (mapped != null) {
+            return mapped;
+        }
+        return name;
     }
 
     @Override
@@ -255,7 +265,6 @@ public abstract class RemapperBase extends Remapper {
         }
         if (DEBUG_REMAPPING && (!superName.startsWith("java") || !name.startsWith("java"))) {
             LOGGER.info("Computing super maps for " + name + " & " + superName);
-            //LOGGER.info("Interfaces: " + Arrays.toString(interfaces));
         }
         String[] parents = new String[interfaces.length + 1];
         parents[0] = superName;
@@ -310,6 +319,10 @@ public abstract class RemapperBase extends Remapper {
             }
         } catch (Throwable ignored) {}
         return bytes;
+    }
+
+    public boolean noPackages() {
+        return this.packagesBiMap == null || this.packagesBiMap.isEmpty();
     }
 
     public boolean noClasses() {
@@ -372,6 +385,9 @@ public abstract class RemapperBase extends Remapper {
             String[] source;
             String[] dest;
             switch (type) {
+                case PACKAGE:
+                    packagesIn.put(parts[1], parts[2]);
+                    break;
                 case CLASS:
                     classesIn.put(parts[1], parts[2]);
                     break;
