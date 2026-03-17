@@ -82,6 +82,7 @@ public class CustomRemapper extends DefaultRemapper {
         rawMethodMaps.get(cl).put(oldName+sig, newName);
     }
 
+    @Override
     public String getRealName(String name) {
         if (Strings.isNullOrEmpty(name)) {
             return name;
@@ -97,37 +98,54 @@ public class CustomRemapper extends DefaultRemapper {
         return realName;
     }
 
+    @Override
     public String getLegacyName(String name) {
         if (Strings.isNullOrEmpty(name)) {
             return name;
         }
         if (name.contains("/")) {
-            return name; // Not mapped
+            if (name.startsWith("net/minecraft/")) {
+                return this.unmap(name);
+            } else {
+                return name; // Not Mapped
+            }
+        } else {
+            String mapped = FMLDeobfuscatingRemapper.INSTANCE.map(name);
+            return this.unmap(mapped);
         }
-        String mappedName = FMLDeobfuscatingRemapper.INSTANCE.map(name);
-        return this.unmap(mappedName);
     }
 
     @Override
     public void loadSuperMaps(String name) {
-        try {
-            byte[] bytes = ClassPatchManager.INSTANCE.getPatchedResource(this.getRealName(name), this.map(name), this.classLoader);
-            if (bytes != null) {
-                ClassReader cr = new ClassReader(bytes);
-                String superName  = cr.getSuperName();
-                String[] interfaces = cr.getInterfaces();
-                String[] legacyInterfaces = new String[interfaces.length];
-                for (int i = 0; i < interfaces.length; i++) {
-                    legacyInterfaces[i] = getLegacyName(interfaces[i]);
-                }
-                if (DEBUG_REMAPPING && (!Strings.isNullOrEmpty(name)) && (!Strings.isNullOrEmpty(superName)) && !name.startsWith("java")) {
-                    LOGGER.info("Try finding super map for " + name + " to " + superName);
-                }
-                this.mergeSuperMaps(name, getLegacyName(superName), legacyInterfaces);
-            }
-        } catch (Exception e) {
-            LOGGER.error(name + " error " + e);
+        if (name.startsWith("java")) {
+            return;
         }
+        byte[] bytes = this.getBytes(this.getRealName(name));
+        if (bytes != null) {
+            ClassReader cr = new ClassReader(bytes);
+            String superName = cr.getSuperName();
+            String[] interfaces = cr.getInterfaces();
+            String[] legacyInterfaces = new String[interfaces.length];
+            for (int i = 0; i < interfaces.length; i++) {
+                legacyInterfaces[i] = getLegacyName(interfaces[i]);
+            }
+            if (DEBUG_REMAPPING && (!Strings.isNullOrEmpty(name)) && (!Strings.isNullOrEmpty(superName)) && !name.startsWith("java")) {
+                LOGGER.info("Try finding super map for " + name + " to " + superName);
+            }
+            this.mergeSuperMaps(name, getLegacyName(superName), legacyInterfaces);
+        }
+    }
+
+    @Override
+    protected byte[] getBytes(String name) {
+        byte[] bytes = null;
+        try {
+            bytes = ClassPatchManager.INSTANCE.getPatchedResource(name, this.map(name), this.classLoader);
+        } catch (Throwable ignored) {}
+        if (bytes == null) {
+            bytes = super.getBytes(name);
+        }
+        return bytes;
     }
 
     @SuppressWarnings("unused")

@@ -12,7 +12,9 @@ import space.libs.util.cursedmixinextensions.annotations.Public;
 @Mixin(value = Block.class, priority = 4040)
 public abstract class MixinBlockLegacyFields {
 
-    /** Legacy Sound Fields */
+    /**
+     * @implNote Legacy Sound Fields
+     * */
     @Public private static StepSound field_71966_d = new StepSound("stone", 1.0F, 1.0F);
     @Public private static StepSound field_71967_e = new StepSound("wood", 1.0F, 1.0F);
     @Public private static StepSound field_71964_f = new StepSound("gravel", 1.0F, 1.0F);
@@ -26,7 +28,9 @@ public abstract class MixinBlockLegacyFields {
     @Public private static StepSound field_82507_n = new StepSoundSand("ladder", 1.0F, 1.0F);
     @Public private static StepSound field_82508_o = new StepSoundAnvil("anvil", 0.3F, 1.0F);
 
-    /** Legacy Block Fields */
+    /**
+     * @implNote Legacy Block Fields
+     * */
     @Public private static Block field_71938_D;
     @Public private static Block field_71939_E;
     @Public private static Block field_71940_F;

@@ -14,7 +14,7 @@ import org.objectweb.asm.commons.*;
 
 public class CustomRemappingAdapter extends RemappingClassAdapter {
 
-    public static DefaultRemapper[] INSTANCES = new DefaultRemapper[128];
+    public static DefaultRemapper[] INSTANCES = new DefaultRemapper[127];
 
     public static CustomRemappingAdapter Default(ClassVisitor cv) {
         return new CustomRemappingAdapter(cv, new DefaultRemapper(), 1);

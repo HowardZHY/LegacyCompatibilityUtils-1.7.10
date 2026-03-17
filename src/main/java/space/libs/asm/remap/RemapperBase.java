@@ -230,6 +230,17 @@ public abstract class RemapperBase extends Remapper {
         return fType;
     }
 
+    /**
+     * @implNote Legacy Deobf only
+     */
+    public String getRealName(String name) {
+        return name;
+    }
+
+    public String getLegacyName(String name) {
+        return name;
+    }
+
     public void loadSuperMaps(String name) {
         byte[] bytes = this.getBytes(name);
         if (bytes != null) {
@@ -268,15 +279,20 @@ public abstract class RemapperBase extends Remapper {
             }
         }
         if (this.legacy) {
-            if (rawFieldMaps.containsKey(name)) {
-                fields.putAll(rawFieldMaps.get(name));
+            value = this.rawFieldMaps.get(name);
+            if (value != null) {
+                fields.putAll(value);
             }
-            if (rawMethodMaps.containsKey(name)) {
-                methods.putAll(rawMethodMaps.get(name));
+            value = this.rawMethodMaps.get(name);
+            if (value != null) {
+                methods.putAll(value);
             }
         } else {
             fields.putAll(this.rawFields.row(name));
             methods.putAll(this.rawMethods.row(name));
+        }
+        if (DEBUG_REMAPPING && (name.startsWith("net/minecraft/") || !name.contains("/"))) {
+            LOGGER.info("Field Maps of " + name + ": " + fields);
         }
         this.fieldsMap.put(name, ImmutableMap.copyOf(fields));
         this.methodsMap.put(name, ImmutableMap.copyOf(methods));
