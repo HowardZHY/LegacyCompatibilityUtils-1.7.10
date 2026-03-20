@@ -148,6 +148,26 @@ public abstract class MixinBlock implements BlockProxy, IBlock {
         field_71973_m[id] = this.GetBlockInstance();
     }
 
+    public boolean[] GetOpaqueCubeList() {
+        return field_71970_n;
+    }
+
+    public int[] GetLightOpacityList() {
+        return field_71971_o;
+    }
+
+    public boolean[] GetCanBlocksLightList() {
+        return field_71985_p;
+    }
+
+    public int[] GetLightValueList() {
+        return field_71984_q;
+    }
+
+    public boolean[] GetUseNearLightList() {
+        return field_71982_s;
+    }
+
     @Override
     public void SetLegacyBlock(int id, String type) {
         this.LegacyBlock = true;
@@ -178,18 +198,39 @@ public abstract class MixinBlock implements BlockProxy, IBlock {
     public void SetLegacyID(int id) {
         field_71973_m[id] = this.GetBlockInstance();
         this.field_71990_ca = id;
+        field_71970_n[id] = this.func_71926_d();
+        field_71971_o[id] = this.func_71926_d() ? 255 : 0;
+        field_71985_p[id] = !this.field_72018_cp.blocksLight();
     }
 
     /** Legacy Fields */
-    @MappedName(value = "displayOnCreativeTab")
+    @Public private static int[] blockFireSpreadSpeed = new int[4096];
+
+    @Public private static int[] blockFlammability = new int[4096];
+
+    @MappedName(value = "displayOnCreativeTab", until = "1.6.4")
     public CreativeTabs field_71969_a;
 
     @MappedName(value = "textureName", until = "1.6.4")
     public String field_111026_f;
 
     @MappedName(value = "blocksList", until = "1.6.4")
-    @Public
-    private static Block[] field_71973_m = new Block[4096];
+    @Public private static Block[] field_71973_m = new Block[4096];
+
+    @MappedName(value = "opaqueCubeLookup", until = "1.6.4")
+    @Public private static boolean[] field_71970_n = new boolean[4096];
+
+    @MappedName(value = "lightOpacity", until = "1.6.4")
+    @Public private static int[] field_71971_o = new int[4096];
+
+    @MappedName(value = "canBlockGrass", until = "1.6.4")
+    @Public private static boolean[] field_71985_p = new boolean[4096];
+
+    @MappedName(value = "lightValue", until = "1.6.4")
+    @Public private static int[] field_71984_q = new int[4096];
+
+    @MappedName(value = "useNeighborBrightness", until = "1.6.4")
+    @Public private static boolean[] field_71982_s = new boolean[4096];
 
     @MappedName(value = "blockID", until = "1.6.4")
     public int field_71990_ca;
@@ -226,6 +267,10 @@ public abstract class MixinBlock implements BlockProxy, IBlock {
     public Block func_71894_b(float resistance) {
         this.field_72029_cc = resistance * 3.0F;
         return this.setResistance(resistance);
+    }
+
+    public void func_71905_a(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
+        this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
     public boolean func_71926_d() {

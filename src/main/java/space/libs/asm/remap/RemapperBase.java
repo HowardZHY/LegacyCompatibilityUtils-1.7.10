@@ -23,7 +23,7 @@ import java.io.*;
 import java.net.URL;
 import java.util.*;
 
-@SuppressWarnings({"UnstableApiUsage", "CommentedOutCode"})
+@SuppressWarnings("UnstableApiUsage")
 public abstract class RemapperBase extends Remapper {
 
     public static final Logger LOGGER = LogManager.getLogger();
