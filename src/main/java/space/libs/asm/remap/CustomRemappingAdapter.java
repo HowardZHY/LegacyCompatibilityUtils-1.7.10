@@ -12,6 +12,7 @@ package space.libs.asm.remap;
 import org.objectweb.asm.*;
 import org.objectweb.asm.commons.*;
 
+@SuppressWarnings("unused")
 public class CustomRemappingAdapter extends RemappingClassAdapter {
 
     public static DefaultRemapper[] INSTANCES = new DefaultRemapper[127];

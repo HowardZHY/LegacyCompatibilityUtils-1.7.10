@@ -25,10 +25,7 @@
 package space.libs.asm;
 
 import net.minecraft.launchwrapper.IClassTransformer;
-import org.objectweb.asm.*;
-import space.libs.asm.remap.*;
-import space.libs.asm.visitors.DuplicateMethodVisitor;
-import space.libs.core.CompatLoader;
+import space.libs.asm.remap.RemapperUtils;
 
 @SuppressWarnings("unused")
 public class DefaultCompatTransformer implements IClassTransformer {
@@ -42,31 +39,7 @@ public class DefaultCompatTransformer implements IClassTransformer {
         if (name == null || bytes == null) {
             return bytes;
         }
-        if (ClassNameList.Contains(name) || ClassNameList.StartsWith(name)) {
-            return bytes;
-        }
-        if (!name.contains(".") && TransformerUtils.isVanillaClass(name)) {
-            return bytes;
-        }
-        if (CompatLoader.isFromLegacyJar(name, 62)) {
-            bytes = transformRemap(bytes, new CustomRemapper("1.6.2.srg"), 62);
-        } else if (CompatLoader.isFromLegacyJar(name, 64)) {
-            bytes = transformRemap(bytes, new CustomRemapper("1.6.4.srg"), 64);
-        }
-        if (!name.contains(".")) {
-            bytes = TransformerUtils.transformSafe(bytes, ClassWriter.COMPUTE_MAXS, DuplicateMethodVisitor.class, ClassReader.SKIP_FRAMES);
-        }
-        ClassReader reader = new ClassReader(bytes);
-        ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS);
-        reader.accept(CustomRemappingAdapter.Default(writer), ClassReader.EXPAND_FRAMES);
-        return writer.toByteArray();
-    }
-
-    private static byte[] transformRemap(byte[] bytes, CustomRemapper remapper, int id) {
-        ClassReader reader = new ClassReader(bytes);
-        ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS);
-        reader.accept(new CustomRemappingAdapter(writer, remapper, id), ClassReader.EXPAND_FRAMES);
-        return writer.toByteArray();
+        return RemapperUtils.transform(name, transformedName, bytes);
     }
 
 }
