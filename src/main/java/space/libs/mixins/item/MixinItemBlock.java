@@ -20,8 +20,8 @@ public abstract class MixinItemBlock extends MixinItem {
 
     @NewConstructor
     public void ItemBlock(int id) {
-        ItemBlock(Block.getBlockById(id));
-        if (id <= 0) {
+        ItemBlock(Block.getBlockById(id + 256));
+        if (id < 1) {
             this.SetLegacyItemNoID("ItemBlock");
             return;
         }

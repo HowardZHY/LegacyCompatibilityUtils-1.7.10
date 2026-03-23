@@ -2,26 +2,26 @@ package space.libs.mixins.forge;
 
 import com.google.common.collect.Lists;
 
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.IWorldGenerator;
-import cpw.mods.fml.common.ModContainer;
+import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.block.IBlock;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.world.biome.BiomeGenBase;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import space.libs.fml.*;
-import space.libs.interfaces.IGameRegistry;
-import space.libs.interfaces.IWorldType;
+import space.libs.interfaces.*;
 import space.libs.util.cursedmixinextensions.annotations.Public;
 import space.libs.util.forge.RegistryUtils;
 
+import java.lang.reflect.Constructor;
 import java.util.List;
 
 @Mixin(value = GameRegistry.class, remap = false)
@@ -83,8 +83,50 @@ public class MixinGameRegistry implements IGameRegistry {
     @SuppressWarnings("deprecation")
     @Public
     private static void registerBlock(Block block, Class<? extends ItemBlock> itemclass, String name, String modId) {
-        if (!RegistryUtils.LegacyBlocks.containsKey(block)) {
-            GameRegistry.registerBlock(block, itemclass, name, modId);
+        GameRegistry.registerBlock(block, itemclass, name, modId);
+    }
+
+    @Inject(
+        method = "registerBlock(Lnet/minecraft/block/Block;Ljava/lang/Class;Ljava/lang/String;[Ljava/lang/Object;)Lnet/minecraft/block/Block;",
+        at = @At(
+            value = "INVOKE",
+            target = "Ljava/lang/Class;getConstructor([Ljava/lang/Class;)Ljava/lang/reflect/Constructor;"
+        ),
+        cancellable = true
+    )
+    private static void registerBlock(Block block, Class<? extends ItemBlock> itemclass, String name, Object[] itemCtorArgs, CallbackInfoReturnable<Block> cir) {
+        IBlock accessor = (IBlock) block;
+        if (accessor.IsLegacyBlock()) {
+            if (itemCtorArgs == null || itemCtorArgs.length == 0) {
+                String unlocalizedName = accessor.RawUnlocalizedName();
+                if (name == null || name.isEmpty()) {
+                    name = unlocalizedName;
+                } else {
+                    if (!name.equals(unlocalizedName)) {
+                        IRegistryNamespaced.renameBlock(name, block);
+                    }
+                }
+                int blockItemId;
+                if (accessor.IsLegacyBlockNoID()) {
+                    blockItemId = RegistryUtils.registerBlockAutoID(block, name) - 256;
+                } else {
+                    blockItemId = accessor.GetLegacyID() - 256;
+                }
+                ItemBlock item = null;
+                try {
+                    Constructor<? extends ItemBlock> itemCtor = itemclass.getConstructor(int.class);
+                    item = itemCtor.newInstance(blockItemId);
+                } catch (ReflectiveOperationException ignored) {
+                    try {
+                        Constructor<? extends ItemBlock> itemCtor = itemclass.getConstructor(int.class, Block.class);
+                        item = itemCtor.newInstance(blockItemId, block);
+                    } catch (ReflectiveOperationException ignored1) {}
+                }
+                if (item != null) {
+                    item.setUnlocalizedName(name);
+                }
+                cir.setReturnValue(block);
+            }
         }
     }
 

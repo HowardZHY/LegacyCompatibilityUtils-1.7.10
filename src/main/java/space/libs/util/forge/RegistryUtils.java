@@ -1,17 +1,21 @@
 package space.libs.util.forge;
 
 import com.google.common.collect.Maps;
+import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import space.libs.CompatLib;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Map;
 
 @SuppressWarnings("JavaReflectionMemberAccess")
 public class RegistryUtils {
+
+    public static GameData GameData;
+
+    public static Method RegisterBlock;
 
     public static Map<Block, Integer> LegacyBlocks = Maps.newHashMap();
 
@@ -20,8 +24,6 @@ public class RegistryUtils {
     public static Field BlocksLists;
 
     public static Field ItemsLists;
-
-    public static Constructor<?> ItemBlock;
 
     public static void putBlock(Block block, int id) {
         LegacyBlocks.put(block, id);
@@ -39,7 +41,6 @@ public class RegistryUtils {
             int id = LegacyBlocks.get(block);
             CompatLib.LOGGER.info("Registering Legacy Block " + block.getClass() + " " + name + " " + id);
             Block.blockRegistry.addObject(id, name, block);
-            registerItemBlock(block, id);
         } catch (Exception e) {
             CompatLib.LOGGER.error("Couldn't Register Legacy Block!", e);
             e.printStackTrace();
@@ -80,11 +81,10 @@ public class RegistryUtils {
         return items;
     }
 
-    public static void registerItemBlock(Block block, int id) {
+    public static int registerBlockAutoID(Block block, String name) {
         try {
-            ((ItemBlock) ItemBlock.newInstance(id)).setUnlocalizedName(block.getUnlocalizedName());
-        } catch (Exception e) {
-            CompatLib.LOGGER.error("Couldn't Construct Legacy ItemBlock!", e);
+            return (int) RegisterBlock.invoke(GameData, block, name);
+        } catch (ReflectiveOperationException e) {
             throw new RuntimeException(e);
         }
     }
@@ -100,8 +100,12 @@ public class RegistryUtils {
         try {
             BlocksLists = Block.class.getDeclaredField("field_71973_m");
             ItemsLists = Item.class.getDeclaredField("field_77698_e");
-            ItemBlock = ItemBlock.class.getDeclaredConstructor(int.class);
-        } catch (NoSuchFieldException | NoSuchMethodException e) {
+            Method main = GameData.class.getDeclaredMethod("getMain");
+            main.setAccessible(true);
+            GameData = (GameData) main.invoke(null);
+            RegisterBlock = GameData.class.getDeclaredMethod("registerBlock", Block.class, String.class);
+            RegisterBlock.setAccessible(true);
+        } catch (ReflectiveOperationException e) {
             throw new RuntimeException(e);
         }
     }

@@ -32,7 +32,7 @@ public abstract class MixinItem implements ItemProxy, IItem {
     @NewConstructor
     public void Item(int id) {
         Item();
-        if (id <= 0) {
+        if (id < 1) {
             this.SetLegacyItemNoID("Item");
             return;
         }

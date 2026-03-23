@@ -7,6 +7,8 @@ public interface IBlock {
 
     boolean IsLegacyBlock();
 
+    boolean IsLegacyBlockNoID();
+
     void SetLegacyBlock(int id, String type);
 
     void SetLegacyBlockNoID(String type);
@@ -14,6 +16,8 @@ public interface IBlock {
     int GetLegacyID();
 
     void SetLegacyID(int id);
+
+    String RawUnlocalizedName();
 
     static void InitLegacyBlock(Block block, int id, String type) {
         IBlock This = (IBlock) block;

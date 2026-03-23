@@ -6,7 +6,7 @@ import net.minecraft.launchwrapper.Launch;
 import space.libs.util.PathUtils;
 
 import java.io.File;
-import java.io.IOException;
+import java.net.JarURLConnection;
 import java.net.URL;
 import java.nio.file.*;
 import java.util.Set;
@@ -37,8 +37,9 @@ public class CompatLoader {
         }
     }
 
-    public static void addLegacyMods(int ver) {
+    public static boolean addLegacyMods(int ver) {
         File directory = getLegacyModsFolder(ver);
+        Version version = VERSIONS[ver];
         if (directory.exists() && directory.isDirectory()) {
             File[] modFiles = directory.listFiles();
             if (modFiles != null) {
@@ -46,11 +47,12 @@ public class CompatLoader {
                     if (modFile.isFile() && (modFile.getName().endsWith(".jar") || modFile.getName().endsWith(".zip"))) {
                         ModListHelper.additionalMods.put(modFile.getName(), modFile);
                         Path p = modFile.toPath().toAbsolutePath().normalize();
-                        VERSIONS[ver].Mods.add(p);
+                        version.Mods.add(p);
                     }
                 }
             }
         }
+        return version.Mods.isEmpty();
     }
 
     public static File getLegacyModsFolder(int ver) {
@@ -61,7 +63,8 @@ public class CompatLoader {
         if (!INIT) {
             return true;
         } else {
-            return (VERSIONS[ver] == null || VERSIONS[ver].Mods.isEmpty());
+            Version version = VERSIONS[ver];
+            return (version == null || version.noMods);
         }
     }
 
@@ -69,19 +72,15 @@ public class CompatLoader {
         if (notAvailable(ver)) {
             return false;
         } else {
-            String res = className.replace('.', '/') + ".class";
+            String res = className.replace('.', '/').concat(".class");
             try {
                 URL url = Launch.classLoader.getResource(res);
-                if (url == null) {
+                if (url == null || !"jar".equals(url.getProtocol())) {
                     return false;
                 }
-                String s = url.toString();
-                int ang = s.indexOf("!/");
-                if (!s.startsWith("jar:") || ang < 0) {
-                    return false;
-                }
-                String jarPart = s.substring(4, ang);
-                Path jarPath = Paths.get(new URL(jarPart).toURI()).toAbsolutePath().normalize();
+                JarURLConnection conn = (JarURLConnection) url.openConnection();
+                URL jarFileUrl = conn.getJarFileURL();
+                Path jarPath = Paths.get(jarFileUrl.toURI()).toAbsolutePath().normalize();
                 return VERSIONS[ver].Mods.contains(jarPath);
             } catch (Exception e) {
                 CompatLibCore.LOGGER.warn(e);
@@ -94,11 +93,13 @@ public class CompatLoader {
 
         public final Set<Path> Mods;
 
-        public Version(final int ver) throws IOException {
+        public final boolean noMods;
+
+        public Version(final int ver) throws Exception {
             this.Mods = ConcurrentHashMap.newKeySet();
             VERSIONS[ver] = this;
             Files.createDirectories(getLegacyModsFolder(ver).toPath());
-            addLegacyMods(ver);
+            noMods = addLegacyMods(ver);
         }
     }
 }

@@ -117,7 +117,7 @@ public abstract class MixinBlock implements BlockProxy, IBlock {
         if (this.LegacyBlockNoID) {
             GameRegistry.registerBlock(GetBlockInstance(), name);
         } else if (this.LegacyBlock) {
-            CompatLibCore.LOGGER.info("Name : " + this.getUnlocalizedName());
+            CompatLibCore.LOGGER.info("Name : " + this.RawUnlocalizedName());
             RegistryUtils.registerLegacyBlock(GetBlockInstance(), name);
         }
         this.func_71928_r_();
@@ -130,6 +130,11 @@ public abstract class MixinBlock implements BlockProxy, IBlock {
     @Override
     public boolean IsLegacyBlock() {
         return (LegacyBlock || LegacyBlockNoID);
+    }
+
+    @Override
+    public boolean IsLegacyBlockNoID() {
+        return LegacyBlockNoID;
     }
 
     public Block GetBlockInstance() {
@@ -201,6 +206,11 @@ public abstract class MixinBlock implements BlockProxy, IBlock {
         field_71970_n[id] = this.func_71926_d();
         field_71971_o[id] = this.func_71926_d() ? 255 : 0;
         field_71985_p[id] = !this.field_72018_cp.blocksLight();
+    }
+
+    @Override
+    public String RawUnlocalizedName() {
+        return unlocalizedName;
     }
 
     /** Legacy Fields */

@@ -256,11 +256,11 @@ public class ModLoader {
     }
 
     public static void registerBlock(Block block) {
-        GameRegistry.registerBlock(block, block.getUnlocalizedName()); // Correct?
+        GameRegistry.registerBlock(block, null);
     }
 
     public static void registerBlock(Block block, Class<? extends ItemBlock> itemclass) {
-        GameRegistry.registerBlock(block, itemclass, block.getUnlocalizedName()); // Above?
+        GameRegistry.registerBlock(block, null);
     }
 
     public static void registerContainerID(BaseMod mod, int id) {
