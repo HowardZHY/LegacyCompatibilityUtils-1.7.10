@@ -12,7 +12,8 @@ public class RemapperUtils {
         if (ClassNameList.Contains(name) || ClassNameList.StartsWith(name)) {
             return bytes;
         }
-        if (!name.contains(".") && TransformerUtils.isVanillaClass(name)) {
+        boolean unpackaged = !name.contains(".");
+        if (unpackaged && TransformerUtils.isVanillaClass(name)) {
             return bytes;
         }
         if (CompatLoader.isFromLegacyJar(name, 62)) {
@@ -20,7 +21,7 @@ public class RemapperUtils {
         } else if (CompatLoader.isFromLegacyJar(name, 64)) {
             bytes = transformRemap(bytes, new CustomRemapper("1.6.4.srg"), 64);
         }
-        if (!name.contains(".")) {
+        if (unpackaged) {
             bytes = TransformerUtils.transformSafe(bytes, ClassWriter.COMPUTE_MAXS, DuplicateMethodVisitor.class, ClassReader.SKIP_FRAMES);
         }
         return transformRemap(bytes, new DefaultRemapper(), 1);

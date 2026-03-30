@@ -125,7 +125,7 @@ public abstract class RemapperBase extends Remapper {
             return result;
         }
         if (!this.negativeFields.contains(owner)) {
-            loadSuperMaps(owner);
+            loadSuperMaps(owner, false);
             if (!this.fieldsMap.containsKey(owner)) {
                 this.negativeFields.add(owner);
             }
@@ -139,7 +139,7 @@ public abstract class RemapperBase extends Remapper {
             return result;
         }
         if (!this.negativeMethods.contains(owner)) {
-            loadSuperMaps(owner);
+            loadSuperMaps(owner, false);
             if (!this.methodsMap.containsKey(owner)) {
                 this.negativeMethods.add(owner);
             }
@@ -251,7 +251,7 @@ public abstract class RemapperBase extends Remapper {
         return name;
     }
 
-    public void loadSuperMaps(String name) {
+    public void loadSuperMaps(String name, boolean chain) {
         byte[] bytes = this.getBytes(name);
         if (bytes != null) {
             ClassReader reader = new ClassReader(bytes);
@@ -260,10 +260,10 @@ public abstract class RemapperBase extends Remapper {
     }
 
     public void mergeSuperMaps(String name, String superName, String[] interfaces) {
-        if (Strings.isNullOrEmpty(superName)) {
+        if (name.startsWith("java/") || Strings.isNullOrEmpty(superName)) {
             return;
         }
-        if (DEBUG_REMAPPING && (!superName.startsWith("java") || !name.startsWith("java"))) {
+        if (DEBUG_REMAPPING && (!superName.startsWith("java"))) {
             LOGGER.info("Computing super maps for " + name + " & " + superName);
         }
         String[] parents = new String[interfaces.length + 1];
@@ -271,7 +271,7 @@ public abstract class RemapperBase extends Remapper {
         System.arraycopy(interfaces, 0, parents, 1, interfaces.length);
         for (String parent : parents) {
             if (!this.fieldsMap.containsKey(parent) || !this.methodsMap.containsKey(parent)) {
-                this.loadSuperMaps(parent);
+                this.loadSuperMaps(parent, true);
             }
         }
         Map<String, String> fields = Maps.newHashMap();
@@ -300,9 +300,9 @@ public abstract class RemapperBase extends Remapper {
             fields.putAll(this.rawFields.row(name));
             methods.putAll(this.rawMethods.row(name));
         }
-        if (DEBUG_REMAPPING && (name.startsWith("net/minecraft/") || !name.contains("/"))) {
+        /*if (DEBUG_REMAPPING && (name.startsWith("net/minecraft/") || !name.contains("/"))) {
             LOGGER.info("Field Maps of " + name + ": " + fields);
-        }
+        }*/
         this.fieldsMap.put(name, ImmutableMap.copyOf(fields));
         this.methodsMap.put(name, ImmutableMap.copyOf(methods));
     }

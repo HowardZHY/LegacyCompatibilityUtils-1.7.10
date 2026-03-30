@@ -123,7 +123,7 @@ public class CustomRemapper extends DefaultRemapper {
     }
 
     @Override
-    public void loadSuperMaps(String name) {
+    public void loadSuperMaps(String name, boolean chain) {
         if (Strings.isNullOrEmpty(name) || name.startsWith("java")) {
             return;
         }
@@ -132,14 +132,18 @@ public class CustomRemapper extends DefaultRemapper {
             ClassReader cr = new ClassReader(bytes);
             String superName = cr.getSuperName();
             String[] interfaces = cr.getInterfaces();
-            String[] legacyInterfaces = new String[interfaces.length];
-            for (int i = 0; i < interfaces.length; i++) {
-                legacyInterfaces[i] = getLegacyName(interfaces[i]);
-            }
             if (DEBUG_REMAPPING && !name.startsWith("java")) {
-                LOGGER.info("Try finding super map for " + name + " to " + superName);
+                LOGGER.info("Try finding super map for " + name + " to " + superName + " chain: " + chain);
             }
-            this.mergeSuperMaps(name, getLegacyName(superName), legacyInterfaces);
+            if (chain) {
+                String[] legacyInterfaces = new String[interfaces.length];
+                for (int i = 0; i < interfaces.length; i++) {
+                    legacyInterfaces[i] = this.getLegacyName(interfaces[i]);
+                }
+                this.mergeSuperMaps(name, this.getLegacyName(superName), legacyInterfaces);
+            } else {
+                this.mergeSuperMaps(name, superName, interfaces);
+            }
         }
     }
 
