@@ -1,4 +1,4 @@
-package space.libs.mixins;
+package space.libs.mixins.tileentity;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.tileentity.TileEntitySkull;

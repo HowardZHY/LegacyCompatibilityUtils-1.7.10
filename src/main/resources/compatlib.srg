@@ -35,6 +35,7 @@ CL: net/minecraft/block/BlockFluid net/minecraft/block/BlockLiquid
 CL: net/minecraft/block/BlockFlowing net/minecraft/block/BlockDynamicLiquid
 CL: net/minecraft/block/BlockStationary net/minecraft/block/BlockStaticLiquid
 CL: net/minecraft/client/renderer/texture/IconRegister net/minecraft/client/renderer/texture/IIconRegister
+CL: net/minecraft/client/renderer/tileentity/TileEntityRenderer net/minecraft/client/renderer/tileentity/TileEntityRendererDispatcher
 CL: net/minecraft/entity/ai/attributes/Attribute net/minecraft/entity/ai/attributes/IAttribute
 CL: net/minecraft/entity/player/EnumStatus net/minecraft/entity/player/EntityPlayer$EnumStatus
 CL: net/minecraft/item/EnumArmorMaterial net/minecraft/item/ItemArmor$ArmorMaterial
@@ -54,7 +55,52 @@ CL: net/minecraftforge/event/Event$Result cpw/mods/fml/common/eventhandler/Event
 CL: net/minecraftforge/event/EventBus cpw/mods/fml/common/eventhandler/EventBus
 CL: net/minecraftforge/event/EventPriority cpw/mods/fml/common/eventhandler/EventPriority
 CL: net/minecraftforge/common/util/IdentityMap space/libs/util/forge/IdentityMap
+FD: net/minecraft/block/Block/field_71989_cb net/minecraft/block/Block/field_149782_v
+FD: net/minecraft/block/Block/field_72016_cq net/minecraft/block/Block/field_149765_K
+FD: net/minecraft/block/Block/field_72017_co net/minecraft/block/Block/field_149763_I
+FD: net/minecraft/block/Block/field_72018_cp net/minecraft/block/Block/field_149764_J
+FD: net/minecraft/block/Block/field_72019_cm net/minecraft/block/Block/field_149757_G
+FD: net/minecraft/block/Block/field_72020_cn net/minecraft/block/Block/field_149762_H
+FD: net/minecraft/block/Block/field_72021_ck net/minecraft/block/Block/field_149755_E
+FD: net/minecraft/block/Block/field_72022_cl net/minecraft/block/Block/field_149756_F
+FD: net/minecraft/block/Block/field_72023_ci net/minecraft/block/Block/field_149760_C
+FD: net/minecraft/block/Block/field_72024_cj net/minecraft/block/Block/field_149754_D
+FD: net/minecraft/block/Block/field_72025_cg net/minecraft/block/Block/field_149758_A
+FD: net/minecraft/block/Block/field_72026_ch net/minecraft/block/Block/field_149759_B
+FD: net/minecraft/block/Block/field_72027_ce net/minecraft/block/Block/field_149790_y
+FD: net/minecraft/block/Block/field_72028_cf net/minecraft/block/Block/field_149789_z
+FD: net/minecraft/block/Block/field_72029_cc net/minecraft/block/Block/field_149781_w
+FD: net/minecraft/block/Block/field_72030_cd net/minecraft/block/Block/field_149791_x
+FD: net/minecraft/block/Block/field_94336_cN net/minecraft/block/Block/field_149761_L
+FD: net/minecraft/block/Block/field_111026_f net/minecraft/block/Block/field_149768_d
+FD: net/minecraft/tileentity/TileEntity/field_70323_b net/minecraft/tileentity/TileEntity/field_145853_j
+FD: net/minecraft/tileentity/TileEntity/field_70324_q net/minecraft/tileentity/TileEntity/field_145854_h
+FD: net/minecraft/tileentity/TileEntity/field_70325_p net/minecraft/tileentity/TileEntity/field_145847_g
+FD: net/minecraft/tileentity/TileEntity/field_70326_a net/minecraft/tileentity/TileEntity/field_145855_i
+FD: net/minecraft/tileentity/TileEntity/field_70327_n net/minecraft/tileentity/TileEntity/field_145849_e
+FD: net/minecraft/tileentity/TileEntity/field_70328_o net/minecraft/tileentity/TileEntity/field_145846_f
+FD: net/minecraft/tileentity/TileEntity/field_70329_l net/minecraft/tileentity/TileEntity/field_145851_c
+FD: net/minecraft/tileentity/TileEntity/field_70330_m net/minecraft/tileentity/TileEntity/field_145848_d
+FD: net/minecraft/tileentity/TileEntity/field_70331_k net/minecraft/tileentity/TileEntity/field_145850_b
 FD: net/minecraftforge/client/event/RenderPlayerEvent/partialTick net/minecraftforge/client/event/RenderPlayerEvent/partialRenderTick
 FD: net/minecraftforge/common/event/entity/player/BonemealEvent/X net/minecraftforge/common/event/entity/player/BonemealEvent/x
 FD: net/minecraftforge/common/event/entity/player/BonemealEvent/Y net/minecraftforge/common/event/entity/player/BonemealEvent/y
 FD: net/minecraftforge/common/event/entity/player/BonemealEvent/Z net/minecraftforge/common/event/entity/player/BonemealEvent/z
+MD: net/minecraft/tileentity/TileEntity/func_70306_a (Ljava/lang/Class;Ljava/lang/String;)V net/minecraft/tileentity/TileEntity/func_145826_a (Ljava/lang/Class;Ljava/lang/String;)V
+MD: net/minecraft/tileentity/TileEntity/func_70307_a (Lnet/minecraft/nbt/NBTTagCompound;)V net/minecraft/tileentity/TileEntity/func_145839_a (Lnet/minecraft/nbt/NBTTagCompound;)V
+MD: net/minecraft/tileentity/TileEntity/func_70308_a (Lnet/minecraft/world/World;)V net/minecraft/tileentity/TileEntity/func_145834_a (Lnet/minecraft/world/World;)V
+MD: net/minecraft/tileentity/TileEntity/func_70309_m ()Z net/minecraft/tileentity/TileEntity/func_145830_o ()Z
+MD: net/minecraft/tileentity/TileEntity/func_70310_b (Lnet/minecraft/nbt/NBTTagCompound;)V net/minecraft/tileentity/TileEntity/func_145841_b (Lnet/minecraft/nbt/NBTTagCompound;)V
+MD: net/minecraft/tileentity/TileEntity/func_70311_o ()Lnet/minecraft/block/Block; net/minecraft/tileentity/TileEntity/func_145838_q ()Lnet/minecraft/block/Block;
+MD: net/minecraft/tileentity/TileEntity/func_70312_q ()V net/minecraft/tileentity/TileEntity/func_145829_t ()V
+MD: net/minecraft/tileentity/TileEntity/func_70313_j ()V net/minecraft/tileentity/TileEntity/func_145843_s ()V
+MD: net/minecraft/tileentity/TileEntity/func_70314_l ()Lnet/minecraft/world/World; net/minecraft/tileentity/TileEntity/func_145831_w ()Lnet/minecraft/world/World;
+MD: net/minecraft/tileentity/TileEntity/func_70315_b (II)Z net/minecraft/tileentity/TileEntity/func_145842_c (II)Z
+MD: net/minecraft/tileentity/TileEntity/func_70316_g ()V net/minecraft/tileentity/TileEntity/func_145845_h ()V
+MD: net/minecraft/tileentity/TileEntity/func_70317_c (Lnet/minecraft/nbt/NBTTagCompound;)Lnet/minecraft/tileentity/TileEntity; net/minecraft/tileentity/TileEntity/func_145827_c (Lnet/minecraft/nbt/NBTTagCompound;)Lnet/minecraft/tileentity/TileEntity;
+MD: net/minecraft/tileentity/TileEntity/func_70318_a (DDD)D net/minecraft/tileentity/TileEntity/func_145835_a (DDD)D
+MD: net/minecraft/tileentity/TileEntity/func_70320_p ()Z net/minecraft/tileentity/TileEntity/func_145837_r ()Z
+MD: net/minecraft/tileentity/TileEntity/func_70321_h ()V net/minecraft/tileentity/TileEntity/func_145836_u ()V
+MD: net/minecraft/tileentity/TileEntity/func_70322_n ()I net/minecraft/tileentity/TileEntity/func_145832_p ()I
+MD: net/minecraft/tileentity/TileEntity/func_82115_m ()D net/minecraft/tileentity/TileEntity/func_145833_n ()D
+MD: net/minecraft/tileentity/TileEntity/func_85027_a (Lnet/minecraft/crash/CrashReportCategory;)V net/minecraft/tileentity/TileEntity/func_145828_a (Lnet/minecraft/crash/CrashReportCategory;)V

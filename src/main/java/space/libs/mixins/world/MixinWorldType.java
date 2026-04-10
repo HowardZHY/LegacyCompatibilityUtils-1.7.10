@@ -62,15 +62,20 @@ public class MixinWorldType implements IWorldType {
         this.biomesForWorldType = newBiomesForWorld.toArray(new BiomeGenBase[0]);
         List<BiomeManager.BiomeEntry>[] lists = BiomeUtils.getForgeBiomes();
         for (List<BiomeManager.BiomeEntry> biomes : lists) {
-            biomes.removeIf(entry -> entry.biome == biome);
+            for (int i = biomes.size() - 1; i > -1; --i) {
+                if (biomes.get(i).biome == biome) {
+                    biomes.remove(i);
+                }
+            }
         }
         BiomeManager.removeSpawnBiome(biome);
     }
 
     public void setBiomesForWorldType() {
-        this.biomesForWorldType = base12Biomes;
         if (this.worldTypeId == 8) {
             this.biomesForWorldType = base11Biomes;
+        } else {
+            this.biomesForWorldType = base12Biomes;
         }
     }
 }
