@@ -147,13 +147,14 @@ public class CustomRemapper extends DefaultRemapper {
         }
     }
 
+    @Override
     protected byte[] getBytesForSuperMap(String name) {
         byte[] bytes = null;
         try {
             bytes = ClassPatchManager.INSTANCE.getPatchedResource(name, this.map(name), this.classLoader);
         } catch (Throwable ignored) {}
         if (bytes == null) {
-            bytes = this.getBytes(name);
+            bytes = super.getBytesForSuperMap(name);
         }
         return bytes;
     }

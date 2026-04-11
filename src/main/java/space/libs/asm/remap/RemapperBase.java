@@ -252,7 +252,7 @@ public abstract class RemapperBase extends Remapper {
     }
 
     public void loadSuperMaps(String name, boolean chain) {
-        byte[] bytes = this.getBytes(name);
+        byte[] bytes = this.getBytesForSuperMap(name);
         if (bytes != null) {
             ClassReader reader = new ClassReader(bytes);
             this.mergeSuperMaps(name, reader.getSuperName(), reader.getInterfaces());
@@ -319,6 +319,10 @@ public abstract class RemapperBase extends Remapper {
             }
         } catch (Throwable ignored) {}
         return bytes;
+    }
+
+    protected byte[] getBytesForSuperMap(String name) {
+        return this.getBytes(name);
     }
 
     public boolean noPackages() {
