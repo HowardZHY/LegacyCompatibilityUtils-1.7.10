@@ -1,7 +1,7 @@
 package space.libs.asm.visitors;
 
 import org.objectweb.asm.*;
-import space.libs.core.CompatLibCore;
+import space.libs.core.ICoreUtils;
 
 import java.util.*;
 
@@ -20,7 +20,7 @@ public class DuplicateMethodVisitor extends ClassVisitor {
         methodCounts.put(key, count + 1);
         String newName = name;
         if (count > 0) {
-            CompatLibCore.LOGGER.warn("Renaming Founded Duplicated Method: " + name);
+            ICoreUtils.LOGGER.warn("Renaming Founded Duplicated Method: " + name);
             newName = name + "_duped" + count;
         }
         return super.visitMethod(access, newName, desc, signature, exceptions);

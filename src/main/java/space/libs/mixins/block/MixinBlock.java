@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import space.libs.core.CompatLibCore;
+import space.libs.core.ICoreUtils;
 import space.libs.fml.BlockProxy;
 import space.libs.util.MappedName;
 import space.libs.util.cursedmixinextensions.annotations.*;
@@ -20,7 +20,7 @@ import space.libs.util.forge.RegistryUtils;
 
 @SuppressWarnings("unused")
 @Mixin(value = Block.class, priority = 20)
-public abstract class MixinBlock implements BlockProxy, IBlock {
+public abstract class MixinBlock implements BlockProxy, IBlock, ICoreUtils {
 
     @Shadow
     private CreativeTabs displayOnCreativeTab;
@@ -117,7 +117,7 @@ public abstract class MixinBlock implements BlockProxy, IBlock {
         if (this.LegacyBlockNoID) {
             GameRegistry.registerBlock(GetBlockInstance(), name);
         } else if (this.LegacyBlock) {
-            CompatLibCore.LOGGER.info("Name : " + this.RawUnlocalizedName());
+            LOGGER.info("Name : " + this.RawUnlocalizedName());
             RegistryUtils.registerLegacyBlock(GetBlockInstance(), name);
         }
         this.func_71928_r_();
@@ -184,14 +184,14 @@ public abstract class MixinBlock implements BlockProxy, IBlock {
             }
         } else {
             this.SetLegacyID(id);
-            CompatLibCore.LOGGER.info("Legacy Register " + type + " ID : " + this.field_71990_ca);
+            LOGGER.info("Legacy Register " + type + " ID : " + this.field_71990_ca);
         }
     }
 
     @Override
     public void SetLegacyBlockNoID(String type) {
         this.LegacyBlockNoID = true;
-        CompatLibCore.LOGGER.warn("Legacy Register " + type + " Has Invalid ID : " + this.getClass());
+        LOGGER.warn("Legacy Register " + type + " Has Invalid ID : " + this.getClass());
     }
 
     @Override

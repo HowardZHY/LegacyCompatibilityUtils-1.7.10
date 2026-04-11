@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import space.libs.core.CompatLibCore;
+import space.libs.core.ICoreUtils;
 import space.libs.fml.ItemProxy;
 import space.libs.util.MappedName;
 import space.libs.util.cursedmixinextensions.annotations.*;
@@ -14,7 +14,7 @@ import space.libs.util.forge.RegistryUtils;
 
 @SuppressWarnings("unused")
 @Mixin(value = Item.class, priority = 20)
-public abstract class MixinItem implements ItemProxy, IItem {
+public abstract class MixinItem implements ItemProxy, IItem, ICoreUtils {
 
     @Shadow
     public Item setHasSubtypes(boolean type) {
@@ -46,7 +46,7 @@ public abstract class MixinItem implements ItemProxy, IItem {
         if (this.LegacyItemNoID) {
             GameRegistry.registerItem(GetItemInstance(), name);
         } else if (this.LegacyItem) {
-            CompatLibCore.LOGGER.info("Name : " + name);
+            LOGGER.info("Name : " + name);
             RegistryUtils.registerLegacyItem(GetItemInstance(), name);
         }
     }
@@ -67,15 +67,15 @@ public abstract class MixinItem implements ItemProxy, IItem {
     public void SetLegacyItem(int id, String type) {
         this.LegacyItem = true;
         if (field_77698_e[256 + id] != null) {
-            CompatLibCore.LOGGER.error("CONFLICT ID: " + id + " Item slot already occupied by " + field_77698_e[256 + id] + " while adding " + this);
+            LOGGER.error("CONFLICT ID: " + id + " Item slot already occupied by " + field_77698_e[256 + id] + " while adding " + this);
         }
         this.SetLegacyIDRaw(id);
-        CompatLibCore.LOGGER.info("Legacy Register " + type + " ID : " + this.field_77779_bT);
+        LOGGER.info("Legacy Register " + type + " ID : " + this.field_77779_bT);
     }
 
     public void SetLegacyItemNoID(String type) {
         this.LegacyItemNoID = true;
-        CompatLibCore.LOGGER.warn("Legacy Register " + type + " Has Invalid ID : " + this.getClass());
+        LOGGER.warn("Legacy Register " + type + " Has Invalid ID : " + this.getClass());
     }
 
     public void SetLegacyIDRaw(int id) {

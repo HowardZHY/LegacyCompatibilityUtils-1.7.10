@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.zip.*;
 
-public class CompatLoader {
+public class CompatLoader implements ICoreUtils {
 
     @SuppressWarnings("unused")
     public static FMLTweaker tweaker = ReflectionHelper.getPrivateValue(CoreModManager.class, null, "tweaker");
@@ -83,7 +83,7 @@ public class CompatLoader {
                 .filter(name -> name.endsWith(".class"))
                 .forEach(version.LegacyClasses::add);
         } catch (Exception e) {
-            CompatLibCore.LOGGER.error(e + " Error while loading Legacy Mod Archive: ".concat(modFile.getName()));
+            LOGGER.error(e + " Error while loading Legacy Mod Archive: ".concat(modFile.getName()));
         }
     }
 
