@@ -192,7 +192,7 @@ public class ConfigurationVisitor extends ClassVisitor {
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String sig, String[] exceptions) {
         MethodVisitor mv = super.visitMethod(access, name, desc, sig, exceptions);
-        if (name.equals("<clinit>")) {
+        if (("<clinit>").equals(name)) {
             return new StaticVisitor(mv);
         }
         return mv;

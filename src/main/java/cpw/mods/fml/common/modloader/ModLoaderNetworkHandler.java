@@ -35,7 +35,7 @@ public class ModLoaderNetworkHandler extends NetworkModHandler {
     }
 
     public boolean acceptVersion(String version) {
-        return baseMod.getVersion().equals(version);
+        return super.acceptVersion(version);
     }
 
     public boolean isNetworkMod() {

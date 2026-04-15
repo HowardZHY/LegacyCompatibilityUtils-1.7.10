@@ -53,10 +53,10 @@ public class FMLNetworkHandler extends cpw.mods.fml.common.network.internal.FMLN
 
     public static void handlePacket250Packet(Packet250CustomPayload packet, INetworkManager network, NetHandler handler) {
         String target = packet.field_73630_a;
-        if (target.startsWith("MC|")) {
+        if (target != null && target.startsWith("MC|")) {
             handler.handleVanilla250Packet(packet);
         }
-        if (target.equals("FML")) {
+        if ("FML".equals(target)) {
             instance().handleFMLPacket(packet, network, handler);
         } else {
             INetworkRegistry.instance().handleCustomPacket(packet, network, handler);
@@ -155,6 +155,7 @@ public class FMLNetworkHandler extends cpw.mods.fml.common.network.internal.FMLN
     public static void onConnectionClosed(INetworkManager manager, EntityPlayer player) {
         INetworkRegistry.instance().connectionClosed(manager, player);
     }
+
     public static void openGui(EntityPlayer player, Object mod, int modGuiId, World world, int x, int y, int z) {
         cpw.mods.fml.common.network.internal.FMLNetworkHandler.openGui(player, mod, modGuiId, world, x, y, z);
     }

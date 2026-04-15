@@ -194,10 +194,10 @@ public class ModLoader {
         return EntityRegistry.findGlobalUniqueEntityId();
     }
 
-    /*@SideOnly(CLIENT)
+    @SideOnly(CLIENT)
     public static int getUniqueSpriteIndex(String path) {
-        return SpriteHelper.getUniqueSpriteIndex(path);
-    }*/
+        return 0; //SpriteHelper.getUniqueSpriteIndex(path);
+    }
 
     public static boolean isChannelActive(EntityPlayer player, String channel) {
         return NetworkRegistry.INSTANCE.hasChannel(channel, SERVER);
@@ -205,7 +205,7 @@ public class ModLoader {
 
     @SideOnly(CLIENT)
     public static boolean isGUIOpen(Class<? extends GuiScreen> gui) {
-        return (FMLClientHandler.instance().getClient().currentScreen != null); //&& (FMLClientHandler.instance().getClient().currentScreen.equals(gui)));
+        return (FMLClientHandler.instance().getClient().currentScreen != null && (FMLClientHandler.instance().getClient().currentScreen.getClass().equals(gui)));
     }
 
     public static boolean isModLoaded(String name) {
@@ -337,11 +337,11 @@ public class ModLoader {
     }
 
     public static void serverChat(String text) {
-        //TOD?
+        //TODO?
     }
 
     public static void serverLogin(NetClientHandler handler, Packet1Login loginPacket) {
-        //TOD?
+        throw new UnsupportedOperationException();
     }
 
     public static void serverSendPacket(NetServerHandler handler, Packet packet) {
