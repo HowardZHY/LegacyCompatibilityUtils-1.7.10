@@ -16,6 +16,7 @@ import cpw.mods.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
 import cpw.mods.fml.common.patcher.ClassPatchManager;
 import org.objectweb.asm.ClassReader;
 
+import java.io.IOException;
 import java.util.*;
 
 @SuppressWarnings("UnstableApiUsage")
@@ -29,26 +30,22 @@ public class CustomRemapper extends DefaultRemapper {
     }
 
     @Override
-    protected void setup() {
-        try {
-            CharSource srgSource = Resources.asCharSource(this.mappings, Charsets.UTF_8);
-            List<String> srgList = srgSource.readLines();
-            Splitter splitter = Splitter.on(CharMatcher.anyOf(": ")).omitEmptyStrings().trimResults();
-            for (String line : srgList) {
-                String[] parts = Iterables.toArray(splitter.split(line),String.class);
-                String typ = parts[0];
-                if ("CL".equals(typ)) {
-                    this.classesIn.put(parts[1],parts[2]);
-                }
-                else if ("MD".equals(typ)) {
-                    parseMethod(parts);
-                }
-                else if ("FD".equals(typ)) {
-                    parseField(parts);
-                }
+    protected void setup() throws IOException {
+        CharSource srgSource = Resources.asCharSource(this.mappings, Charsets.UTF_8);
+        List<String> srgList = srgSource.readLines();
+        Splitter splitter = Splitter.on(CharMatcher.anyOf(": ")).omitEmptyStrings().trimResults();
+        for (String line : srgList) {
+            String[] parts = Iterables.toArray(splitter.split(line),String.class);
+            String typ = parts[0];
+            if ("CL".equals(typ)) {
+                this.classesIn.put(parts[1],parts[2]);
             }
-        } catch (Exception e) {
-            LOGGER.error("An error occurred loading the custom map data" + e);
+            else if ("MD".equals(typ)) {
+                parseMethod(parts);
+            }
+            else if ("FD".equals(typ)) {
+                parseField(parts);
+            }
         }
     }
 

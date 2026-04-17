@@ -42,7 +42,11 @@ public abstract class RemapperBase extends Remapper {
         this.methodsIn = ImmutableTable.builder();
         this.negativeFields = Sets.newHashSet();
         this.negativeMethods = Sets.newHashSet();
-        this.setup();
+        try {
+            this.setup();
+        } catch (Exception e) {
+            LOGGER.error("An error occurred loading the custom map data " + file, e);
+        }
         this.rawFields = fieldsIn.build();
         this.rawMethods = methodsIn.build();
         this.packagesBiMap = packagesIn.build();
@@ -83,12 +87,8 @@ public abstract class RemapperBase extends Remapper {
 
     protected final Map<String, Map<String, String>> fieldDescriptions;
 
-    protected void setup() {
-        try {
-            Resources.readLines(mappings, Charsets.UTF_8, new MappingLineProcessor());
-        } catch (IOException e) {
-            LOGGER.error(e);
-        }
+    protected void setup() throws IOException {
+        Resources.readLines(mappings, Charsets.UTF_8, new MappingLineProcessor());
     }
 
     protected String getFieldType(String owner, String name) {
@@ -300,9 +300,7 @@ public abstract class RemapperBase extends Remapper {
             fields.putAll(this.rawFields.row(name));
             methods.putAll(this.rawMethods.row(name));
         }
-        /*if (DEBUG_REMAPPING && (name.startsWith("net/minecraft/") || !name.contains("/"))) {
-            LOGGER.info("Field Maps of " + name + ": " + fields);
-        }*/
+        //if (DEBUG_REMAPPING && (name.startsWith("net/minecraft/") || !name.contains("/"))) LOGGER.info("Field Maps of " + name + ": " + fields);
         this.fieldsMap.put(name, ImmutableMap.copyOf(fields));
         this.methodsMap.put(name, ImmutableMap.copyOf(methods));
     }
