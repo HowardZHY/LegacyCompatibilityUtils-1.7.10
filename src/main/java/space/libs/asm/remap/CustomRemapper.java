@@ -22,6 +22,8 @@ import java.util.*;
 @SuppressWarnings("UnstableApiUsage")
 public class CustomRemapper extends DefaultRemapper {
 
+    public static boolean DEBUG_CUSTOM_REMAPPING = false;
+
     public final FMLDeobfuscatingRemapper FMLRemapper;
 
     public CustomRemapper(String name) {
@@ -96,7 +98,7 @@ public class CustomRemapper extends DefaultRemapper {
         }
         String mappedName = this.map(name);
         String realName = FMLRemapper.unmap(mappedName);
-        if (DEBUG_REMAPPING && (!name.equals(realName))) {
+        if (DEBUG_CUSTOM_REMAPPING && (!name.equals(realName))) {
             LOGGER.info("Get " + name + "'s unmapped name " + realName + " from " + mappedName);
         }
         return realName;
@@ -129,7 +131,7 @@ public class CustomRemapper extends DefaultRemapper {
             ClassReader cr = new ClassReader(bytes);
             String superName = cr.getSuperName();
             String[] interfaces = cr.getInterfaces();
-            if (DEBUG_REMAPPING && !name.startsWith("java")) {
+            if (DEBUG_CUSTOM_REMAPPING && !name.startsWith("java")) {
                 LOGGER.info("Try finding super map for " + name + " to " + superName + " chain: " + chain);
             }
             if (chain) {

@@ -201,7 +201,7 @@ public abstract class RemapperBase extends Remapper {
                 mapped = fields.get(name + ":null");
                 if (mapped != null) {
                     if (DEBUG_REMAPPING && (!owner.contains("/") || owner.startsWith("net"))) {
-                        LOGGER.info("Try map field without desc " + owner + "." + name + " to " + mapped);
+                        DebugRemap("Try map field without desc " + owner + "." + name + " to " + mapped);
                     }
                     return mapped;
                 }
@@ -226,7 +226,7 @@ public abstract class RemapperBase extends Remapper {
     public String getStaticFieldType(String oldType, String oldName, String newType, String newName) {
         String fType = getFieldType(oldType, oldName);
         if (DEBUG_REMAPPING) {
-            LOGGER.info("Static Field: " + oldType + "+" + oldName + " & " + newType + "+" + newName + " fT: " + fType);
+            DebugRemap("Static Field: " + oldType + "+" + oldName + " & " + newType + "+" + newName + " fT: " + fType);
         }
         if (oldType.equals(newType)) {
             return fType;
@@ -300,7 +300,9 @@ public abstract class RemapperBase extends Remapper {
             fields.putAll(this.rawFields.row(name));
             methods.putAll(this.rawMethods.row(name));
         }
-        //if (DEBUG_REMAPPING && (name.startsWith("net/minecraft/") || !name.contains("/"))) LOGGER.info("Field Maps of " + name + ": " + fields);
+        if (DEBUG_REMAPPING && (name.startsWith("net/minecraft/") || !name.contains("/"))) {
+            DebugRemap("Field Maps of " + name + ": " + fields);
+        }
         this.fieldsMap.put(name, ImmutableMap.copyOf(fields));
         this.methodsMap.put(name, ImmutableMap.copyOf(methods));
     }
@@ -339,6 +341,13 @@ public abstract class RemapperBase extends Remapper {
     public static String[] getSignature(String in) {
         int pos = in.lastIndexOf('/');
         return new String[]{in.substring(0, pos), in.substring(pos + 1)};
+    }
+
+    public void DebugRemap(String msg) {
+        if (this instanceof CustomRemapper) {
+            return;
+        }
+        LOGGER.info(msg);
     }
 
     public enum MappingType {
