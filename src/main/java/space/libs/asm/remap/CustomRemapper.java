@@ -12,7 +12,6 @@ package space.libs.asm.remap;
 import com.google.common.base.*;
 import com.google.common.collect.*;
 import com.google.common.io.*;
-import cpw.mods.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
 import cpw.mods.fml.common.patcher.ClassPatchManager;
 import org.objectweb.asm.ClassReader;
 
@@ -24,11 +23,8 @@ public class CustomRemapper extends DefaultRemapper {
 
     public static boolean DEBUG_CUSTOM_REMAPPING = false;
 
-    public final FMLDeobfuscatingRemapper FMLRemapper;
-
     public CustomRemapper(String name) {
         super(name, true);
-        FMLRemapper = FMLDeobfuscatingRemapper.INSTANCE;
     }
 
     @Override

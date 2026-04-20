@@ -9,7 +9,7 @@
 
 package space.libs.asm.remap;
 
-import com.google.common.base.*;
+import cpw.mods.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
 import net.minecraft.launchwrapper.*;
 
 import java.io.IOException;
@@ -22,6 +22,8 @@ public class DefaultRemapper extends RemapperBase implements IClassNameTransform
 
     public final LaunchClassLoader classLoader;
 
+    public final FMLDeobfuscatingRemapper FMLRemapper;
+
     public DefaultRemapper() {
         this(DEFAULT_MAPPINGS, false);
     }
@@ -29,6 +31,7 @@ public class DefaultRemapper extends RemapperBase implements IClassNameTransform
     public DefaultRemapper(final String file, final boolean deobfuscating) {
         super(file, deobfuscating);
         this.classLoader = (LaunchClassLoader) this.getClass().getClassLoader();
+        this.FMLRemapper = FMLDeobfuscatingRemapper.INSTANCE;
     }
 
     @Override
@@ -43,10 +46,15 @@ public class DefaultRemapper extends RemapperBase implements IClassNameTransform
 
     @Override
     protected byte[] getBytes(String name) {
+        byte[] bytes = null;
         try {
-            return Launch.classLoader.getClassBytes(name.replace('/', '.'));
-        } catch (IOException e) {
-            throw Throwables.propagate(e);
-        }
+            bytes = Launch.classLoader.getClassBytes(name.replace('/', '.'));
+        } catch (IOException ignored) {}
+        return bytes;
+    }
+
+    @Override
+    protected byte[] getBytesForSuperMap(String name) {
+        return getBytes(name);
     }
 }
