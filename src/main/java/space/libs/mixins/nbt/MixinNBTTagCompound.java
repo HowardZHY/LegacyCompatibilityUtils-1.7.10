@@ -17,12 +17,12 @@ import java.util.Map;
 
 @SuppressWarnings({"rawtypes", "unchecked", "unused"})
 @Mixin(NBTTagCompound.class)
-public class MixinNBTTagCompound extends MixinNBTBase implements INBTBase {
+public abstract class MixinNBTTagCompound extends MixinNBTBase implements INBTBase {
 
     @Shadow
     private Map tagMap;
 
-    /** load */
+    @MappedName(value = "load", until = "1.7.2")
     public void func_74735_a(DataInput input, int depth) {
         if (depth > 512) {
             throw new RuntimeException("Tried to read NBT tag with too high complexity, depth > 512");

@@ -5,21 +5,22 @@ import net.minecraft.nbt.NBTTagList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import net.minecraft.nbt.INBTBase;
+import space.libs.util.MappedName;
 
 import java.io.DataInput;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("all")
 @Mixin(NBTTagList.class)
-public class MixinNBTTagList extends MixinNBTBase {
+public abstract class MixinNBTTagList extends MixinNBTBase {
 
     @Shadow
-    private List tagList;
+    private List<NBTBase> tagList;
 
     @Shadow
     private byte tagType;
 
+    @MappedName(value = "load", until = "1.7.2")
     public void func_74735_a(DataInput input, int depth) {
         if (depth > 512) {
             throw new RuntimeException("Tried to read NBT tag with too high complexity, depth > 512");
@@ -27,7 +28,7 @@ public class MixinNBTTagList extends MixinNBTBase {
         try {
             this.tagType = input.readByte();
             int j = input.readInt();
-            this.tagList = new ArrayList();
+            this.tagList = new ArrayList<>();
             for (int k = 0; k < j; k++) {
                 NBTBase nbtbase = NBTBase.createNewByType(this.tagType);
                 INBTBase accessor = (INBTBase) nbtbase;

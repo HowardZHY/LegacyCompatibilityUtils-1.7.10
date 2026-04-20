@@ -10,6 +10,7 @@ import net.minecraft.util.ReportedException;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import net.minecraft.nbt.INBTBase;
+import space.libs.util.MappedName;
 import space.libs.util.cursedmixinextensions.annotations.Public;
 
 import java.io.*;
@@ -24,7 +25,7 @@ public abstract class MixinCompressedStreamTools {
         throw new AbstractMethodError();
     }
 
-    /** decompress */
+    @MappedName("decompress")
     @Public
     private static NBTTagCompound func_74792_a(byte[] par0ArrayOfByte) throws IOException {
         NBTTagCompound nbttagcompound;

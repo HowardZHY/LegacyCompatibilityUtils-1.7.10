@@ -2,7 +2,6 @@ package space.libs.asm.visitors;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
-import space.libs.asm.EarliestTransformer;
 
 import static org.spongepowered.asm.lib.Opcodes.*;
 
