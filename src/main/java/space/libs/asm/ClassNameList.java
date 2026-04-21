@@ -84,6 +84,7 @@ public class ClassNameList {
             "net.java.",
             "net.jpointz",
             "net.md_5.spec",
+            "net.nevermine",
             "net.raphimc",
             "net.weavemc",
             "oshi",

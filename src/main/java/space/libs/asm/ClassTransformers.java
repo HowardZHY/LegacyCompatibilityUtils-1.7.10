@@ -26,7 +26,7 @@ public class ClassTransformers implements IClassTransformer {
                 return TransformerUtils.transformSafe(bytes, ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES, DragonAPIVisitor.class, ClassReader.EXPAND_FRAMES);
             }
         }
-        if (ClassNameList.Contains(name) || ClassNameList.StartsWith(name)) {
+        if (ClassNameList.ShouldNotTransform(name)) {
             return bytes;
         } else {
             return TransformerUtils.transformSafe(bytes, 0, EventVisitor.class, 0);

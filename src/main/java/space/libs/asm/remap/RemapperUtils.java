@@ -9,7 +9,7 @@ import space.libs.core.CompatLoader;
 public class RemapperUtils {
 
     public static byte[] transform(String name, String transformedName, byte[] bytes) {
-        if (ClassNameList.Contains(name) || ClassNameList.StartsWith(name)) {
+        if (ClassNameList.ShouldNotTransform(name)) {
             return bytes;
         }
         boolean unpackaged = !name.contains(".");

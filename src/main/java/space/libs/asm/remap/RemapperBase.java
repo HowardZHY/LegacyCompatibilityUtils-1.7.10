@@ -34,6 +34,7 @@ public abstract class RemapperBase extends Remapper {
         this.mappings = Resources.getResource(file);
         this.id = id;
         this.legacy = (id > 9);
+        this.renamesMap = Maps.newHashMap();
         this.fieldDescriptions = Maps.newHashMap();
         this.rawFieldMaps = Maps.newHashMap();
         this.rawMethodMaps = Maps.newHashMap();
@@ -87,6 +88,7 @@ public abstract class RemapperBase extends Remapper {
     protected final Set<String> negativeFields;
     protected final Set<String> negativeMethods;
 
+    protected final Map<String, String> renamesMap;
     protected final Map<String, Map<String, String>> fieldDescriptions;
 
     protected void setup() throws IOException {
@@ -194,9 +196,10 @@ public abstract class RemapperBase extends Remapper {
 
     @Override
     public String mapFieldName(String owner, String name, String desc) {
-        Map<String, String> fields = getFieldMap(owner);
+        Map<String, String> fields = this.getFieldMap(owner);
+        String mapped;
         if (fields != null) {
-            String mapped = fields.get(name + ':' + desc);
+            mapped = fields.get(name + ':' + desc);
             if (mapped != null) {
                 return mapped;
             } else {
@@ -214,14 +217,20 @@ public abstract class RemapperBase extends Remapper {
 
     @Override
     public String mapMethodName(String owner, String name, String desc) {
-        Map<String, String> methods = getMethodMap(owner);
+        Map<String, String> methods = this.getMethodMap(owner);
+        String mapped;
         if (methods != null) {
-            String mapped = methods.get(name + desc);
+            mapped = methods.get(name + desc);
             if (mapped != null) {
                 return mapped;
             }
         }
-        return name;
+        if (this.noRenames()) {
+            return name;
+        } else {
+            mapped = renamesMap.get(name);
+            return mapped != null ? mapped : name;
+        }
     }
 
     @SuppressWarnings("Java8MapApi")
@@ -257,21 +266,22 @@ public abstract class RemapperBase extends Remapper {
         byte[] bytes = this.getBytesForSuperMap(name);
         if (bytes != null) {
             ClassReader reader = new ClassReader(bytes);
-            this.mergeSuperMaps(name, reader.getSuperName(), reader.getInterfaces());
+            this.mergeSuperMaps(name, reader.getSuperName(), reader.getInterfaces(), false);
         }
     }
 
-    public void mergeSuperMaps(String name, String superName, String[] interfaces) {
-        if (name.startsWith("java/") || Strings.isNullOrEmpty(superName)) {
+    public void mergeSuperMaps(String name, String superName, String[] interfaces, boolean visit) {
+        if (name.startsWith("java/") || Strings.isNullOrEmpty(superName) || superName.startsWith("net/minecraftforge/event") ) {
             return;
         }
-        this.mergeSuperMaps(name, mergeParents(superName, interfaces, interfaces.length));
+        String[] parents = mergeParents(superName, interfaces, interfaces.length);
+        this.mergeSuperMaps(name, parents);
+        if (DEBUG_REMAPPING && (!parents[0].startsWith("java"))) {
+            LOGGER.info("Computing super maps for " + name + " & " + Arrays.toString(parents) + " visit " + visit);
+        }
     }
 
     public void mergeSuperMaps(String name, String[] parents) {
-        if (DEBUG_REMAPPING && (!parents[0].startsWith("java"))) {
-            LOGGER.info("Computing super maps for " + name + " & " + Arrays.toString(parents));
-        }
         for (String parent : parents) {
             if (!this.fieldsMap.containsKey(parent) || !this.methodsMap.containsKey(parent)) {
                 this.loadSuperMaps(parent, true);
@@ -304,7 +314,7 @@ public abstract class RemapperBase extends Remapper {
             methods.putAll(this.rawMethods.row(name));
         }
         if (DEBUG_REMAPPING && (name.startsWith("net/minecraft/") || !name.contains("/"))) {
-            DebugRemap("Method Maps of " + name + ": " + methods);
+            DebugRemap("Field Maps of " + name + ": " + fields);
         }
         this.fieldsMap.put(name, ImmutableMap.copyOf(fields));
         this.methodsMap.put(name, ImmutableMap.copyOf(methods));
@@ -336,6 +346,10 @@ public abstract class RemapperBase extends Remapper {
         return this.classesBiMap == null || this.classesBiMap.isEmpty();
     }
 
+    public boolean noRenames() {
+        return this.renamesMap == null || this.renamesMap.isEmpty();
+    }
+
     @SuppressWarnings("unused")
     public boolean isRemappedClass(String className) {
         return !map(className).equals(className);
@@ -343,9 +357,8 @@ public abstract class RemapperBase extends Remapper {
 
     public void DebugRemap(String msg) {
         if (this instanceof CustomRemapper) {
-            return;
+            LOGGER.info(msg);
         }
-        LOGGER.info(msg);
     }
 
     public static String[] getSignature(String in) {

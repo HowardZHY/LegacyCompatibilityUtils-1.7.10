@@ -1,0 +1,21 @@
+# net/minecraft/client/renderer/tileentity/TileEntitySpecialRenderer
+renderTileEntityAt,func_147500_a
+# net/minecraft/tileentity/TileEntity
+func_70306_a,func_145826_a
+func_70307_a,func_145839_a
+func_70308_a,func_145834_a
+func_70309_m,func_145830_o
+func_70310_b,func_145841_b
+func_70311_o,func_145838_q
+func_70312_q,func_145829_t
+func_70313_j,func_145843_s
+func_70314_l,func_145831_w
+func_70315_b,func_145842_c
+func_70316_g,func_145845_h
+func_70317_c,func_145827_c
+func_70318_a,func_145835_a
+func_70320_p,func_145837_r
+func_70321_h,func_145836_u
+func_70322_n,func_145832_p
+func_82115_m,func_145833_n
+func_85027_a,func_145828_a

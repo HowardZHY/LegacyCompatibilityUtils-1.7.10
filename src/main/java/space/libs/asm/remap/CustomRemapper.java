@@ -131,14 +131,14 @@ public class CustomRemapper extends DefaultRemapper {
                 LOGGER.info("Try finding super map for " + name + " to " + superName + " chain: " + chain);
             }
             int l = interfaces.length;
-            if (chain) {
+            if (chain || superName.startsWith("net/minecraft/")) {
                 String[] legacyInterfaces = new String[l];
                 for (int i = 0; i < l; i++) {
                     legacyInterfaces[i] = this.getLegacyName(interfaces[i]);
                 }
-                this.mergeSuperMaps(name, this.getLegacyName(superName), legacyInterfaces);
+                this.mergeSuperMaps(name, this.getLegacyName(superName), legacyInterfaces, false);
             } else {
-                this.mergeSuperMaps(name, superName, interfaces);
+                this.mergeSuperMaps(name, superName, interfaces, false);
             }
         }
     }
