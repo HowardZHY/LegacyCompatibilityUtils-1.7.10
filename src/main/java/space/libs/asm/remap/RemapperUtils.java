@@ -17,20 +17,20 @@ public class RemapperUtils {
             return bytes;
         }
         if (CompatLoader.isFromLegacyJar(name, 62)) {
-            bytes = transformRemap(bytes, new CustomRemapper("1.6.2.srg"), 62);
+            bytes = transformRemap(bytes, new CustomRemapper("1.6.2.srg", 62));
         } else if (CompatLoader.isFromLegacyJar(name, 64)) {
-            bytes = transformRemap(bytes, new CustomRemapper("1.6.4.srg"), 64);
+            bytes = transformRemap(bytes, new CustomRemapper("1.6.4.srg", 64));
         }
         if (unpackaged) {
             bytes = TransformerUtils.transformSafe(bytes, ClassWriter.COMPUTE_MAXS, DuplicateMethodVisitor.class, ClassReader.SKIP_FRAMES);
         }
-        return transformRemap(bytes, new DefaultRemapper(), 1);
+        return transformRemap(bytes, new DefaultRemapper());
     }
 
-    public static byte[] transformRemap(byte[] bytes, DefaultRemapper remapper, int id) {
+    public static byte[] transformRemap(byte[] bytes, DefaultRemapper remapper) {
         ClassReader reader = new ClassReader(bytes);
         ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS);
-        reader.accept(new CustomRemappingAdapter(writer, remapper, id), ClassReader.EXPAND_FRAMES);
+        reader.accept(new CustomRemappingAdapter(writer, remapper), ClassReader.EXPAND_FRAMES);
         return writer.toByteArray();
     }
 }

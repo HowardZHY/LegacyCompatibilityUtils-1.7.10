@@ -30,9 +30,10 @@ public abstract class RemapperBase extends Remapper {
 
     public static boolean DEBUG_REMAPPING = CompatLibDebug.DEBUG_REMAP;
 
-    public RemapperBase(final String file, final boolean deobfuscating) {
+    public RemapperBase(final String file, final int id) {
         this.mappings = Resources.getResource(file);
-        this.legacy = deobfuscating;
+        this.id = id;
+        this.legacy = (id > 9);
         this.fieldDescriptions = Maps.newHashMap();
         this.rawFieldMaps = Maps.newHashMap();
         this.rawMethodMaps = Maps.newHashMap();
@@ -52,7 +53,7 @@ public abstract class RemapperBase extends Remapper {
         this.packagesBiMap = packagesIn.build();
         this.classesBiMap = classesIn.build();
         this.reverseClassMap = classesBiMap.inverse();
-        if (deobfuscating) {
+        if (this.legacy) {
             this.fieldsMap = Maps.newHashMapWithExpectedSize(this.rawFieldMaps.size());
             this.methodsMap = Maps.newHashMapWithExpectedSize(this.rawMethodMaps.size());
         } else {
@@ -62,7 +63,8 @@ public abstract class RemapperBase extends Remapper {
     }
 
     protected final URL mappings;
-    public final Boolean legacy;
+    public final int id;
+    public final boolean legacy;
 
     public final ImmutableBiMap<String, String> packagesBiMap;
     public final ImmutableBiMap<String, String> classesBiMap;
@@ -125,7 +127,7 @@ public abstract class RemapperBase extends Remapper {
             return result;
         }
         if (!this.negativeFields.contains(owner)) {
-            loadSuperMaps(owner, false);
+            this.loadSuperMaps(owner, false);
             if (!this.fieldsMap.containsKey(owner)) {
                 this.negativeFields.add(owner);
             }
@@ -139,7 +141,7 @@ public abstract class RemapperBase extends Remapper {
             return result;
         }
         if (!this.negativeMethods.contains(owner)) {
-            loadSuperMaps(owner, false);
+            this.loadSuperMaps(owner, false);
             if (!this.methodsMap.containsKey(owner)) {
                 this.negativeMethods.add(owner);
             }
@@ -263,12 +265,13 @@ public abstract class RemapperBase extends Remapper {
         if (name.startsWith("java/") || Strings.isNullOrEmpty(superName)) {
             return;
         }
-        if (DEBUG_REMAPPING && (!superName.startsWith("java"))) {
-            LOGGER.info("Computing super maps for " + name + " & " + superName);
+        this.mergeSuperMaps(name, mergeParents(superName, interfaces, interfaces.length));
+    }
+
+    public void mergeSuperMaps(String name, String[] parents) {
+        if (DEBUG_REMAPPING && (!parents[0].startsWith("java"))) {
+            LOGGER.info("Computing super maps for " + name + " & " + Arrays.toString(parents));
         }
-        String[] parents = new String[interfaces.length + 1];
-        parents[0] = superName;
-        System.arraycopy(interfaces, 0, parents, 1, interfaces.length);
         for (String parent : parents) {
             if (!this.fieldsMap.containsKey(parent) || !this.methodsMap.containsKey(parent)) {
                 this.loadSuperMaps(parent, true);
@@ -301,7 +304,7 @@ public abstract class RemapperBase extends Remapper {
             methods.putAll(this.rawMethods.row(name));
         }
         if (DEBUG_REMAPPING && (name.startsWith("net/minecraft/") || !name.contains("/"))) {
-            DebugRemap("Field Maps of " + name + ": " + fields);
+            DebugRemap("Method Maps of " + name + ": " + methods);
         }
         this.fieldsMap.put(name, ImmutableMap.copyOf(fields));
         this.methodsMap.put(name, ImmutableMap.copyOf(methods));
@@ -338,16 +341,23 @@ public abstract class RemapperBase extends Remapper {
         return !map(className).equals(className);
     }
 
-    public static String[] getSignature(String in) {
-        int pos = in.lastIndexOf('/');
-        return new String[]{in.substring(0, pos), in.substring(pos + 1)};
-    }
-
     public void DebugRemap(String msg) {
         if (this instanceof CustomRemapper) {
             return;
         }
         LOGGER.info(msg);
+    }
+
+    public static String[] getSignature(String in) {
+        int pos = in.lastIndexOf('/');
+        return new String[]{in.substring(0, pos), in.substring(pos + 1)};
+    }
+
+    public static String[] mergeParents(String superName, String[] interfaces, int l) {
+        String[] parents = new String[l + 1];
+        parents[0] = superName;
+        System.arraycopy(interfaces, 0, parents, 1, l);
+        return parents;
     }
 
     public enum MappingType {

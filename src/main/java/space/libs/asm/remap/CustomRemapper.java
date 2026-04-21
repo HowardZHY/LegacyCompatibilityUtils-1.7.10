@@ -23,8 +23,8 @@ public class CustomRemapper extends DefaultRemapper {
 
     public static boolean DEBUG_CUSTOM_REMAPPING = false;
 
-    public CustomRemapper(String name) {
-        super(name, true);
+    public CustomRemapper(String name, int id) {
+        super(name, id);
     }
 
     @Override
@@ -130,9 +130,10 @@ public class CustomRemapper extends DefaultRemapper {
             if (DEBUG_CUSTOM_REMAPPING && !name.startsWith("java")) {
                 LOGGER.info("Try finding super map for " + name + " to " + superName + " chain: " + chain);
             }
+            int l = interfaces.length;
             if (chain) {
-                String[] legacyInterfaces = new String[interfaces.length];
-                for (int i = 0; i < interfaces.length; i++) {
+                String[] legacyInterfaces = new String[l];
+                for (int i = 0; i < l; i++) {
                     legacyInterfaces[i] = this.getLegacyName(interfaces[i]);
                 }
                 this.mergeSuperMaps(name, this.getLegacyName(superName), legacyInterfaces);

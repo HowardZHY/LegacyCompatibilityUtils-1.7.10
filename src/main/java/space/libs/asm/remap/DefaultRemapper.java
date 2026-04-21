@@ -25,11 +25,11 @@ public class DefaultRemapper extends RemapperBase implements IClassNameTransform
     public final FMLDeobfuscatingRemapper FMLRemapper;
 
     public DefaultRemapper() {
-        this(DEFAULT_MAPPINGS, false);
+        this(DEFAULT_MAPPINGS, 1);
     }
 
-    public DefaultRemapper(final String file, final boolean deobfuscating) {
-        super(file, deobfuscating);
+    public DefaultRemapper(final String file, final int id) {
+        super(file, id);
         this.classLoader = (LaunchClassLoader) this.getClass().getClassLoader();
         this.FMLRemapper = FMLDeobfuscatingRemapper.INSTANCE;
     }

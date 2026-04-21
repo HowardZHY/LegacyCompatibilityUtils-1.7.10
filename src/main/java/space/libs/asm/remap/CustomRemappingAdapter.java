@@ -18,17 +18,17 @@ public class CustomRemappingAdapter extends RemappingClassAdapter {
     public static DefaultRemapper[] INSTANCES = new DefaultRemapper[127];
 
     public static CustomRemappingAdapter Default(ClassVisitor cv) {
-        return new CustomRemappingAdapter(cv, new DefaultRemapper(), 1);
+        return new CustomRemappingAdapter(cv, new DefaultRemapper());
     }
 
     public static CustomRemappingAdapter Legacy(ClassVisitor cv) {
-        return new CustomRemappingAdapter(cv, new CustomRemapper(DefaultRemapper.LEGACY_MAPPINGS), 10);
+        return new CustomRemappingAdapter(cv, new CustomRemapper(DefaultRemapper.LEGACY_MAPPINGS, 10));
     }
 
-    public CustomRemappingAdapter(ClassVisitor cv, DefaultRemapper instance, int id) {
+    public CustomRemappingAdapter(ClassVisitor cv, DefaultRemapper instance) {
         super(cv, instance);
+        this.id = instance.id;
         INSTANCES[id] = instance;
-        this.id = id;
         this.legacy = id > 9;
     }
 
