@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.*;
 
 @SuppressWarnings("unused")
-public class NBTTagLongArray extends NBTBase {
+public class NBTTagLongArray extends NBTBase implements INBTBase {
 
     @MappedName("data")
     public long[] field_193587_b;

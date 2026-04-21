@@ -1,24 +1,40 @@
 package space.libs.mixins.nbt;
 
-import net.minecraft.crash.CrashReport;
-import net.minecraft.crash.CrashReportCategory;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagEnd;
+import net.minecraft.crash.*;
+import net.minecraft.nbt.*;
 import net.minecraft.util.ReportedException;
-import org.spongepowered.asm.mixin.Mixin;
-import net.minecraft.nbt.INBTBase;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 import space.libs.util.MappedName;
-import space.libs.util.cursedmixinextensions.annotations.NewConstructor;
-import space.libs.util.cursedmixinextensions.annotations.Public;
-import space.libs.util.cursedmixinextensions.annotations.ShadowConstructor;
+import space.libs.util.cursedmixinextensions.annotations.*;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
+import java.io.*;
 
 @Mixin(NBTBase.class)
 public abstract class MixinNBTBase implements INBTBase {
+
+    @Shadow
+    @Override
+    public abstract void write(DataOutput output);
+
+    @Shadow
+    @Override
+    public abstract void read(DataInput input, int depth, NBTSizeTracker sizeTracker);
+
+    @Shadow
+    @Override
+    public abstract String toString();
+
+    @Shadow
+    @Override
+    public abstract byte getId();
+
+    @Shadow
+    @Override
+    public abstract String getString();
+
+    @Shadow
+    @Override
+    public abstract NBTBase copy();
 
     @Shadow
     public static NBTBase createNewByType(byte id) {
@@ -65,38 +81,12 @@ public abstract class MixinNBTBase implements INBTBase {
     }
 
     @MappedName(value = "load", until = "1.7.2")
-    public abstract void func_74735_a(DataInput paramDataInput, int paramInt);
+    public void func_74735_a(DataInput input, int depth) {}
 
     @MappedName(value = "getTagName", until = "1.6.4")
     @Public
     private static String func_74736_a(byte id) {
-        switch (id) {
-            case 0:
-                return "TAG_End";
-            case 1:
-                return "TAG_Byte";
-            case 2:
-                return "TAG_Short";
-            case 3:
-                return "TAG_Int";
-            case 4:
-                return "TAG_Long";
-            case 5:
-                return "TAG_Float";
-            case 6:
-                return "TAG_Double";
-            case 7:
-                return "TAG_Byte_Array";
-            case 8:
-                return "TAG_String";
-            case 9:
-                return "TAG_List";
-            case 10:
-                return "TAG_Compound";
-            case 11:
-                return "TAG_Int_Array";
-        }
-        return "UNKNOWN";
+        return INBTBase.func_193581_j(id);
     }
 
     @MappedName(value = "setName", until = "1.6.4")
@@ -111,8 +101,9 @@ public abstract class MixinNBTBase implements INBTBase {
 
     @MappedName(value = "getName", until = "1.6.4")
     public String func_74740_e() {
-        if (this.field_74741_a == null)
+        if (this.field_74741_a == null) {
             return "";
+        }
         return this.field_74741_a;
     }
 

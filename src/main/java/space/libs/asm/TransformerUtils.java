@@ -2,8 +2,6 @@ package space.libs.asm;
 
 import org.objectweb.asm.*;
 
-import java.util.Locale;
-
 public class TransformerUtils {
 
     public static byte[] transform(byte[] bytes, int writerFlags, Class<? extends ClassVisitor> visitor, int acceptFlags) {
@@ -33,6 +31,16 @@ public class TransformerUtils {
     }
 
     public static boolean isVanillaClass(String name) {
-        return (name.length() < 4 && name.equals(name.toLowerCase(Locale.ENGLISH)));
+        int l = name.length();
+        if (l > 3) {
+            return false;
+        }
+        for (int i = 0; i < l; i++) {
+            char c = name.charAt(i);
+            if (c < 'a' || c > 'z') {
+                return false;
+            }
+        }
+        return true;
     }
 }
