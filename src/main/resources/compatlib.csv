@@ -42,3 +42,6 @@ func_70321_h,func_145836_u
 func_70322_n,func_145832_p
 func_82115_m,func_145833_n
 func_85027_a,func_145828_a
+# net/minecraft/world/IBlockAccess
+func_72796_p,func_147438_o
+func_72799_c,func_147437_c

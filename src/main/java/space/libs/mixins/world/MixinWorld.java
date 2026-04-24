@@ -3,19 +3,19 @@ package space.libs.mixins.world;
 import net.minecraft.block.Block;
 import net.minecraft.util.Vec3Pool;
 import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
+import net.minecraftforge.common.util.ForgeDirection;
+import org.spongepowered.asm.mixin.*;
 import net.minecraft.world.IBlockAccessBridge;
 import org.spongepowered.asm.mixin.Shadow;
+import space.libs.util.MappedName;
 
-@SuppressWarnings("all")
 @Mixin(World.class)
 public abstract class MixinWorld implements IBlockAccessBridge {
 
-    /** difficultySetting */
+    @MappedName("difficultySetting")
     public int field_73013_u = 2; //TODO?
 
-    /** vecPool */
+    @MappedName("vecPool")
     @Mutable
     public final Vec3Pool field_82741_K = new Vec3Pool(300, 2000);
 
@@ -29,6 +29,9 @@ public abstract class MixinWorld implements IBlockAccessBridge {
     @Shadow
     public abstract boolean setBlock(int x, int y, int z, Block blockType);
 
+    @Shadow
+    public abstract boolean isSideSolid(int x, int y, int z, ForgeDirection side, boolean _default);
+
     @Override
     public int func_72798_a(int x, int y, int z) {
         return Block.getIdFromBlock(this.getBlock(x, y, z));
@@ -38,7 +41,7 @@ public abstract class MixinWorld implements IBlockAccessBridge {
         return this.setBlock(x, y, z, Block.getBlockById(block), metadataIn, flags);
     }
 
-    /** getWorldVec3Pool */
+    @MappedName("getWorldVec3Pool")
     public Vec3Pool func_82732_R() {
         return this.field_82741_K;
     }
