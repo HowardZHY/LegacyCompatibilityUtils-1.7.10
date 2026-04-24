@@ -1,3 +1,26 @@
+# net/minecraft/block/Block
+func_71852_a,func_149749_a
+func_71857_b,func_149645_b
+func_71858_a,func_149691_a
+func_71860_a,func_149689_a
+func_71871_a,func_149743_a
+func_71879_a,func_149666_a
+func_71886_c,func_149686_d
+func_71899_b,func_149692_a
+func_71903_a,func_149727_a
+func_71926_d,func_149662_c
+func_94332_a,func_149651_a
+# net/minecraft/client/renderer/RenderBlocks
+func_78570_q,func_147784_q
+func_78573_e,func_147798_e
+func_78581_r,func_147742_r
+func_78605_f,func_147764_f
+func_78611_c,func_147761_c
+func_78613_a,func_147768_a
+func_78617_b,func_147806_b
+func_78622_d,func_147734_d
+func_83020_a,func_147782_a
+func_96445_r,func_147779_s
 # net/minecraft/client/renderer/tileentity/TileEntitySpecialRenderer
 renderTileEntityAt,func_147500_a
 # net/minecraft/tileentity/TileEntity

@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
-@Mixin(ITileEntityProvider.class)
+@Mixin(value = ITileEntityProvider.class, priority = 10)
 public interface MixinITileEntityProvider {
 
     /**

@@ -3,6 +3,7 @@ package space.libs.mixins.client;
 import net.minecraft.client.resources.data.PackMetadataSection;
 import net.minecraft.util.*;
 import org.spongepowered.asm.mixin.*;
+import space.libs.util.MappedName;
 import space.libs.util.cursedmixinextensions.annotations.*;
 
 @SuppressWarnings("unused")
@@ -23,7 +24,7 @@ public abstract class MixinPackMetadataSection {
         this.PackMetadataSection(IChatComponent.Serializer.jsonToComponent(p_i1034_1_), p_i1034_2_); // Is this correct?
     }
 
-    /** getPackDescription */
+    @MappedName("getPackDescription")
     public String func_110461_a() {
         return this.func_152805_a().getFormattedText();
     }

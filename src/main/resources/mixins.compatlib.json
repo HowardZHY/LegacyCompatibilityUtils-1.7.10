@@ -16,6 +16,7 @@
     "client.MixinOpenGlHelper",
     "client.MixinOptions",
     "client.MixinPackMetadataSection",
+    "client.MixinRenderBlocks",
     "client.MixinScaledResolution",
     "client.MixinServerData",
     "client.MixinShaderGroup",
