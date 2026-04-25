@@ -33,7 +33,7 @@ public interface IBlock {
         if (block instanceof BlockFlower) {
             return (BlockFlower) block;
         }
-        CompatLib.LOGGER.warn("Could get BlockFlower for: " + block.getClass() + " extends " + block.getClass().getSuperclass());
+        CompatLib.LOGGER.warn("Couldn't get BlockFlower for: " + block.getClass() + " extends " + block.getClass().getSuperclass());
         return null;
     }
 

@@ -30,6 +30,7 @@ public class ClassNameList {
         "LateMixin",
         "Main",
         "betterfps",
+        "jvmdg",
         "makamys",
         "mixinbooter",
         "mixinextra",

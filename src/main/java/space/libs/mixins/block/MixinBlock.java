@@ -4,8 +4,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
@@ -23,9 +21,6 @@ import space.libs.util.forge.RegistryUtils;
 public abstract class MixinBlock implements BlockProxy, IBlock, ICoreUtils {
 
     @Shadow
-    private CreativeTabs displayOnCreativeTab;
-
-    @Shadow
     protected String textureName;
 
     @Shadow
@@ -38,31 +33,10 @@ public abstract class MixinBlock implements BlockProxy, IBlock, ICoreUtils {
     public abstract Block setResistance(float resistance);
 
     @Shadow
-    public abstract boolean renderAsNormalBlock();
-
-    @Shadow
-    public abstract boolean isPassable(IBlockAccess worldIn, int x, int y, int z);
-
-    @Shadow
-    public abstract int getRenderType();
-
-    @Shadow
     public abstract Block setHardness(float hardness);
 
     @Shadow
-    public abstract Block setBlockUnbreakable();
-
-    @Shadow
-    public abstract float getBlockHardness(World worldIn, int x, int y, int z);
-
-    @Shadow
     public abstract Block setTickRandomly(boolean shouldTick);
-
-    @Shadow
-    public abstract boolean getTickRandomly();
-
-    @Shadow
-    public abstract boolean hasTileEntity();
 
     @Shadow
     public @Final void setBlockBounds(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {}
@@ -72,15 +46,6 @@ public abstract class MixinBlock implements BlockProxy, IBlock, ICoreUtils {
 
     @Shadow
     public abstract int damageDropped(int meta);
-
-    @Shadow
-    public abstract boolean canPlaceBlockAt(World worldIn, int x, int y, int z);
-
-    @Shadow
-    public abstract Block setUnlocalizedName(String name);
-
-    @Shadow
-    public abstract String getUnlocalizedName();
 
     @Shadow
     public abstract Block setTextureName(String textureName);
@@ -203,8 +168,8 @@ public abstract class MixinBlock implements BlockProxy, IBlock, ICoreUtils {
     public void SetLegacyID(int id) {
         field_71973_m[id] = this.GetBlockInstance();
         this.field_71990_ca = id;
-        field_71970_n[id] = this.func_71926_d();
-        field_71971_o[id] = this.func_71926_d() ? 255 : 0;
+        field_71970_n[id] = this.isOpaqueCube();
+        field_71971_o[id] = this.isOpaqueCube() ? 255 : 0;
         field_71985_p[id] = !this.field_72018_cp.blocksLight();
     }
 
@@ -279,30 +244,9 @@ public abstract class MixinBlock implements BlockProxy, IBlock, ICoreUtils {
         return this.setResistance(resistance);
     }
 
-    public void func_71905_a(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
-        this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
-    }
-
-    public boolean func_71926_d() {
-        return this.isOpaqueCube();
-    }
-
-    public boolean func_71930_b(World world, int x, int y, int z) {
-        return this.canPlaceBlockAt(world, x, y, z);
-    }
-
-    public Block func_71864_b(String name) {
-        return this.setUnlocalizedName(name);
-    }
-
     public Block func_71849_a(CreativeTabs tab) {
         this.field_71969_a = tab;
         return this.setCreativeTab(tab);
-    }
-
-    @MappedName(value = "getCreativeTabToDisplayOn", until = "1.6.4")
-    public CreativeTabs func_71882_w() {
-        return this.displayOnCreativeTab;
     }
 
     public Block func_111022_d(String textureName) {

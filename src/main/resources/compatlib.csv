@@ -1,14 +1,23 @@
 # net/minecraft/block/Block
-func_71852_a,func_149749_a
 func_71857_b,func_149645_b
 func_71858_a,func_149691_a
 func_71860_a,func_149689_a
+func_71861_g,func_149726_b
 func_71871_a,func_149743_a
-func_71879_a,func_149666_a
+func_71875_q,func_149722_s
+func_71881_r,func_149653_t
+func_71882_w,func_149708_J
+func_71883_b,func_149696_a
 func_71886_c,func_149686_d
+func_71887_s,func_149716_u
 func_71899_b,func_149692_a
 func_71903_a,func_149727_a
+func_71905_a,func_149676_a
+func_71917_a,func_149739_a
 func_71926_d,func_149662_c
+func_71930_b,func_149742_c
+func_71931_t,func_149732_F
+func_71934_m,func_149712_f
 func_94332_a,func_149651_a
 # net/minecraft/client/renderer/RenderBlocks
 func_78570_q,func_147784_q

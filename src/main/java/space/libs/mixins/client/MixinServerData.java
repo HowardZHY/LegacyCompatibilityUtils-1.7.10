@@ -26,8 +26,8 @@ public abstract class MixinServerData {
     }
 
     /** setHideAddress */
-    public void func_82819_b(boolean paramBoolean) {
-        this.field_82823_k = paramBoolean;
+    public void func_82819_b(boolean hide) {
+        this.field_82823_k = hide;
     } // unused
 
     /** isHidingAddress */

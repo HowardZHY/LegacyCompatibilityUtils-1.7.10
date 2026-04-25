@@ -57,6 +57,7 @@
     "block.MixinBlockFire",
     "block.MixinBlockFlower",
     "block.MixinBlockLegacyFields",
+    "block.MixinBlockLegacyMethods",
     "block.MixinBlockLegacyTypedFields",
     "block.MixinBlockLiquid",
     "block.MixinBlockMushroom",
