@@ -1,4 +1,22 @@
 # net/minecraft/block/Block
+field_71989_cb,field_149782_v
+field_72016_cq,field_149765_K
+field_72017_co,field_149763_I
+field_72018_cp,field_149764_J
+field_72019_cm,field_149757_G
+field_72020_cn,field_149762_H
+field_72021_ck,field_149755_E
+field_72022_cl,field_149756_F
+field_72023_ci,field_149760_C
+field_72024_cj,field_149754_D
+field_72025_cg,field_149758_A
+field_72026_ch,field_149759_B
+field_72027_ce,field_149790_y
+field_72028_cf,field_149789_z
+field_72029_cc,field_149781_w
+field_72030_cd,field_149791_x
+field_94336_cN,field_149761_L
+field_111026_f,field_149768_d
 func_71857_b,func_149645_b
 func_71858_a,func_149691_a
 func_71860_a,func_149689_a
@@ -33,6 +51,15 @@ func_96445_r,func_147779_s
 # net/minecraft/client/renderer/tileentity/TileEntitySpecialRenderer
 renderTileEntityAt,func_147500_a
 # net/minecraft/tileentity/TileEntity
+field_70323_b,field_145853_j
+field_70324_q,field_145854_h
+field_70325_p,field_145847_g
+field_70326_a,field_145855_i
+field_70327_n,field_145849_e
+field_70328_o,field_145846_f
+field_70329_l,field_145851_c
+field_70330_m,field_145848_d
+field_70331_k,field_145850_b
 func_70306_a,func_145826_a
 func_70307_a,func_145839_a
 func_70308_a,func_145834_a

@@ -212,7 +212,12 @@ public abstract class RemapperBase extends Remapper {
                 }
             }
         }
-        return name;
+        if (this.noRenames()) {
+            return name;
+        } else {
+            mapped = renamesMap.get(name);
+            return mapped != null ? mapped : name;
+        }
     }
 
     @Override
