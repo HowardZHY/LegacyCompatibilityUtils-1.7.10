@@ -50,6 +50,8 @@ func_83020_a,func_147782_a
 func_96445_r,func_147779_s
 # net/minecraft/client/renderer/tileentity/TileEntitySpecialRenderer
 renderTileEntityAt,func_147500_a
+# net/minecraft/inventory/IInventory
+func_70303_b,func_145825_b
 # net/minecraft/tileentity/TileEntity
 field_70323_b,field_145853_j
 field_70324_q,field_145854_h

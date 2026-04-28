@@ -98,9 +98,9 @@ public class ModLoaderClientHelper implements IModLoaderSidedHelper {
     private static Multimap<ModLoaderModContainer, ModLoaderKeyBindingHandler> keyBindingContainers;
 
     public static void registerKeyBinding(BaseModProxy mod, KeyBinding keyHandler, boolean allowRepeat) {
-        ModLoaderModContainer mlmc = (ModLoaderModContainer) Loader.instance().activeModContainer();
-        ModLoaderKeyBindingHandler handler = Iterables.getOnlyElement(keyBindingContainers.get(mlmc));
-        handler.setModContainer(mlmc);
+        ModLoaderModContainer container = (ModLoaderModContainer) Loader.instance().activeModContainer();
+        ModLoaderKeyBindingHandler handler = Iterables.getOnlyElement(keyBindingContainers.get(container));
+        handler.setModContainer(container);
         handler.addKeyBinding(keyHandler, allowRepeat);
         KeyBindingRegistry.registerKeyBinding(handler);
     }
@@ -130,7 +130,7 @@ public class ModLoaderClientHelper implements IModLoaderSidedHelper {
 
     @Override
     public void sendClientPacket(BaseModProxy mod, Packet250CustomPayload packet) {
-        //((net.minecraft.src.BaseMod)mod).clientCustomPayload(client.thePlayer.sendQueue, packet);
+        ((net.minecraft.src.BaseMod)mod).clientCustomPayload(client.thePlayer.sendQueue, packet);
     }
 
     public Map<INetworkManager, NetHandler> managerLookups = new MapMaker().weakKeys().weakValues().makeMap();

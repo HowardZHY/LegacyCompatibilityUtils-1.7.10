@@ -10,6 +10,7 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.multiplayer.NetClientHandler;
+import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.settings.KeyBinding;
@@ -160,4 +161,7 @@ public abstract class BaseMod implements cpw.mods.fml.common.modloader.BaseModPr
     }
 
     public void clientCustomPayload(NetClientHandler handler, Packet250CustomPayload packet) {}
+
+    public void clientCustomPayload(NetHandlerPlayClient handler, Packet250CustomPayload packet) {}
+
 }
