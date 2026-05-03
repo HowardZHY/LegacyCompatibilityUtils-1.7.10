@@ -12,8 +12,6 @@
 
 package space.libs.fml;
 
-import cpw.mods.fml.common.gameevent.TickEvent;
-
 import java.util.EnumSet;
 
 /**
@@ -29,18 +27,18 @@ public interface ITickHandler {
      * Called at the "start" phase of a tick
      * Multiple ticks may fire simultaneously- you will only be called once with all the firing ticks
      */
-    void tickStart(EnumSet<TickEvent.Type> type, Object... tickData);
+    void tickStart(EnumSet<TickType> type, Object... tickData);
 
     /**
      * Called at the "end" phase of a tick
      * Multiple ticks may fire simultaneously- you will only be called once with all the firing ticks
      */
-    void tickEnd(EnumSet<TickEvent.Type> type, Object... tickData);
+    void tickEnd(EnumSet<TickType> type, Object... tickData);
 
     /**
      * Returns the list of ticks this tick handler is interested in receiving at the minute
      */
-    EnumSet<TickEvent.Type> ticks();
+    EnumSet<TickType> ticks();
 
     /**
      * A profiling label for this tick handler

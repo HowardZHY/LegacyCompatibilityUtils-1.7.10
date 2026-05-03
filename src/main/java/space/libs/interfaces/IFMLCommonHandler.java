@@ -7,6 +7,7 @@ import net.minecraft.network.packet.NetHandler;
 import net.minecraft.network.packet.Packet131MapData;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
+import space.libs.fml.TickType;
 
 import java.util.EnumSet;
 
@@ -20,9 +21,9 @@ public interface IFMLCommonHandler {
 
     void rescheduleTicks(Side side);
 
-    void tickStart(EnumSet<TickEvent.Type> ticks, Side side, Object ... data);
+    void tickStart(EnumSet<TickType> ticks, Side side, Object ... data);
 
-    void tickEnd(EnumSet<TickEvent.Type> ticks, Side side, Object ... data);
+    void tickEnd(EnumSet<TickType> ticks, Side side, Object ... data);
 
     void onWorldLoadTick(World[] worlds);
 

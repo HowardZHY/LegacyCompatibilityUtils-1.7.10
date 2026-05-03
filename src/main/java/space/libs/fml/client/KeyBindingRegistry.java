@@ -12,11 +12,6 @@
 
 package space.libs.fml.client;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.Set;
-
-import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
@@ -25,8 +20,9 @@ import org.lwjgl.input.Mouse;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import cpw.mods.fml.relauncher.Side;
-import space.libs.fml.ITickHandler;
-import space.libs.fml.TickRegistry;
+import space.libs.fml.*;
+
+import java.util.*;
 
 @SuppressWarnings("all")
 @SideOnly(Side.CLIENT)
@@ -44,7 +40,7 @@ public class KeyBindingRegistry {
     }
 
     /**
-     * Extend this class to register a KeyBinding and recieve callback
+     * Extend this class to register a KeyBinding and receive callback
      * when the key binding is triggered
      *
      * @author cpw
@@ -80,29 +76,29 @@ public class KeyBindingRegistry {
         }
 
         /**
-         * Not to be overridden - KeyBindings are tickhandlers under the covers
+         * Not to be overridden - KeyBindings are tick handlers under the covers
          */
         @Override
-        public final void tickStart(EnumSet<TickEvent.Type> type, Object... tickData) {
+        public final void tickStart(EnumSet<TickType> type, Object... tickData) {
             keyTick(type, false);
         }
 
         /**
-         * Not to be overridden - KeyBindings are tickhandlers under the covers
+         * Not to be overridden - KeyBindings are tick handlers under the covers
          */
         @Override
-        public final void tickEnd(EnumSet<TickEvent.Type> type, Object... tickData) {
+        public final void tickEnd(EnumSet<TickType> type, Object... tickData) {
             keyTick(type, true);
         }
 
-        private void keyTick(EnumSet<TickEvent.Type> type, boolean tickEnd) {
+        private void keyTick(EnumSet<TickType> type, boolean tickEnd) {
             for (int i = 0; i < keyBindings.length; i++) {
                 KeyBinding keyBinding = keyBindings[i];
                 int keyCode = keyBinding.getKeyCode();
                 boolean state = (keyCode < 0 ? Mouse.isButtonDown(keyCode + 100) : Keyboard.isKeyDown(keyCode));
                 if (state != keyDown[i] || (state && repeatings[i])) {
                     if (state) {
-                        keyDown(type, keyBinding, tickEnd, state!=keyDown[i]);
+                        keyDown(type, keyBinding, tickEnd, state != keyDown[i]);
                     } else {
                         keyUp(type, keyBinding, tickEnd);
                     }
@@ -122,7 +118,7 @@ public class KeyBindingRegistry {
          * @param tickEnd was it an end or start tick which fired the key
          * @param isRepeat is it a repeat key event
          */
-        public abstract void keyDown(EnumSet<TickEvent.Type> types, KeyBinding kb, boolean tickEnd, boolean isRepeat);
+        public abstract void keyDown(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd, boolean isRepeat);
         /**
          * Fired once when the key changes state from down to up
          *
@@ -131,15 +127,16 @@ public class KeyBindingRegistry {
          * @param types the type(s) of tick that fired when this key was first down
          * @param tickEnd was it an end or start tick which fired the key
          */
-        public abstract void keyUp(EnumSet<TickEvent.Type> types, KeyBinding kb, boolean tickEnd);
+        public abstract void keyUp(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd);
         /**
          * This is the list of ticks for which the key binding should trigger. The only
          * valid ticks are client side ticks, obviously.
          */
-        public abstract EnumSet<TickEvent.Type> ticks();
+        public abstract EnumSet<TickType> ticks();
     }
 
     public static final KeyBindingRegistry INSTANCE = new KeyBindingRegistry();
+
     public Set<KeyHandler> keyHandlers = Sets.newLinkedHashSet();
 
     public static KeyBindingRegistry instance() {

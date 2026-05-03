@@ -15,15 +15,14 @@ package cpw.mods.fml.common.modloader;
 import java.util.EnumSet;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.gameevent.TickEvent;
 import space.libs.fml.ITickHandler;
+import space.libs.fml.TickType;
 
-@SuppressWarnings("unused")
 public class BaseModTicker implements ITickHandler {
 
     public BaseModProxy mod;
 
-    public EnumSet<TickEvent.Type> ticks;
+    public EnumSet<TickType> ticks;
 
     public boolean clockTickTrigger;
 
@@ -31,41 +30,37 @@ public class BaseModTicker implements ITickHandler {
 
     public BaseModTicker(BaseModProxy mod, boolean guiTicker) {
         this.mod = mod;
-        //this.ticks = EnumSet.of(TickEvent.Type.WORLDLOAD);
+        this.ticks = EnumSet.of(TickType.WORLDLOAD);
         this.sendGuiTicks = guiTicker;
     }
 
-    public BaseModTicker(EnumSet<TickEvent.Type> ticks, boolean guiTicker) {
+    public BaseModTicker(EnumSet<TickType> ticks, boolean guiTicker) {
         this.ticks = ticks;
         this.sendGuiTicks = guiTicker;
     }
 
     @Override
-    public void tickStart(EnumSet<TickEvent.Type> types, Object... tickData) {
+    public void tickStart(EnumSet<TickType> types, Object... tickData) {
         tickBaseMod(types, false, tickData);
     }
 
     @Override
-    public void tickEnd(EnumSet<TickEvent.Type> types, Object... tickData) {
+    public void tickEnd(EnumSet<TickType> types, Object... tickData) {
         tickBaseMod(types, true, tickData);
     }
 
-    public void tickBaseMod(EnumSet<TickEvent.Type> types, boolean end, Object... tickData) {
-        if (FMLCommonHandler.instance().getSide().isClient() && (ticks.contains(TickEvent.Type.CLIENT)
-            //|| ticks.contains(TickEvent.Type.WORLDLOAD)
-        )) {
-            EnumSet<TickEvent.Type> cTypes=EnumSet.copyOf(types);
-            if (( end && types.contains(TickEvent.Type.CLIENT))
-                //|| types.contains(TickEvent.Type.WORLDLOAD)
-            ) {
+    public void tickBaseMod(EnumSet<TickType> types, boolean end, Object... tickData) {
+        if (FMLCommonHandler.instance().getSide().isClient() && (ticks.contains(TickType.CLIENT) || ticks.contains(TickType.WORLDLOAD))) {
+            EnumSet<TickType> cTypes=EnumSet.copyOf(types);
+            if ((end && types.contains(TickType.CLIENT)) || types.contains(TickType.WORLDLOAD)) {
                 clockTickTrigger =  true;
-                cTypes.remove(TickEvent.Type.CLIENT);
-                //cTypes.remove(TickEvent.Type.WORLDLOAD);
+                cTypes.remove(TickType.CLIENT);
+                cTypes.remove(TickType.WORLDLOAD);
             }
-            if (end && clockTickTrigger && types.contains(TickEvent.Type.RENDER)) {
+            if (end && clockTickTrigger && types.contains(TickType.RENDER)) {
                 clockTickTrigger = false;
-                cTypes.remove(TickEvent.Type.RENDER);
-                cTypes.add(TickEvent.Type.CLIENT);
+                cTypes.remove(TickType.RENDER);
+                cTypes.add(TickType.CLIENT);
             }
             sendTick(cTypes, end, tickData);
         } else {
@@ -74,8 +69,8 @@ public class BaseModTicker implements ITickHandler {
     }
 
     @SuppressWarnings("UnusedAssignment")
-    public void sendTick(EnumSet<TickEvent.Type> types, boolean end, Object... tickData) {
-        for (TickEvent.Type type : types) {
+    public void sendTick(EnumSet<TickType> types, boolean end, Object... tickData) {
+        for (TickType type : types) {
             if (!ticks.contains(type)) {
                 continue;
             }
@@ -87,14 +82,14 @@ public class BaseModTicker implements ITickHandler {
             }
             if (!keepTicking) {
                 ticks.remove(type);
-                //ticks.removeAll(type.partnerTicks());
+                ticks.removeAll(type.partnerTicks());
             }
         }
     }
 
     @Override
-    public EnumSet<TickEvent.Type> ticks() {
-        return (clockTickTrigger ? EnumSet.of(TickEvent.Type.RENDER) : ticks);
+    public EnumSet<TickType> ticks() {
+        return (clockTickTrigger ? EnumSet.of(TickType.RENDER) : ticks);
     }
 
     @Override

@@ -13,6 +13,8 @@ package space.libs.mixins.forge;
 
 import cpw.mods.fml.common.gameevent.TickEvent;
 import org.spongepowered.asm.mixin.Mixin;
+import space.libs.interfaces.IFMLCommonHandler;
+import space.libs.util.cursedmixinextensions.annotations.Public;
 
 import java.util.EnumSet;
 
@@ -21,6 +23,9 @@ import static cpw.mods.fml.common.gameevent.TickEvent.Type.*;
 @SuppressWarnings("unused")
 @Mixin(value = TickEvent.Type.class, remap = false)
 public class MixinTickEventType {
+
+    @Public
+    private static TickEvent.Type WORLDLOAD = IFMLCommonHandler.WORLDLOAD;
 
     public EnumSet<TickEvent.Type> partnerTicks() {
         if (this.Instance() == CLIENT) return EnumSet.of(RENDER);

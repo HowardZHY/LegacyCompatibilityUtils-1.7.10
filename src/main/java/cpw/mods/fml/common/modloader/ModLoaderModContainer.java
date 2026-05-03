@@ -21,12 +21,12 @@ import cpw.mods.fml.common.discovery.ASMDataTable;
 import cpw.mods.fml.common.discovery.ASMDataTable.ASMData;
 import cpw.mods.fml.common.discovery.ContainerType;
 import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.versioning.*;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.command.ICommand;
 import space.libs.CompatLib;
+import space.libs.fml.TickType;
 import space.libs.fml.network.FMLNetworkHandler;
 import space.libs.interfaces.IGameRegistry;
 import space.libs.interfaces.INetworkRegistry;
@@ -362,7 +362,7 @@ public class ModLoaderModContainer implements ModContainer {
         try {
             ModClassLoader modClassLoader = event.getModClassLoader();
             modClassLoader.addFile(modSource);
-            EnumSet<TickEvent.Type> ticks = EnumSet.noneOf(TickEvent.Type.class);
+            EnumSet<TickType> ticks = EnumSet.noneOf(TickType.class);
             this.gameTickHandler = new BaseModTicker(ticks, false);
             this.guiTickHandler = new BaseModTicker(ticks.clone(), true);
             Class<? extends BaseModProxy> modClazz = ModLoadingUtils.loadBaseModClass(modClassLoader, modClazzName);

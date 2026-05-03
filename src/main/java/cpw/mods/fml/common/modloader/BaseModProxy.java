@@ -12,7 +12,6 @@
 
 package cpw.mods.fml.common.modloader;
 
-import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -21,6 +20,7 @@ import net.minecraft.network.NetServerHandler;
 import net.minecraft.network.packet.NetHandler;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.world.World;
+import space.libs.fml.TickType;
 
 import java.util.Random;
 
@@ -37,9 +37,9 @@ public interface BaseModProxy {
 
     String getVersion();
 
-    boolean doTickInGUI(TickEvent.Type type, boolean end, Object... tickData);
+    boolean doTickInGUI(TickType type, boolean end, Object... tickData);
 
-    boolean doTickInGame(TickEvent.Type type, boolean end, Object... tickData);
+    boolean doTickInGame(TickType type, boolean end, Object... tickData);
 
     void generateSurface(World w, Random random, int i, int j);
 

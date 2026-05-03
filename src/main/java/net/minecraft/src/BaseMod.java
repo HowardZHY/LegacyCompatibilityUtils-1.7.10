@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -25,6 +24,7 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import space.libs.fml.TickType;
 
 import java.util.*;
 
@@ -33,8 +33,8 @@ import static cpw.mods.fml.relauncher.Side.CLIENT;
 @SuppressWarnings("unused")
 public abstract class BaseMod implements cpw.mods.fml.common.modloader.BaseModProxy {
 
-    public final boolean doTickInGame(TickEvent.Type tick, boolean tickEnd, Object... data) {
-        if (tickEnd && (tick == TickEvent.Type.RENDER || tick == TickEvent.Type.CLIENT)) {
+    public final boolean doTickInGame(TickType tick, boolean tickEnd, Object... data) {
+        if (tickEnd && (tick == TickType.RENDER || tick == TickType.CLIENT)) {
             Minecraft mc = FMLClientHandler.instance().getClient();
             boolean hasWorld = (mc.theWorld != null);
             if (hasWorld) {
@@ -50,11 +50,12 @@ public abstract class BaseMod implements cpw.mods.fml.common.modloader.BaseModPr
     }
 
     @SideOnly(CLIENT)
-    public final boolean doTickInGUI(TickEvent.Type tick, boolean tickEnd, Object... data) {
+    public final boolean doTickInGUI(TickType tick, boolean tickEnd, Object... data) {
         Minecraft mc = FMLClientHandler.instance().getClient();
         boolean hasWorld = (mc.theWorld != null);
-        if (tickEnd && (tick == TickEvent.Type.RENDER || (tick == TickEvent.Type.CLIENT && hasWorld)))
+        if (tickEnd && (tick == TickType.RENDER || (tick == TickType.CLIENT && hasWorld))) {
             return onTickInGUI((Float) data[0], mc, mc.currentScreen);
+        }
         return true;
     }
 

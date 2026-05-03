@@ -12,8 +12,6 @@
 
 package space.libs.fml;
 
-import cpw.mods.fml.common.gameevent.TickEvent;
-
 import java.util.EnumSet;
 
 public class SingleIntervalHandler implements IScheduledTickHandler {
@@ -25,17 +23,17 @@ public class SingleIntervalHandler implements IScheduledTickHandler {
     }
 
     @Override
-    public void tickStart(EnumSet<TickEvent.Type> type, Object... tickData) {
+    public void tickStart(EnumSet<TickType> type, Object... tickData) {
         wrapped.tickStart(type, tickData);
     }
 
     @Override
-    public void tickEnd(EnumSet<TickEvent.Type> type, Object... tickData) {
+    public void tickEnd(EnumSet<TickType> type, Object... tickData) {
         wrapped.tickEnd(type, tickData);
     }
 
     @Override
-    public EnumSet<TickEvent.Type> ticks() {
+    public EnumSet<TickType> ticks() {
         return wrapped.ticks();
     }
 

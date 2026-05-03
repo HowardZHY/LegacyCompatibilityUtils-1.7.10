@@ -21,9 +21,9 @@ import java.util.List;
 import com.google.common.collect.ObjectArrays;
 import com.google.common.primitives.Booleans;
 
-import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.client.settings.KeyBinding;
 import cpw.mods.fml.common.modloader.ModLoaderModContainer;
+import space.libs.fml.TickType;
 import space.libs.fml.client.KeyBindingRegistry;
 
 public class ModLoaderKeyBindingHandler extends KeyBindingRegistry.KeyHandler {
@@ -51,15 +51,15 @@ public class ModLoaderKeyBindingHandler extends KeyBindingRegistry.KeyHandler {
     }
 
     @Override
-    public void keyDown(EnumSet<TickEvent.Type> type, KeyBinding kb, boolean end, boolean repeats) {
+    public void keyDown(EnumSet<TickType> type, KeyBinding kb, boolean end, boolean repeats) {
         if (!end) {
             return;
         }
         int idx = helper.indexOf(kb);
-        if (type.contains(TickEvent.Type.CLIENT)) {
+        if (type.contains(TickType.CLIENT)) {
             armed[idx] = true;
         }
-        if (armed[idx] && type.contains(TickEvent.Type.RENDER) && (!active[idx] || mlRepeats[idx])) {
+        if (armed[idx] && type.contains(TickType.RENDER) && (!active[idx] || mlRepeats[idx])) {
             fireKeyEvent(kb);
             active[idx] = true;
             armed[idx] = false;
@@ -67,7 +67,7 @@ public class ModLoaderKeyBindingHandler extends KeyBindingRegistry.KeyHandler {
     }
 
     @Override
-    public void keyUp(EnumSet<TickEvent.Type> type, KeyBinding kb, boolean end) {
+    public void keyUp(EnumSet<TickType> type, KeyBinding kb, boolean end) {
         if (!end) {
             return;
         }
@@ -76,8 +76,8 @@ public class ModLoaderKeyBindingHandler extends KeyBindingRegistry.KeyHandler {
     }
 
     @Override
-    public EnumSet<TickEvent.Type> ticks() {
-        return EnumSet.of(TickEvent.Type.CLIENT, TickEvent.Type.RENDER);
+    public EnumSet<TickType> ticks() {
+        return EnumSet.of(TickType.CLIENT, TickType.RENDER);
     }
 
     @Override
@@ -87,12 +87,13 @@ public class ModLoaderKeyBindingHandler extends KeyBindingRegistry.KeyHandler {
 
     public void addKeyBinding(KeyBinding binding, boolean repeats) {
         this.keyBindings = ObjectArrays.concat(this.keyBindings, binding);
-        this.repeatings = new boolean[this.keyBindings.length];
+        int length = this.keyBindings.length;
+        this.repeatings = new boolean[length];
         Arrays.fill(this.repeatings, true);
-        this.active = new boolean[this.keyBindings.length];
-        this.armed = new boolean[this.keyBindings.length];
+        this.active = new boolean[length];
+        this.armed = new boolean[length];
         this.mlRepeats = Booleans.concat(this.mlRepeats, new boolean[] { repeats });
-        this.keyDown = new boolean[this.keyBindings.length];
+        this.keyDown = new boolean[length];
         this.helper = Arrays.asList(this.keyBindings);
     }
 }

@@ -15,7 +15,6 @@ package cpw.mods.fml.common.modloader;
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import cpw.mods.fml.common.*;
-import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.*;
 import cpw.mods.fml.common.network.internal.FMLMessage;
 import cpw.mods.fml.common.registry.EntityRegistry;
@@ -28,14 +27,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.src.TradeEntry;
 import space.libs.fml.*;
-import space.libs.fml.network.IChatListener;
-import space.libs.fml.network.IConnectionHandler;
-import space.libs.fml.network.IPacketHandler;
+import space.libs.fml.network.*;
 import space.libs.interfaces.IEntityRegistry;
-import space.libs.interfaces.IFMLCommonHandler;
 
-import java.util.EnumSet;
-import java.util.Map;
+import java.util.*;
+
+import static space.libs.fml.TickType.*;
 
 @SuppressWarnings("unused")
 public class ModLoaderHelper {
@@ -56,20 +53,20 @@ public class ModLoaderHelper {
             return;
         }
         BaseModTicker ticker = mlmc.getGameTickHandler();
-        EnumSet<TickEvent.Type> ticks = ticker.ticks();
+        EnumSet<TickType> ticks = ticker.ticks();
         // If we're enabled we get render ticks
         if (enable && !useClock) {
-            ticks.add(TickEvent.Type.RENDER);
+            ticks.add(RENDER);
         } else {
-            ticks.remove(TickEvent.Type.RENDER);
+            ticks.remove(RENDER);
         }
         // If we're enabled, but we want clock ticks, or we're server side we get game ticks
         if (enable && (useClock || FMLCommonHandler.instance().getSide().isServer())) {
-            ticks.add(TickEvent.Type.CLIENT);
-            ticks.add(IFMLCommonHandler.WORLDLOAD);
+            ticks.add(CLIENT);
+            ticks.add(WORLDLOAD);
         } else {
-            ticks.remove(TickEvent.Type.CLIENT);
-            ticks.remove(IFMLCommonHandler.WORLDLOAD);
+            ticks.remove(CLIENT);
+            ticks.remove(WORLDLOAD);
         }
     }
 
@@ -82,20 +79,20 @@ public class ModLoaderHelper {
             FMLLog.severe("Attempted to register ModLoader ticking for invalid BaseMod %s", mod);
             return;
         }
-        EnumSet<TickEvent.Type> ticks = mlmc.getGUITickHandler().ticks();
+        EnumSet<TickType> ticks = mlmc.getGUITickHandler().ticks();
         // If we're enabled, and we don't want clock ticks we get render ticks
         if (enable && !useClock) {
-            ticks.add(TickEvent.Type.RENDER);
+            ticks.add(RENDER);
         } else {
-            ticks.remove(TickEvent.Type.RENDER);
+            ticks.remove(RENDER);
         }
         // If we're enabled, but we want clock ticks, or we're server side we get world ticks
         if (enable && useClock) {
-            ticks.add(TickEvent.Type.CLIENT);
-            ticks.add(IFMLCommonHandler.WORLDLOAD);
+            ticks.add(TickType.CLIENT);
+            ticks.add(WORLDLOAD);
         } else {
-            ticks.remove(TickEvent.Type.CLIENT);
-            ticks.remove(IFMLCommonHandler.WORLDLOAD);
+            ticks.remove(CLIENT);
+            ticks.remove(WORLDLOAD);
         }
     }
 
@@ -146,10 +143,8 @@ public class ModLoaderHelper {
         player.openGui(helper.getMod(), id, player.worldObj, x, y, z);
     }
 
-    public static Object getClientSideGui(BaseModProxy mod, EntityPlayer player, int ID, int x, int y, int z)
-    {
-        if (sidedHelper != null)
-        {
+    public static Object getClientSideGui(BaseModProxy mod, EntityPlayer player, int ID, int x, int y, int z) {
+        if (sidedHelper != null) {
             return sidedHelper.getClientGui(mod, player, ID, x, y, z);
         }
         return null;
@@ -174,9 +169,9 @@ public class ModLoaderHelper {
     }
 
     public static void addCommand(ICommand command) {
-        ModLoaderModContainer mlmc = (ModLoaderModContainer) Loader.instance().activeModContainer();
-        if (mlmc!=null) {
-            mlmc.addServerCommand(command);
+        ModLoaderModContainer container = (ModLoaderModContainer) Loader.instance().activeModContainer();
+        if (container != null) {
+            container.addServerCommand(command);
         }
     }
 
