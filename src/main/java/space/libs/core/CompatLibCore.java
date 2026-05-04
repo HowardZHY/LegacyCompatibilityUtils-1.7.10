@@ -23,6 +23,7 @@ public class CompatLibCore implements IFMLLoadingPlugin, ICoreUtils {
 
     static {
         LOGGER.info("Initializing CompatLib Core Class...");
+        CompatLibLateCore.init();
     }
 
     @Override
@@ -34,7 +35,6 @@ public class CompatLibCore implements IFMLLoadingPlugin, ICoreUtils {
         transformersList.add("space.libs.asm.ClassTransformers");
         transformersList.add("space.libs.asm.DefaultCompatTransformer");
         // "space.libs.asm.GameDataTransformer"
-        // "space.libs.asm.ReplaceTransformer"
         String[] transformers = new String[transformersList.size()];
         return transformersList.toArray(transformers);
     }

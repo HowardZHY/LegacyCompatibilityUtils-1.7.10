@@ -1,10 +1,10 @@
 package space.libs.util;
 
-import net.minecraft.launchwrapper.Launch;
+import space.libs.core.*;
 
-import java.io.IOException;
+import java.io.*;
 
-public class ModDetector {
+public class ModDetector implements ICoreUtils {
 
     public static boolean AOA1 = false;
 
@@ -13,7 +13,7 @@ public class ModDetector {
     public static boolean hasClassBytes(String name) {
         byte[] bytes = null;
         try {
-            bytes = Launch.classLoader.getClassBytes(name);
+            bytes = classLoader.getClassBytes(name);
         } catch (IOException ignored) {}
         return bytes != null;
     }

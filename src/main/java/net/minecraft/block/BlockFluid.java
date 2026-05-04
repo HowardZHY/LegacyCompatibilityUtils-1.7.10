@@ -6,7 +6,7 @@ import net.minecraft.block.material.Material;
  * {@link net.minecraft.block.BlockLiquid }
  * @implNote Will be remapped, Don't use.
  */
-public class BlockFluid extends Block {
+public abstract class BlockFluid extends Block {
 
     protected BlockFluid(Material materialIn) {
         super(materialIn);
