@@ -52,6 +52,7 @@ func_96445_r,func_147779_s
 renderTileEntityAt,func_147500_a
 # net/minecraft/inventory/IInventory
 func_70303_b,func_145825_b
+func_94042_c,func_145818_k_
 # net/minecraft/tileentity/TileEntity
 field_70323_b,field_145853_j
 field_70324_q,field_145854_h

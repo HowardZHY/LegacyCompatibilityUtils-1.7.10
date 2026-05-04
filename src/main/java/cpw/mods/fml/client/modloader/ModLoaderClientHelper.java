@@ -87,6 +87,8 @@ public class ModLoaderClientHelper implements IModLoaderSidedHelper {
         }
     }
 
+    public static ModLoaderClientHelper INSTANCE;
+
     public ModLoaderClientHelper(Minecraft client) {
         this.client = client;
         ModLoaderHelper.sidedHelper = this;
