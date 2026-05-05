@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import space.libs.util.MappedName;
 import space.libs.util.cursedmixinextensions.annotations.Public;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -26,7 +27,7 @@ public abstract class MixinGuiMainMenu extends MixinGuiScreen {
 
     public boolean field_96141_q;
 
-    /** realmsButton*/
+    @MappedName("realmsButton")
     public GuiButton field_130023_H;
 
     @Public
