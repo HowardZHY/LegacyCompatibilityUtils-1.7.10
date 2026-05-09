@@ -50,15 +50,11 @@ public abstract class MixinNBTBase implements INBTBase {
     @NewConstructor
     public void NBTBase(String name) {
         NBTBase();
-        if (name == null) {
-            this.field_74741_a = "";
-        } else {
-            this.field_74741_a = name;
-        }
+        this.field_74741_a = name;
     }
 
     @MappedName(value = "name", until = "1.6.4")
-    public String field_74741_a;
+    public String field_74741_a = "";
 
     @MappedName(value = "writeNamedTag", until = "1.6.4")
     @Public

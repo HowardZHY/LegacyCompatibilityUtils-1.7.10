@@ -33,6 +33,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
 import space.libs.fml.client.TextureFXManager;
 import space.libs.fml.network.PacketDispatcher;
+import space.libs.fml.network.Player;
 import space.libs.interfaces.*;
 import space.libs.util.BiomeUtils;
 
@@ -260,7 +261,7 @@ public class ModLoader {
     }
 
     public static void registerBlock(Block block, Class<? extends ItemBlock> itemclass) {
-        GameRegistry.registerBlock(block, null);
+        GameRegistry.registerBlock(block, itemclass, null);
     }
 
     public static void registerContainerID(BaseMod mod, int id) {
@@ -345,10 +346,9 @@ public class ModLoader {
     }
 
     public static void serverSendPacket(NetServerHandler handler, Packet packet) {
-        //Impl will be complicated
-        /*if (handler != null) {
+        if (handler != null) {
             PacketDispatcher.sendPacketToPlayer(packet, (Player)handler.getPlayer());
-        }*/
+        }
     }
 
     public static void serverOpenWindow(EntityPlayerMP player, Container container, int ID, int x, int y, int z) {

@@ -6,6 +6,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import net.minecraft.nbt.INBTBase;
 import space.libs.util.MappedName;
+import space.libs.util.cursedmixinextensions.annotations.NewConstructor;
+import space.libs.util.cursedmixinextensions.annotations.ShadowSuperConstructor;
 
 import java.io.DataInput;
 import java.util.ArrayList;
@@ -19,6 +21,14 @@ public abstract class MixinNBTTagList extends MixinNBTBase {
 
     @Shadow
     private byte tagType;
+
+    @ShadowSuperConstructor
+    public void NBTBase(String name) {}
+
+    @NewConstructor
+    public void NBTTagList(String name) {
+        NBTBase(name);
+    }
 
     @MappedName(value = "load", until = "1.7.2")
     public void func_74735_a(DataInput input, int depth) {
@@ -40,4 +50,8 @@ public abstract class MixinNBTTagList extends MixinNBTBase {
         }
     }
 
+    @MappedName(value = "tagAt", until = "1.6.4")
+    public NBTBase func_74743_b(int i) {
+        return this.tagList.remove(i);
+    }
 }

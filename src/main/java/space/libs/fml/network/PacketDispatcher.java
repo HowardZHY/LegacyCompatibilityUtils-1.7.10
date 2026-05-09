@@ -13,9 +13,7 @@
 package space.libs.fml.network;
 
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet131MapData;
-import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.network.packet.*;
 import net.minecraft.server.MinecraftServer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
@@ -36,15 +34,16 @@ public class PacketDispatcher {
     }
 
     public static void sendPacketToPlayer(Packet packet, Player player) {
+        //TODO: Impl will be complicated
         if (player instanceof EntityPlayerMP) {
-            //((EntityPlayerMP)player).playerNetServerHandler.func_72567_b(packet);
+            ((EntityPlayerMP)player).playerNetServerHandler.sendPacket(packet);
         }
     }
 
     public static void sendPacketToAllAround(double X, double Y, double Z, double range, int dimensionId, Packet packet) {
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
         if (server != null) {
-            //server.getConfigurationManager().func_72393_a(X, Y, Z, range, dimensionId, packet);
+            server.getConfigurationManager().sendToAllNear(X, Y, Z, range, dimensionId, packet);
         } else {
             FMLLog.fine("Attempt to send packet to all around without a server instance available");
         }
@@ -53,7 +52,7 @@ public class PacketDispatcher {
     public static void sendPacketToAllInDimension(Packet packet, int dimId) {
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
         if (server != null) {
-            //server.getConfigurationManager().func_72396_a(packet, dimId);
+            server.getConfigurationManager().sendPacketToAllPlayersInDimension(packet, dimId);
         } else {
             FMLLog.fine("Attempt to send packet to all in dimension without a server instance available");
         }
@@ -62,7 +61,7 @@ public class PacketDispatcher {
     public static void sendPacketToAllPlayers(Packet packet) {
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
         if (server != null) {
-            //server.getConfigurationManager().func_72384_a(packet);
+            server.getConfigurationManager().sendPacketToAllPlayers(packet);
         } else {
             FMLLog.fine("Attempt to send packet to all in dimension without a server instance available");
         }
