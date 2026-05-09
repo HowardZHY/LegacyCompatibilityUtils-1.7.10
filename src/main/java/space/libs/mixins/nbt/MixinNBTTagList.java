@@ -52,6 +52,6 @@ public abstract class MixinNBTTagList extends MixinNBTBase {
 
     @MappedName(value = "tagAt", until = "1.6.4")
     public NBTBase func_74743_b(int i) {
-        return this.tagList.remove(i);
+        return this.tagList.get(i);
     }
 }
