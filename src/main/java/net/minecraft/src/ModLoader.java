@@ -19,27 +19,27 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.ICommand;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.entity.*;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetServerHandler;
 import net.minecraft.network.packet.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.stats.Achievement;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
 import space.libs.fml.client.TextureFXManager;
-import space.libs.fml.network.PacketDispatcher;
-import space.libs.fml.network.Player;
+import space.libs.fml.network.*;
 import space.libs.interfaces.*;
 import space.libs.util.BiomeUtils;
 
 import java.awt.image.BufferedImage;
 import java.util.*;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 import static cpw.mods.fml.relauncher.Side.*;
 
@@ -48,13 +48,21 @@ public class ModLoader {
 
     public static final String fmlMarker = "This is an FML marker";
 
+    public static Level cfgLoggingLevel = Level.FINER;
+
+    public static final Properties props = new Properties();
+
+    public static final String VERSION = "";
+
+    public static final Map<Class<? extends Entity>, EntityTrackerNonliving> trackers = new HashMap<>();
+
     public static final Map<String, Map<String, String>> localizedStrings = Collections.emptyMap();
 
     public static void addAchievementDesc(Achievement achievement, String name, String description) {
         IStatBase accessor = (IStatBase) achievement;
         String achName = accessor.func_75970_i();
         addLocalization(achName, name);
-        addLocalization(achName+".desc", description);
+        addLocalization(achName + ".desc", description);
     }
 
     public static int addAllFuel(int id, int metadata) {
@@ -77,6 +85,7 @@ public class ModLoader {
 
     public static void addEntityTracker(BaseMod mod, Class<? extends Entity> entityClass, int entityTypeId, int updateRange, int updateInterval, boolean sendVelocityInfo) {
         ModLoaderHelper.buildEntityTracker(mod, entityClass, entityTypeId, updateRange, updateInterval, sendVelocityInfo);
+        trackers.put(entityClass, new EntityTrackerNonliving(mod, entityClass, entityTypeId, updateRange, updateInterval, sendVelocityInfo));
     }
 
     public static void addCommand(ICommand command) {
@@ -157,8 +166,44 @@ public class ModLoader {
         return false;
     }
 
+    /**
+     * @implNote Original FML didn't impl?
+     * @implSpec From 
+     */
     public static void genericContainerRemoval(World world, int x, int y, int z) {
-        // Forge didn't impl?
+        TileEntity te = world.getTileEntity(x, y, z);
+        if (!(te instanceof IInventory)) {
+            return;
+        }
+        IInventory inv = (IInventory)te;
+        for (int l = 0; l < inv.getSizeInventory(); l++) {
+            ItemStack itemstack = inv.getStackInSlot(l);
+            if (itemstack == null) {
+                continue;
+            }
+            Random random = world.rand;
+            float f = random.nextFloat() * 0.8F + 0.1F;
+            float f1 = random.nextFloat() * 0.8F + 0.1F;
+            float f2 = random.nextFloat() * 0.8F + 0.1F;
+            while (itemstack.stackSize > 0) {
+                int i1 = random.nextInt(21) + 10;
+                if (i1 > itemstack.stackSize) {
+                    i1 = itemstack.stackSize;
+                }
+                itemstack.stackSize -= i1;
+                EntityItem entityitem = new EntityItem(world,
+                    te.xCoord + f, te.yCoord + f1, te.zCoord + f2,
+                    new ItemStack(itemstack.getItem(), i1, itemstack.getMetadata()));
+                float f3 = 0.05F;
+                entityitem.motionX = random.nextGaussian() * f3;
+                entityitem.motionY = random.nextGaussian() * f3 + 0.2F;
+                entityitem.motionZ = random.nextGaussian() * f3;
+                if (itemstack.hasTagCompound()) {
+                    entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
+                }
+                world.spawnEntityInWorld(entityitem);
+            }
+        }
     }
 
     public static List<BaseMod> getLoadedMods() {
@@ -184,6 +229,10 @@ public class ModLoader {
 
     public static <T, E> T getPrivateValue(Class<? super E> instanceclass, E instance, String field) {
         return ObfuscationReflectionHelper.getPrivateValue(instanceclass, instance, field);
+    }
+
+    public static Map<Class<? extends Entity>, EntityTrackerNonliving> getTrackers() {
+        return trackers;
     }
 
     @SideOnly(CLIENT)

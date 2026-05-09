@@ -12,10 +12,13 @@
 
 package net.minecraft.src;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 
 @SuppressWarnings("unused")
+@SideOnly(Side.CLIENT)
 public class EntityRendererProxy extends EntityRenderer {
 
     public static final String fmlMarker = "This is an FML marker";

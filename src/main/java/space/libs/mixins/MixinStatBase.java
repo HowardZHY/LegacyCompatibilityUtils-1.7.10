@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import space.libs.interfaces.IStatBase;
+import space.libs.util.MappedName;
 import space.libs.util.cursedmixinextensions.annotations.NewConstructor;
 import space.libs.util.cursedmixinextensions.annotations.ShadowConstructor;
 
@@ -47,7 +48,7 @@ public class MixinStatBase implements IStatBase {
         this.field_75978_a = name;
     }
 
-    /** getName */
+    @MappedName("getName")
     public String func_75970_i() {
         return this.statId;
     }
