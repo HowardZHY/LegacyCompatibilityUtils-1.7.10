@@ -13,22 +13,16 @@ import com.google.common.base.*;
 import com.google.common.collect.*;
 import com.google.common.io.*;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.*;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.commons.Remapper;
 import org.objectweb.asm.tree.*;
-import space.libs.core.CompatLibDebug;
 
 import java.io.*;
 import java.net.URL;
 import java.util.*;
 
 @SuppressWarnings("UnstableApiUsage")
-public abstract class RemapperBase extends Remapper {
-
-    public static final Logger LOGGER = LogManager.getLogger();
-
-    public static boolean DEBUG_REMAPPING = CompatLibDebug.DEBUG_REMAP;
+public abstract class RemapperBase extends Remapper implements IRemapperDebug {
 
     public RemapperBase(final String file, final int id) {
         this.mappings = Resources.getResource(file);
@@ -38,22 +32,19 @@ public abstract class RemapperBase extends Remapper {
         this.fieldDescriptions = Maps.newHashMap();
         this.rawFieldMaps = Maps.newHashMap();
         this.rawMethodMaps = Maps.newHashMap();
-        this.packagesIn =ImmutableBiMap.builder();
+        this.packagesIn = ImmutableBiMap.builder();
         this.classesIn = ImmutableBiMap.builder();
         this.fieldsIn = ImmutableTable.builder();
         this.methodsIn = ImmutableTable.builder();
         this.negativeFields = Sets.newHashSet();
         this.negativeMethods = Sets.newHashSet();
-        try {
-            this.setup();
-        } catch (Exception e) {
-            LOGGER.error("An error occurred loading the custom map data " + file, e);
-        }
-        this.rawFields = fieldsIn.build();
-        this.rawMethods = methodsIn.build();
+        this.setupClasses();
         this.packagesBiMap = packagesIn.build();
         this.classesBiMap = classesIn.build();
         this.reverseClassMap = classesBiMap.inverse();
+        this.setupMembers();
+        this.rawFields = fieldsIn.build();
+        this.rawMethods = methodsIn.build();
         if (this.legacy) {
             this.fieldsMap = Maps.newHashMapWithExpectedSize(this.rawFieldMaps.size());
             this.methodsMap = Maps.newHashMapWithExpectedSize(this.rawMethodMaps.size());
@@ -91,8 +82,20 @@ public abstract class RemapperBase extends Remapper {
     protected final Map<String, String> renamesMap;
     protected final Map<String, Map<String, String>> fieldDescriptions;
 
-    protected void setup() throws IOException {
-        Resources.readLines(mappings, Charsets.UTF_8, new MappingLineProcessor());
+    protected void setupClasses() {
+        try {
+            Resources.readLines(mappings, Charsets.UTF_8, new MappingLineProcessor( true, legacy));
+        } catch (Exception e) {
+            LOGGER.error("An error occurred loading the custom map data " + mappings, e);
+        }
+    }
+
+    protected void setupMembers() {
+        try {
+            Resources.readLines(mappings, Charsets.UTF_8, new MappingLineProcessor(false, legacy));
+        } catch (Exception e) {
+            LOGGER.error("An error occurred loading the custom map data " + mappings, e);
+        }
     }
 
     protected String getFieldType(String owner, String name) {
@@ -280,10 +283,10 @@ public abstract class RemapperBase extends Remapper {
             return;
         }
         String[] parents = mergeParents(superName, interfaces, interfaces.length);
-        this.mergeSuperMaps(name, parents);
         if (DEBUG_REMAPPING && (!parents[0].startsWith("java"))) {
-            LOGGER.info("Computing super maps for " + name + " & " + Arrays.toString(parents) + " visit " + visit);
+            LOGGER.info("Merging super maps for " + name + " & " + Arrays.toString(parents) + " visit " + visit);
         }
+        this.mergeSuperMaps(name, parents);
     }
 
     public void mergeSuperMaps(String name, String[] parents) {
@@ -360,12 +363,6 @@ public abstract class RemapperBase extends Remapper {
         return !map(className).equals(className);
     }
 
-    public void DebugRemap(String msg) {
-        if (this instanceof CustomRemapper) {
-            LOGGER.info(msg);
-        }
-    }
-
     public static String[] getSignature(String in) {
         int pos = in.lastIndexOf('/');
         return new String[]{in.substring(0, pos), in.substring(pos + 1)};
@@ -403,8 +400,16 @@ public abstract class RemapperBase extends Remapper {
         }
     }
 
-    @SuppressWarnings("all")
     public class MappingLineProcessor implements LineProcessor<Void> {
+
+        private final boolean classes;
+
+        private final boolean legacy;
+
+        public MappingLineProcessor(final boolean classes, final boolean legacy) {
+            this.classes = classes;
+            this.legacy = legacy;
+        }
 
         @Override
         public boolean processLine(String line) {
@@ -421,32 +426,67 @@ public abstract class RemapperBase extends Remapper {
                 LOGGER.error("Invalid mapping type: " + line);
                 return true;
             }
-            String[] source;
-            String[] dest;
-            switch (type) {
-                case PACKAGE:
-                    packagesIn.put(parts[1], parts[2]);
-                    break;
-                case CLASS:
-                    classesIn.put(parts[1], parts[2]);
-                    break;
-                case FIELD:
-                    source = getSignature(parts[1]);
-                    dest = getSignature(parts[2]);
-                    String fieldType = getFieldType(source[0], source[1]);
-                    fieldsIn.put(source[0], source[1] + ':' + fieldType, dest[1]);
-                    if (fieldType != null) {
-                        fieldsIn.put(source[0], source[1] + ":null", dest[1]);
-                    }
-                    break;
-                case METHOD:
-                    source = getSignature(parts[1]);
-                    dest = getSignature(parts[3]);
-                    methodsIn.put(source[0], source[1] + parts[2], dest[1]);
-                    break;
-                default:
+            if (classes) {
+                switch (type) {
+                    case PACKAGE:
+                        packagesIn.put(parts[1], parts[2]);
+                        break;
+                    case CLASS:
+                        classesIn.put(parts[1], parts[2]);
+                        break;
+                    default:
+                }
+            } else {
+                switch (type) {
+                    case FIELD:
+                        parse(parts, false);
+                        break;
+                    case METHOD:
+                        parse(parts, true);
+                        break;
+                    default:
+                }
             }
             return true;
+        }
+
+        public final void parse(String[] parts, boolean method) {
+            String[] source = getSignature(parts[1]);
+            String[] dest;
+            String s0 = source[0];
+            String s1 = source[1];
+            String p2 = parts[2];
+            String d1;
+            if (method) {
+                dest = getSignature(parts[3]);
+                d1 = dest[1];
+                if (this.legacy) {
+                    if (!rawMethodMaps.containsKey(s0)) {
+                        rawMethodMaps.put(s0, Maps.newHashMap());
+                    }
+                    rawMethodMaps.get(s0).put(s1 + p2, d1);
+                } else {
+                    methodsIn.put(s0, s1 + p2, d1);
+                }
+            } else {
+                dest = getSignature(p2);
+                d1 = dest[1];
+                String fieldType = getFieldType(s0, s1);
+                if (this.legacy) {
+                    if (!rawFieldMaps.containsKey(s0)) {
+                        rawFieldMaps.put(s0, Maps.newHashMap());
+                    }
+                    if (fieldType != null) {
+                        rawFieldMaps.get(s0).put(s1 + ":" + fieldType, d1);
+                    }
+                    rawFieldMaps.get(s0).put(s1 + ":null", d1);
+                } else {
+                    if (fieldType != null) {
+                        fieldsIn.put(s0, s1 + ':' + fieldType, d1);
+                    }
+                    fieldsIn.put(s0, s1 + ":null", d1);
+                }
+            }
         }
 
         @Override
