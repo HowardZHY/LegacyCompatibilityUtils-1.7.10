@@ -274,17 +274,27 @@ public abstract class RemapperBase extends Remapper implements IRemapperDebug {
         byte[] bytes = this.getBytesForSuperMap(name);
         if (bytes != null) {
             ClassReader reader = new ClassReader(bytes);
-            this.mergeSuperMaps(name, reader.getSuperName(), reader.getInterfaces(), false);
+            this.mergeSuperMaps(name, reader.getSuperName(), reader.getInterfaces(), false, false);
         }
     }
 
-    public void mergeSuperMaps(String name, String superName, String[] interfaces, boolean visit) {
+    public void mergeSuperMaps(String name, String superName, String[] interfaces, boolean handleSuper, boolean visit) {
         if (name.startsWith("java/") || Strings.isNullOrEmpty(superName) || superName.startsWith("net/minecraftforge/event") ) {
             return;
         }
-        String[] parents = mergeParents(superName, interfaces, interfaces.length);
+        int l = interfaces.length;
+        String[] parents;
+        if (handleSuper) {
+            String[] legacyInterfaces = new String[l];
+            for (int i = 0; i < l; i++) {
+                legacyInterfaces[i] = this.getLegacyName(interfaces[i]);
+            }
+            parents = mergeParents(this.getLegacyName(superName), legacyInterfaces, l);
+        } else {
+            parents = mergeParents(superName, interfaces, l);
+        }
         if (DEBUG_REMAPPING && (!parents[0].startsWith("java"))) {
-            LOGGER.info("Merging super maps for " + name + " & " + Arrays.toString(parents) + " visit " + visit);
+            LOGGER.info("Merging super maps for " + name + " & " + Arrays.toString(parents) + " handleSuper " + handleSuper + " visit " + visit);
         }
         this.mergeSuperMaps(name, parents);
     }
@@ -361,6 +371,11 @@ public abstract class RemapperBase extends Remapper implements IRemapperDebug {
     @SuppressWarnings("unused")
     public boolean isRemappedClass(String className) {
         return !map(className).equals(className);
+    }
+
+    @SuppressWarnings("unused")
+    public Set<String> getObfedClasses() {
+        return ImmutableSet.copyOf(this.classesBiMap.keySet());
     }
 
     public static String[] getSignature(String in) {

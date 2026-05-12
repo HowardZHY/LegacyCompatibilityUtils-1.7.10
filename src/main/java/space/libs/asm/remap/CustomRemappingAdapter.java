@@ -53,9 +53,9 @@ public class CustomRemappingAdapter extends RemappingClassAdapter {
             interfaces = new String[0];
         }
         if (legacy) { //TODO?
-            this.getCustomRemapper().mergeSuperMaps(name, superName, interfaces, true);
+            this.getCustomRemapper().mergeSuperMaps(name, superName, interfaces, false, true);
         } else {
-            this.getRemapper().mergeSuperMaps(name, superName, interfaces, true);
+            this.getRemapper().mergeSuperMaps(name, superName, interfaces, false, true);
         }
         super.visit(version, access, name, signature, superName, interfaces);
     }

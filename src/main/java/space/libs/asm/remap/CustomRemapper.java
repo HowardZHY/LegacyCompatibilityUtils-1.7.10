@@ -10,11 +10,9 @@
 package space.libs.asm.remap;
 
 import com.google.common.base.*;
-import com.google.common.collect.*;
 import cpw.mods.fml.common.patcher.ClassPatchManager;
 import org.objectweb.asm.ClassReader;
-
-import java.util.*;
+import space.libs.asm.TransformerUtils;
 
 public class CustomRemapper extends DefaultRemapper {
 
@@ -28,7 +26,7 @@ public class CustomRemapper extends DefaultRemapper {
             return name;
         }
         if (name.contains("/")) {
-            if (name.startsWith("net/minecraft/")) {
+            if (isMCPackage(name)) {
                 return FMLRemapper.unmap(name);
             } else {
                 return name; // Not Mapped
@@ -48,7 +46,7 @@ public class CustomRemapper extends DefaultRemapper {
             return name;
         }
         if (name.contains("/")) {
-            if (name.startsWith("net/minecraft/")) {
+            if (isMCPackage(name)) {
                 return this.unmap(name);
             } else {
                 return name; // Not Mapped
@@ -64,7 +62,8 @@ public class CustomRemapper extends DefaultRemapper {
         if (Strings.isNullOrEmpty(name) || name.startsWith("java")) {
             return;
         }
-        byte[] bytes = this.getBytesForSuperMap(this.getRealName(name));
+        String realName = this.getRealName(name);
+        byte[] bytes = this.getBytesForSuperMap(realName);
         if (bytes != null) {
             ClassReader cr = new ClassReader(bytes);
             String superName = cr.getSuperName();
@@ -72,15 +71,15 @@ public class CustomRemapper extends DefaultRemapper {
             if (DEBUG_CUSTOM_REMAPPING && !name.startsWith("java")) {
                 LOGGER.info("Try loading super map for " + name + " to " + superName + " chain: " + chain);
             }
-            int l = interfaces.length;
-            if (chain || superName.startsWith("net/minecraft/")) {
-                String[] legacyInterfaces = new String[l];
-                for (int i = 0; i < l; i++) {
-                    legacyInterfaces[i] = this.getLegacyName(interfaces[i]);
-                }
-                this.mergeSuperMaps(name, this.getLegacyName(superName), legacyInterfaces, false);
-            } else {
-                this.mergeSuperMaps(name, superName, interfaces, false);
+            this.mergeSuperMaps(name, superName, interfaces, chain || isMCPackage(superName), false);
+        }
+        if (chain && TransformerUtils.isVanillaClass(name)) {
+            bytes = this.getBytesForSuperMap(name);
+            if (bytes != null) {
+                ClassReader reader = new ClassReader(bytes);
+                String superName1 = reader.getSuperName();
+                String[] interfaces1 = reader.getInterfaces();
+                this.mergeSuperMaps(name, superName1, interfaces1, false, false);
             }
         }
     }
@@ -97,8 +96,7 @@ public class CustomRemapper extends DefaultRemapper {
         return bytes;
     }
 
-    @SuppressWarnings("unused")
-    public Set<String> getObfedClasses() {
-        return ImmutableSet.copyOf(this.classesBiMap.keySet());
+    public static boolean isMCPackage(String name) {
+        return name.startsWith("net/minecraft/");
     }
 }
