@@ -368,7 +368,6 @@ public abstract class RemapperBase extends Remapper implements IRemapperDebug {
         return this.renamesMap == null || this.renamesMap.isEmpty();
     }
 
-    @SuppressWarnings("unused")
     public boolean isRemappedClass(String className) {
         return !map(className).equals(className);
     }

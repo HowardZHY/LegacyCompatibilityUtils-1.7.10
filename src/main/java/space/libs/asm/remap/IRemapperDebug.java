@@ -10,7 +10,7 @@ public interface IRemapperDebug {
 
     boolean DEBUG_REMAPPING = CompatLibDebug.DEBUG_REMAP;
 
-    boolean DEBUG_CUSTOM_REMAPPING = false;
+    boolean DEBUG_CUSTOM_REMAPPING = CompatLibDebug.DEBUG_CUSTOM_REMAP;
 
     default void DebugRemap(String msg) {
         if (this instanceof CustomRemapper) {

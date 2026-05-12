@@ -9,6 +9,8 @@ public class CompatLibDebug {
 
     public static boolean DEBUG_REMAP = false;
 
+    public static boolean DEBUG_CUSTOM_REMAP = false;
+
     public static Logger LOGGER = LogManager.getLogger("CompatLibDebug");
 
     public static void init() {}

@@ -12,7 +12,6 @@ package space.libs.asm.remap;
 import com.google.common.base.*;
 import cpw.mods.fml.common.patcher.ClassPatchManager;
 import org.objectweb.asm.ClassReader;
-import space.libs.asm.TransformerUtils;
 
 public class CustomRemapper extends DefaultRemapper {
 
@@ -71,16 +70,7 @@ public class CustomRemapper extends DefaultRemapper {
             if (DEBUG_CUSTOM_REMAPPING && !name.startsWith("java")) {
                 LOGGER.info("Try loading super map for " + name + " to " + superName + " chain: " + chain);
             }
-            this.mergeSuperMaps(name, superName, interfaces, chain || isMCPackage(superName), false);
-        }
-        if (chain && TransformerUtils.isVanillaClass(name)) {
-            bytes = this.getBytesForSuperMap(name);
-            if (bytes != null) {
-                ClassReader reader = new ClassReader(bytes);
-                String superName1 = reader.getSuperName();
-                String[] interfaces1 = reader.getInterfaces();
-                this.mergeSuperMaps(name, superName1, interfaces1, false, false);
-            }
+            this.mergeSuperMaps(name, superName, interfaces, (chain || isMCPackage(superName) || isMCPackage(name) || isRemappedClass(name)), false);
         }
     }
 
