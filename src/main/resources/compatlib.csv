@@ -1,10 +1,10 @@
 # net/minecraft/block/Block
+field_71969_a,field_149772_a
 field_71989_cb,field_149782_v
 field_72016_cq,field_149765_K
 field_72017_co,field_149763_I
 field_72018_cp,field_149764_J
 field_72019_cm,field_149757_G
-field_72020_cn,field_149762_H
 field_72021_ck,field_149755_E
 field_72022_cl,field_149756_F
 field_72023_ci,field_149760_C
@@ -17,10 +17,16 @@ field_72029_cc,field_149781_w
 field_72030_cd,field_149791_x
 field_94336_cN,field_149761_L
 field_111026_f,field_149768_d
+func_71848_c,func_149711_c
+func_71849_a,func_149647_a
+func_71851_a,func_149733_h
+func_71856_s_,func_149701_w
 func_71857_b,func_149645_b
 func_71858_a,func_149691_a
 func_71860_a,func_149689_a
+func_71868_h,func_149713_g
 func_71861_g,func_149726_b
+func_71862_a,func_149734_b
 func_71871_a,func_149743_a
 func_71875_q,func_149722_s
 func_71881_r,func_149653_t
@@ -28,15 +34,42 @@ func_71882_w,func_149708_J
 func_71883_b,func_149696_a
 func_71886_c,func_149686_d
 func_71887_s,func_149716_u
+func_71889_f_,func_149741_i
+func_71891_b,func_149724_b
+func_71894_b,func_149752_b
 func_71899_b,func_149692_a
+func_71900_a,func_149715_a
 func_71903_a,func_149727_a
 func_71905_a,func_149676_a
+func_71911_a_,func_149633_g
 func_71917_a,func_149739_a
+func_71920_b,func_149720_d
+func_71921_a,func_149699_a
 func_71926_d,func_149662_c
 func_71930_b,func_149742_c
 func_71931_t,func_149732_F
+func_71933_m,func_149635_D
 func_71934_m,func_149712_f
+func_85104_a,func_149660_a
 func_94332_a,func_149651_a
+func_111022_d,func_149658_d
+# net/minecraft/client/gui/GuiButton
+field_73741_f,field_146127_k
+field_73742_g,field_146124_l
+field_73743_d,field_146129_i
+field_73744_e,field_146126_j
+field_73745_b,field_146121_g
+field_73746_c,field_146128_h
+field_73747_a,field_146120_f
+field_73748_h,field_146125_m
+field_110332_a,field_146122_a
+func_73736_c,func_146116_c
+func_73737_a,func_146112_a
+func_73738_a,func_146114_a
+func_73739_b,func_146119_b
+func_73740_a,func_146118_a
+func_82251_b,func_146111_b
+func_82252_a,func_146115_a
 # net/minecraft/client/gui/GuiScreen
 field_73880_f,field_146294_l
 field_73881_g,field_146295_m
@@ -136,6 +169,32 @@ func_70321_h,func_145836_u
 func_70322_n,func_145832_p
 func_82115_m,func_145833_n
 func_85027_a,func_145828_a
+# net/minecraft/tileentity/TileEntityFurnace
+field_70404_d,field_145957_n
+field_70405_b,field_145963_i
+field_70406_c,field_145961_j
+field_70407_a,field_145956_a
+field_94130_e,field_145958_o
+field_102009_f,field_145960_m
+field_102010_d,field_145962_k
+field_102011_e,field_145959_l
+func_70397_c,func_145953_d
+func_70398_a,func_145952_a
+func_70399_k,func_145949_j
+func_70400_i,func_145950_i
+func_70401_b,func_145954_b
+func_70402_r,func_145948_k
+func_70403_d,func_145955_e
 # net/minecraft/world/IBlockAccess
 func_72796_p,func_147438_o
 func_72799_c,func_147437_c
+# net/minecraft/would/World
+func_72831_a,func_147447_a
+func_72837_a,func_147455_a
+func_72840_a,func_147461_a
+func_72852_a,func_147448_a
+func_72887_b,func_147445_c
+func_72902_n,func_147479_m
+func_72941_a,func_147467_a
+func_72978_e,func_147470_e
+func_85174_u,func_147469_q

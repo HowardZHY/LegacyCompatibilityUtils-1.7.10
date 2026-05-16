@@ -11,7 +11,9 @@ public class ConfigurationVisitor extends ClassVisitor {
 
     public static final String UTILS = "space/libs/util/forge/ConfigurationUtils";
 
-    public static final String BLOCK = "net/minecraft/block/Block";
+    public static final String INTERNAL_DESC = "(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;II)Lnet/minecraftforge/common/config/Property;";
+
+    public static final String STRING_TYPE = "Ljava/lang/String;";
 
     public ConfigurationVisitor(ClassVisitor cv) {
         super(ASM5, cv);
@@ -32,8 +34,8 @@ public class ConfigurationVisitor extends ClassVisitor {
         cv.visitField(ACC_PUBLIC + ACC_STATIC, "configMarkers", "[Z", null, null).visitEnd();
         cv.visitField(ACC_PUBLIC + ACC_STATIC, "ITEM_SHIFT", "I", null, null).visitEnd();
         cv.visitField(ACC_PUBLIC + ACC_STATIC, "MAX_BLOCKS", "I", null, null).visitEnd();
-        cv.visitField(ACC_PUBLIC + ACC_STATIC, "CATEGORY_BLOCK", "Ljava/lang/String;", null, null).visitEnd();
-        cv.visitField(ACC_PUBLIC + ACC_STATIC, "CATEGORY_ITEM", "Ljava/lang/String;", null, null).visitEnd();
+        cv.visitField(ACC_PUBLIC + ACC_STATIC, "CATEGORY_BLOCK", STRING_TYPE, null, null).visitEnd();
+        cv.visitField(ACC_PUBLIC + ACC_STATIC, "CATEGORY_ITEM", STRING_TYPE, null, null).visitEnd();
         super.visitEnd();
     }
 
@@ -53,11 +55,8 @@ public class ConfigurationVisitor extends ClassVisitor {
             mv.visitInsn(ACONST_NULL);
         }
         mv.visitIntInsn(SIPUSH, 256);
-        mv.visitFieldInsn(GETSTATIC, BLOCK, "blocksList", "[Lnet/minecraft/block/Block;");
-        mv.visitInsn(ARRAYLENGTH);
-        mv.visitMethodInsn(INVOKEVIRTUAL, TARGET, "getBlockInternal",
-            "(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;II)Lnet/minecraftforge/common/config/Property;",
-            false);
+        mv.visitIntInsn(SIPUSH, 4096);
+        mv.visitMethodInsn(INVOKEVIRTUAL, TARGET, "getBlockInternal", INTERNAL_DESC, false);
         mv.visitInsn(ARETURN);
         mv.visitMaxs(7, comment ? 4 : 3);
         mv.visitEnd();
@@ -79,11 +78,8 @@ public class ConfigurationVisitor extends ClassVisitor {
             mv.visitInsn(ACONST_NULL);
         }
         mv.visitIntInsn(SIPUSH, 256);
-        mv.visitFieldInsn(GETSTATIC, BLOCK, "blocksList", "[Lnet/minecraft/block/Block;");
-        mv.visitInsn(ARRAYLENGTH);
-        mv.visitMethodInsn(INVOKEVIRTUAL, TARGET, "getBlockInternal",
-            "(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;II)Lnet/minecraftforge/common/config/Property;",
-            false);
+        mv.visitIntInsn(SIPUSH, 4096);
+        mv.visitMethodInsn(INVOKEVIRTUAL, TARGET, "getBlockInternal", INTERNAL_DESC, false);
         mv.visitInsn(ARETURN);
         mv.visitMaxs(7, comment ? 5 : 4);
         mv.visitEnd();
@@ -101,18 +97,14 @@ public class ConfigurationVisitor extends ClassVisitor {
         mv.visitVarInsn(ALOAD, 4);
         mv.visitInsn(ICONST_0);
         mv.visitIntInsn(SIPUSH, 256);
-        mv.visitMethodInsn(INVOKEVIRTUAL, TARGET, "getBlockInternal",
-            "(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;II)Lnet/minecraftforge/common/config/Property;",
-            false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, TARGET, "getBlockInternal", INTERNAL_DESC, false);
         mv.visitInsn(ARETURN);
         mv.visitMaxs(7, 5);
         mv.visitEnd();
     }
 
     public void addGetBlockInternal() {
-        MethodVisitor mv = cv.visitMethod(ACC_PUBLIC, "getBlockInternal",
-            "(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;II)Lnet/minecraftforge/common/config/Property;",
-            null, null);
+        MethodVisitor mv = cv.visitMethod(ACC_PUBLIC, "getBlockInternal", INTERNAL_DESC, null, null);
         mv.visitCode();
         mv.visitVarInsn(ALOAD, 0);
         mv.visitVarInsn(ALOAD, 1);
@@ -214,9 +206,9 @@ public class ConfigurationVisitor extends ClassVisitor {
                 mv.visitIntInsn(SIPUSH, 4096);
                 mv.visitFieldInsn(PUTSTATIC, TARGET, "MAX_BLOCKS", "I");
                 mv.visitLdcInsn("block");
-                mv.visitFieldInsn(PUTSTATIC, TARGET, "CATEGORY_BLOCK", "Ljava/lang/String;");
+                mv.visitFieldInsn(PUTSTATIC, TARGET, "CATEGORY_BLOCK", STRING_TYPE);
                 mv.visitLdcInsn("item");
-                mv.visitFieldInsn(PUTSTATIC, TARGET, "CATEGORY_ITEM", "Ljava/lang/String;");
+                mv.visitFieldInsn(PUTSTATIC, TARGET, "CATEGORY_ITEM", STRING_TYPE);
                 mv.visitFieldInsn(GETSTATIC, TARGET, "configMarkers", "[Z");
                 mv.visitInsn(ICONST_0);
                 mv.visitMethodInsn(INVOKESTATIC, "java/util/Arrays", "fill", "([ZZ)V", false);

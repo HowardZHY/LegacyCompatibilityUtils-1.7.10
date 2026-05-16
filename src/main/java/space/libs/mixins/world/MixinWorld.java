@@ -32,6 +32,9 @@ public abstract class MixinWorld implements IBlockAccessBridge {
     @Shadow
     public abstract boolean isSideSolid(int x, int y, int z, ForgeDirection side, boolean _default);
 
+    @Shadow
+    public abstract void notifyBlockOfNeighborChange(int x, int y, int z, Block block);
+
     @Override
     public int func_72798_a(int x, int y, int z) {
         return Block.getIdFromBlock(this.getBlock(x, y, z));
@@ -48,5 +51,9 @@ public abstract class MixinWorld implements IBlockAccessBridge {
 
     public boolean func_94575_c(int x, int y, int z, int block) {
         return this.setBlock(x, y, z, Block.getBlockById(block));
+    }
+
+    public void func_96440_m(int x, int y, int z, int block) {
+        this.notifyBlockOfNeighborChange(x, y, z, Block.getBlockById(block));
     }
 }

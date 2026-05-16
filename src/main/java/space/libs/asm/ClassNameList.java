@@ -26,16 +26,14 @@ public class ClassNameList {
 
     /** Things totally shouldn't be transformed */
     public static String[] CONTAINS_WHITELIST = {
-        "EarlyMixin",
-        "LateMixin",
         "Main",
         "betterfps",
         "jvmdg",
         "makamys",
-        "mixinbooter",
-        "mixinextra",
         "optifine",
-        "shadersmod"
+        "shadersmod",
+        // No Mixin Mods before 1.7.10
+        "ixin"
     };
 
     /** Mod packages that requires additional transforms */

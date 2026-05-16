@@ -12,7 +12,7 @@ public class ClassTransformers implements IClassTransformer {
         if (name == null || bytes == null) {
             return bytes;
         }
-        if (name.startsWith("cpw")) {
+        if (name.startsWith("cp")) {
             if (name.equals("cpw.mods.fml.common.FMLModContainer")) {
                 return TransformerUtils.transformSafe(bytes, ClassWriter.COMPUTE_MAXS, FMLModContainerVisitor.class, 0);
             } else {

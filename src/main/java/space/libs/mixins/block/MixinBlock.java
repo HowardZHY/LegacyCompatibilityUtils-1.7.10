@@ -30,12 +30,6 @@ public abstract class MixinBlock implements BlockProxy, IBlock, ICoreUtils {
     public abstract Block setStepSound(Block.SoundType sound);
 
     @Shadow
-    public abstract Block setResistance(float resistance);
-
-    @Shadow
-    public abstract Block setHardness(float hardness);
-
-    @Shadow
     public abstract Block setTickRandomly(boolean shouldTick);
 
     @Shadow
@@ -46,9 +40,6 @@ public abstract class MixinBlock implements BlockProxy, IBlock, ICoreUtils {
 
     @Shadow
     public abstract int damageDropped(int meta);
-
-    @Shadow
-    public abstract Block setTextureName(String textureName);
 
     @Shadow
     public abstract Block setCreativeTab(CreativeTabs tab);
@@ -183,12 +174,6 @@ public abstract class MixinBlock implements BlockProxy, IBlock, ICoreUtils {
 
     @Public private static int[] blockFlammability = new int[4096];
 
-    @MappedName(value = "displayOnCreativeTab", until = "1.6.4")
-    public CreativeTabs field_71969_a;
-
-    @MappedName(value = "textureName", until = "1.6.4")
-    public String field_111026_f;
-
     @MappedName(value = "blocksList", until = "1.6.4")
     @Public private static Block[] field_71973_m = new Block[4096];
 
@@ -210,12 +195,6 @@ public abstract class MixinBlock implements BlockProxy, IBlock, ICoreUtils {
     @MappedName(value = "blockID", until = "1.6.4")
     public int field_71990_ca;
 
-    @MappedName(value = "blockHardness", until = "1.6.4")
-    public float field_71989_cb;
-
-    @MappedName(value = "blockResistance", until = "1.6.4")
-    public float field_72029_cc;
-
     @MappedName(value = "stepSound", until = "1.6.4")
     public StepSound field_72020_cn;
 
@@ -232,26 +211,6 @@ public abstract class MixinBlock implements BlockProxy, IBlock, ICoreUtils {
     public Block func_71884_a(StepSound stepSound) {
         this.field_72020_cn = stepSound;
         return this.setStepSound(stepSound);
-    }
-
-    public Block func_71848_c(float hardness) {
-        this.field_71989_cb = hardness;
-        return this.setHardness(hardness);
-    }
-
-    public Block func_71894_b(float resistance) {
-        this.field_72029_cc = resistance * 3.0F;
-        return this.setResistance(resistance);
-    }
-
-    public Block func_71849_a(CreativeTabs tab) {
-        this.field_71969_a = tab;
-        return this.setCreativeTab(tab);
-    }
-
-    public Block func_111022_d(String textureName) {
-        this.field_111026_f = textureName;
-        return this.setTextureName(textureName);
     }
 
     @MappedName(value = "getTextureName", until = "1.6.4")
