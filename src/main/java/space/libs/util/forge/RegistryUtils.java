@@ -11,7 +11,7 @@ import java.lang.reflect.*;
 import java.util.*;
 
 @SuppressWarnings("JavaReflectionMemberAccess")
-public class RegistryUtils {
+public abstract class RegistryUtils {
 
     public static GameData Data;
 

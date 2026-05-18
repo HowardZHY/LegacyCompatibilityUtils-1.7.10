@@ -6,6 +6,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import space.libs.core.CompatLoader;
 
 @SuppressWarnings("all")
 @Mod(
@@ -38,7 +39,9 @@ public class CompatLib {
     }
 
     @Mod.EventHandler
-    public void init(FMLInitializationEvent event) {}
+    public void init(FMLInitializationEvent event) {
+        CompatLoader.EXECUTOR.shutdown();
+    }
 
     public void onClientModLoading() {
         //unused atm

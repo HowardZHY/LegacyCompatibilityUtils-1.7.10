@@ -21,7 +21,7 @@ public abstract class MixinWorld implements IBlockAccessBridge {
 
     @Shadow
     @Override
-    public abstract Block getBlock(int p_147439_1_, int p_147439_2_, int p_147439_3_);
+    public abstract Block getBlock(int x, int y, int z);
 
     @Shadow
     public abstract boolean setBlock(int x, int y, int z, Block blockIn, int metadataIn, int flags);

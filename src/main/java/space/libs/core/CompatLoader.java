@@ -1,21 +1,21 @@
 package space.libs.core;
 
-import cpw.mods.fml.common.launcher.FMLTweaker;
 import cpw.mods.fml.relauncher.*;
-import space.libs.util.PathUtils;
+import space.libs.util.IPathUtils;
 
 import java.io.File;
 import java.nio.file.*;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.*;
 import java.util.zip.*;
 
-public class CompatLoader implements ICoreUtils {
-
-    @SuppressWarnings("unused")
-    public static FMLTweaker tweaker = ReflectionHelper.getPrivateValue(CoreModManager.class, null, "tweaker");
+public class CompatLoader implements ICoreUtils, IPathUtils {
 
     public static final Version[] VERSIONS = new Version[127];
+
+    public static final short[] LOAD = new short[]{62, 64};
+
+    public static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(LOAD.length);
 
     public static boolean INIT = false;
 
@@ -24,13 +24,10 @@ public class CompatLoader implements ICoreUtils {
     public static void init() {
         if (!INIT) {
             INIT = true;
-            CompatLibFolder = new File(PathUtils.MOD_DIRECTORY.toFile(), "compatlib");
-            try {
-                Files.createDirectories(CompatLibFolder.toPath());
-                new Version(62);
-                new Version(64);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+            CompatLibFolder = new File(IPathUtils.MOD_DIRECTORY.toFile(), "compatlib");
+            IPathUtils.createDir(CompatLibFolder.toPath());
+            for (short ver : LOAD) {
+                EXECUTOR.execute(() -> new Version(ver));
             }
         }
     }
@@ -58,7 +55,7 @@ public class CompatLoader implements ICoreUtils {
         return new File(CompatLibFolder, "1." + ver / 10 + "." + ver % 10);
     }
 
-    public static boolean notAvailable(int ver) {
+    public static boolean unavailable(int ver) {
         if (!INIT) {
             return true;
         } else {
@@ -68,7 +65,7 @@ public class CompatLoader implements ICoreUtils {
     }
 
     public static boolean isFromLegacyJar(String className, int ver) {
-        if (notAvailable(ver)) {
+        if (unavailable(ver)) {
             return false;
         } else {
             String res = className.replace('.', '/').concat(".class");
@@ -95,11 +92,11 @@ public class CompatLoader implements ICoreUtils {
 
         public final boolean noMods;
 
-        public Version(final int ver) throws Exception {
+        public Version(final int ver) {
+            VERSIONS[ver] = this;
             this.Mods = ConcurrentHashMap.newKeySet();
             this.LegacyClasses = ConcurrentHashMap.newKeySet();
-            VERSIONS[ver] = this;
-            Files.createDirectories(getLegacyModsFolder(ver).toPath());
+            IPathUtils.createDir(getLegacyModsFolder(ver).toPath());
             noMods = addLegacyMods(ver);
         }
     }
