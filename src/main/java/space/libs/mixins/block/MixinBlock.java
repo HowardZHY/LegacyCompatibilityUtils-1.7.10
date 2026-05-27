@@ -63,8 +63,14 @@ public abstract class MixinBlock implements BlockProxy, IBlock, ICoreUtils {
             shift = At.Shift.AFTER
         )
     )
+    @SuppressWarnings("JavaReflectionMemberAccess")
     protected void init(Material materialIn, CallbackInfo ci) {
-        this.field_72018_cp = materialIn;
+        try {
+            this.field_72018_cp = materialIn;
+            this.field_72020_cn = (StepSound) Block.class.getDeclaredField("field_71966_d").get(null);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Inject(method = "setUnlocalizedName", at = @At("RETURN"))
