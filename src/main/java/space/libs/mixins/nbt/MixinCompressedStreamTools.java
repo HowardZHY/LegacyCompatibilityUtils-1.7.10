@@ -21,15 +21,15 @@ import java.util.zip.GZIPInputStream;
 public abstract class MixinCompressedStreamTools {
 
     @Shadow
-    public static NBTTagCompound read(DataInputStream p_74794_0_) throws IOException {
+    public static NBTTagCompound read(DataInputStream inputStream) throws IOException {
         throw new AbstractMethodError();
     }
 
     @MappedName("decompress")
     @Public
-    private static NBTTagCompound func_74792_a(byte[] par0ArrayOfByte) throws IOException {
+    private static NBTTagCompound func_74792_a(byte[] b) throws IOException {
         NBTTagCompound nbttagcompound;
-        DataInputStream datainputstream = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new ByteArrayInputStream(par0ArrayOfByte))));
+        DataInputStream datainputstream = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new ByteArrayInputStream(b))));
         try {
             nbttagcompound = read(datainputstream);
         } finally {
@@ -49,16 +49,16 @@ public abstract class MixinCompressedStreamTools {
     }
 
     @Public
-    private static NBTBase func_150664_a(DataInput p_150664_0_, int p_150664_1_) throws IOException {
-        byte b0 = p_150664_0_.readByte();
+    private static NBTBase func_150664_a(DataInput input, int depth) throws IOException {
+        byte b0 = input.readByte();
         if (b0 == 0) {
             return (NBTBase) new NBTTagEnd();
         }
-        p_150664_0_.readUTF();
+        input.readUTF();
         NBTBase nbtbase = NBTBase.createNewByType(b0);
         INBTBase accessor = (INBTBase) nbtbase;
         try {
-            accessor.func_74735_a(p_150664_0_, p_150664_1_);
+            accessor.func_74735_a(input, depth);
             return nbtbase;
         } catch (Exception exception) {
             CrashReport crashreport = CrashReport.makeCrashReport(exception, "Loading NBT data");

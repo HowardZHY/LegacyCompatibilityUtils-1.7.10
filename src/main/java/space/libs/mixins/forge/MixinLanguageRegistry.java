@@ -15,14 +15,14 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.Map;
 import java.util.Properties;
 
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 @Mixin(value = LanguageRegistry.class, remap = false)
 public abstract class MixinLanguageRegistry {
 
     @Shadow
     private Map<String, Properties> modLanguageData;
 
-    public void loadLanguageTable(Map field_135032_a, String lang) {
+    public void loadLanguageTable(Map<Object, Object> field_135032_a, String lang) {
         Properties usPack = this.modLanguageData.get("en_US");
         if (usPack != null) {
             field_135032_a.putAll(usPack);

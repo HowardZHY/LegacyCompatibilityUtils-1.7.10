@@ -2,8 +2,7 @@ package net.minecraft.network.packet;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import java.io.DataInput;
-import java.io.DataOutput;
+import java.io.*;
 
 public class Packet132TileEntityData extends Packet {
 
@@ -21,25 +20,36 @@ public class Packet132TileEntityData extends Packet {
         this.field_73287_r = true;
     }
 
-    public Packet132TileEntityData(int p_i1483_1_, int p_i1483_2_, int p_i1483_3_, int p_i1483_4_, NBTTagCompound p_i1483_5_) {
+    public Packet132TileEntityData(int x, int y, int z, int actionType, NBTTagCompound data) {
         this.field_73287_r = true;
-        this.field_73334_a = p_i1483_1_;
-        this.field_73332_b = p_i1483_2_;
-        this.field_73333_c = p_i1483_3_;
-        this.field_73330_d = p_i1483_4_;
-        this.field_73331_e = p_i1483_5_;
+        this.field_73334_a = x;
+        this.field_73332_b = y;
+        this.field_73333_c = z;
+        this.field_73330_d = actionType;
+        this.field_73331_e = data;
     }
 
-    public void func_73267_a(DataInput p_73267_1_) {
-
+    @Override
+    public void func_73267_a(DataInput input) throws IOException {
+        this.field_73334_a = input.readInt();
+        this.field_73332_b = input.readShort();
+        this.field_73333_c = input.readInt();
+        this.field_73330_d = input.readByte();
+        this.field_73331_e = func_73283_d(input);
     }
 
-    public void func_73273_a(DataOutput p_73273_1_) {
-
+    @Override
+    public void func_73273_a(DataOutput output) throws IOException {
+        output.writeInt(this.field_73334_a);
+        output.writeShort(this.field_73332_b);
+        output.writeInt(this.field_73333_c);
+        output.writeByte((byte)this.field_73330_d);
+        func_73275_a(this.field_73331_e, output);
     }
 
-    public void func_73279_a(NetHandler p_73279_1_) {
-
+    @Override
+    public void func_73279_a(NetHandler handler) {
+        //handler.func_72468_a(this);
     }
 
     public int func_73284_a() {

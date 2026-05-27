@@ -17,12 +17,13 @@ import net.minecraft.network.packet.*;
 import net.minecraft.server.MinecraftServer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
+import space.libs.interfaces.IIFMLSidedHandler;
 
 /**
  * A simple utility class to send packet 250 packets around the place
  * @author cpw
  */
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 public class PacketDispatcher {
 
     public static Packet250CustomPayload getPacket(String type, byte[] data) {
@@ -30,11 +31,12 @@ public class PacketDispatcher {
     }
 
     public static void sendPacketToServer(Packet packet) {
-        //FMLCommonHandler.instance().getSidedDelegate().sendPacket(packet);
+        IIFMLSidedHandler instance = (IIFMLSidedHandler) FMLCommonHandler.instance().getSidedDelegate();
+        instance.sendPacket(packet);
     }
 
     public static void sendPacketToPlayer(Packet packet, Player player) {
-        //TODO: Impl will be complicated
+        //TODO: Impl might be complicated
         if (player instanceof EntityPlayerMP) {
             ((EntityPlayerMP)player).playerNetServerHandler.sendPacket(packet);
         }

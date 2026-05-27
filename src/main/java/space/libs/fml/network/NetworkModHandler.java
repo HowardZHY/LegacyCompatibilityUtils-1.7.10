@@ -16,14 +16,11 @@ import java.lang.reflect.Method;
 import java.util.Set;
 
 import com.google.common.base.Strings;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.ModContainer;
+import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.discovery.ASMDataTable;
 import cpw.mods.fml.common.discovery.ASMDataTable.ASMData;
 import cpw.mods.fml.common.network.FMLNetworkException;
-import cpw.mods.fml.common.versioning.InvalidVersionSpecificationException;
-import cpw.mods.fml.common.versioning.VersionRange;
+import cpw.mods.fml.common.versioning.*;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -144,7 +141,7 @@ public class NetworkModHandler {
     }
 
     public void tryCreatingPacketHandler(ModContainer container, Class<? extends IPacketHandler> clazz, String[] channels, Side side) {
-        if (side!=null && side.isClient() && ! FMLCommonHandler.instance().getSide().isClient()) {
+        if (side != null && side.isClient() && ! FMLCommonHandler.instance().getSide().isClient()) {
             return;
         }
         if (clazz!=getPacketHandlerDefaultValue()) {

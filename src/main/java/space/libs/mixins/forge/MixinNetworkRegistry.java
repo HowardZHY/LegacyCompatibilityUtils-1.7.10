@@ -14,6 +14,8 @@ package space.libs.mixins.forge;
 import com.google.common.base.*;
 import com.google.common.collect.*;
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.ModContainer;
+import cpw.mods.fml.common.discovery.ASMDataTable;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.*;
@@ -21,6 +23,9 @@ import net.minecraft.network.*;
 import net.minecraft.network.packet.*;
 import net.minecraft.server.MinecraftServer;
 import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import space.libs.fml.network.*;
 import space.libs.interfaces.INetworkRegistry;
 import space.libs.util.cursedmixinextensions.annotations.Public;
@@ -38,6 +43,8 @@ public class MixinNetworkRegistry implements INetworkRegistry {
     private static NetworkRegistry instance() {
         return INSTANCE;
     }
+
+    public Multimap<Player, String> activeChannels = ArrayListMultimap.create();
 
     public Multimap<String, IPacketHandler> universalPacketHandlers = ArrayListMultimap.create();
 
@@ -77,6 +84,14 @@ public class MixinNetworkRegistry implements INetworkRegistry {
         } else {
             serverPacketHandlers.put(channelName, handler);
         }
+    }
+
+    public void activateChannel(Player player, String channel) {
+        activeChannels.put(player, channel);
+    }
+
+    public void deactivateChannel(Player player, String channel) {
+        activeChannels.remove(player, channel);
     }
 
     @Override
@@ -135,7 +150,7 @@ public class MixinNetworkRegistry implements INetworkRegistry {
         pkt.field_73630_a = "REGISTER";
         pkt.field_73629_c = getPacketRegistry(player instanceof EntityPlayerMP ? Side.SERVER : Side.CLIENT);
         pkt.field_73628_b = pkt.field_73629_c.length;
-        //manager.addToSendQueue(pkt);
+        manager.func_74429_a(pkt); //addToSendQueue
     }
 
     @Override
@@ -143,11 +158,19 @@ public class MixinNetworkRegistry implements INetworkRegistry {
         for (IConnectionHandler handler : connectionHandlers) {
             handler.connectionClosed(manager);
         }
-        //activeChannels.removeAll(player);
+        activeChannels.removeAll((Player) player);
     }
 
     @Override
-    public void handleCustomPacket(Packet250CustomPayload packet, INetworkManager network, NetHandler handler) {}
+    public void handleCustomPacket(Packet250CustomPayload packet, INetworkManager network, NetHandler handler) {
+        if ("REGISTER".equals(packet.field_73630_a)) {
+            handleRegistrationPacket(packet, (Player)handler.getPlayer());
+        } else if ("UNREGISTER".equals(packet.field_73630_a)) {
+            handleUnregistrationPacket(packet, (Player)handler.getPlayer());
+        } else {
+            handlePacket(packet, network, (Player)handler.getPlayer());
+        }
+    }
 
     @Override
     public void handlePacket(Packet250CustomPayload packet, INetworkManager network, Player player) {
@@ -160,9 +183,19 @@ public class MixinNetworkRegistry implements INetworkRegistry {
         }
     }
 
-    public void handleRegistrationPacket(Packet250CustomPayload packet, Player player) {}
+    public void handleRegistrationPacket(Packet250CustomPayload packet, Player player) {
+        List<String> channels = extractChannelList(packet);
+        for (String channel : channels) {
+            activateChannel(player, channel);
+        }
+    }
 
-    public void handleUnregistrationPacket(Packet250CustomPayload packet, Player player) {}
+    public void handleUnregistrationPacket(Packet250CustomPayload packet, Player player) {
+        List<String> channels = extractChannelList(packet);
+        for (String channel : channels) {
+            deactivateChannel(player, channel);
+        }
+    }
 
     public List<String> extractChannelList(Packet250CustomPayload packet) {
         String request = new String(packet.field_73629_c, Charsets.UTF_8);
@@ -181,6 +214,21 @@ public class MixinNetworkRegistry implements INetworkRegistry {
     }
 
     @Override
-    public void handleTinyPacket(NetHandler handler, Packet131MapData mapData) {}
+    public void handleTinyPacket(NetHandler handler, Packet131MapData mapData) {
+        NetworkModHandler nmh = FMLNetworkHandler.instance().findNetworkModHandler((int)mapData.field_73438_a);
+        if (nmh == null) {
+            FMLLog.info("Received a tiny packet for network id %d that is not recognised here", mapData.field_73438_a);
+            return;
+        }
+        if (nmh.hasTinyPacketHandler()) {
+            nmh.getTinyPacketHandler().handle(handler, mapData);
+        } else {
+            FMLLog.info("Received a tiny packet for a network mod that does not accept tiny packets %s", nmh.getContainer().getModId());
+        }
+    }
 
+    @Inject(method = "register", at = @At("HEAD"))
+    public void register(ModContainer fmlModContainer, Class<?> clazz, String remoteVersionRange, ASMDataTable asmHarvestedData, CallbackInfo ci) {
+        FMLNetworkHandler.instance().registerNetworkMod(fmlModContainer, clazz, asmHarvestedData);
+    }
 }

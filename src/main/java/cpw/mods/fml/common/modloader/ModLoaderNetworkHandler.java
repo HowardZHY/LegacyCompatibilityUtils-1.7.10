@@ -26,18 +26,22 @@ public class ModLoaderNetworkHandler extends NetworkModHandler {
         this.baseMod = baseMod;
     }
 
+    @Override
     public boolean requiresClientSide() {
         return false;
     }
 
+    @Override
     public boolean requiresServerSide() {
         return false;
     }
 
+    @Override
     public boolean acceptVersion(String version) {
         return super.acceptVersion(version);
     }
 
+    @Override
     public boolean isNetworkMod() {
         return true;
     }

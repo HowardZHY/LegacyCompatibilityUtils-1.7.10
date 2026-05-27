@@ -82,7 +82,7 @@ public @interface NetworkMod
      */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
-    public @interface VersionCheckHandler { }
+    public @interface VersionCheckHandler {}
 
     /**
      * Bundles together a packet handler, and it's associated channels for the sided packet handlers

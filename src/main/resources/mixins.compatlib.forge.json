@@ -16,9 +16,14 @@
     "MixinEntityRegistry",
     "MixinFMLCommonHandler",
     "MixinFMLControlledNamespacedRegistry",
+    "MixinFMLMessageEntityAdjustMessage",
+    "MixinFMLMessageEntityMessage",
+    "MixinFMLMessageEntitySpawnMessage",
+    "MixinFMLServerHandler",
     "MixinGameRegistry",
     "MixinLanguageRegistry",
     "MixinNetworkRegistry",
-    "MixinTickEventType"
+    "MixinTickEventType",
+    "interfaces.MixinIFMLSidedHandler"
   ]
 }

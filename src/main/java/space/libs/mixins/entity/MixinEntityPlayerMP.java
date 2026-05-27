@@ -3,6 +3,7 @@ package space.libs.mixins.entity;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.network.NetServerHandler;
 import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ItemInWorldManager;
@@ -13,9 +14,10 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import space.libs.interfaces.IEntityPlayerMP;
 
 @Mixin(EntityPlayerMP.class)
-public abstract class MixinEntityPlayerMP extends MixinEntityPlayer {
+public abstract class MixinEntityPlayerMP extends MixinEntityPlayer implements IEntityPlayerMP {
 
     @Shadow
     public NetHandlerPlayServer playerNetServerHandler;
@@ -30,5 +32,11 @@ public abstract class MixinEntityPlayerMP extends MixinEntityPlayer {
     @Override
     public void func_71035_c(String msg) {
         this.playerNetServerHandler.sendPacket(new S02PacketChat(new ChatComponentText(msg)));
+    }
+
+    @SuppressWarnings("DataFlowIssue")
+    @Override
+    public NetServerHandler getNetServerHandler() {
+        return (NetServerHandler) (Object) this.playerNetServerHandler;
     }
 }

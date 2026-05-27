@@ -67,7 +67,9 @@ public class FMLNetworkHandler extends cpw.mods.fml.common.network.internal.FMLN
         INetworkRegistry.instance().clientLoggedIn(clientHandler, manager, login);
     }
 
-    public void handleFMLPacket(Packet250CustomPayload packet, INetworkManager network, NetHandler netHandler) {}
+    public void handleFMLPacket(Packet250CustomPayload packet, INetworkManager network, NetHandler netHandler) {
+        // NO-OP
+    }
 
     public static void onConnectionReceivedFromClient(NetLoginHandler netLoginHandler, MinecraftServer server, SocketAddress address, String userName) {
         instance().handleClientConnection(netLoginHandler, server, address, userName);

@@ -35,6 +35,9 @@ public abstract class MixinWorld implements IBlockAccessBridge {
     @Shadow
     public abstract void notifyBlockOfNeighborChange(int x, int y, int z, Block block);
 
+    @Shadow
+    public abstract void addBlockEvent(int x, int y, int z, Block blockIn, int eventId, int eventParameter);
+
     @Override
     public int func_72798_a(int x, int y, int z) {
         return Block.getIdFromBlock(this.getBlock(x, y, z));
@@ -42,6 +45,10 @@ public abstract class MixinWorld implements IBlockAccessBridge {
 
     public boolean func_72832_d(int x, int y, int z, int block, int metadataIn, int flags) {
         return this.setBlock(x, y, z, Block.getBlockById(block), metadataIn, flags);
+    }
+
+    public void func_72965_b(int x, int y, int z, int block, int eventId, int eventParameter) {
+        this.addBlockEvent(x, y, z, Block.getBlockById(block), eventId, eventParameter);
     }
 
     @MappedName("getWorldVec3Pool")

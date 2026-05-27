@@ -11,6 +11,7 @@ package space.libs.mixins.forge;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.IFMLSidedHandler;
 import cpw.mods.fml.common.eventhandler.EventBus;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.item.EntityItem;
@@ -35,6 +36,9 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Mixin(value = FMLCommonHandler.class, remap = false)
 public abstract class MixinFMLCommonHandler implements IFMLCommonHandler {
+
+    @Shadow
+    private IFMLSidedHandler sidedDelegate;
 
     @Shadow
     public abstract EventBus bus();
@@ -184,6 +188,13 @@ public abstract class MixinFMLCommonHandler implements IFMLCommonHandler {
     }
 
     @Override
-    public void handleTinyPacket(NetHandler handler, Packet131MapData mapData) {}
+    public void handleTinyPacket(NetHandler handler, Packet131MapData mapData) {
+        IIFMLSidedHandler accessor = (IIFMLSidedHandler) sidedDelegate;
+        accessor.handleTinyPacket(handler, mapData);
+    }
 
+    public void updateResourcePackList() {
+        IIFMLSidedHandler accessor = (IIFMLSidedHandler) sidedDelegate;
+        accessor.updateResourcePackList();
+    }
 }
