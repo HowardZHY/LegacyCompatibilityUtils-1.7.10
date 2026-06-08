@@ -53,9 +53,7 @@ public class CompatLibLateCore implements IFMLLoadingPlugin, ICoreUtils {
             add.setAccessible(true);
             add.invoke(appClassLoader, this.getClass().getProtectionDomain().getCodeSource().getLocation());
             MethodUtils.invokeStaticMethod(appClassLoader.loadClass(CompatLibLateTweaker.class.getName()), "init");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception ignored) {}
         final List<String> tweaks = GlobalProperties.get(MixinServiceLaunchWrapper.BLACKBOARD_KEY_TWEAKCLASSES);
         tweaks.add("space.libs.util.launch.CompatLibLateTweaker");
     }

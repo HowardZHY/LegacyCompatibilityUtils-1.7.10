@@ -130,7 +130,7 @@ public class NetworkModHandler {
             }
             INetworkRegistry.RegisterConnectionHandler(instance);
         }
-        if (mod.tinyPacketHandler()!=getTinyPacketHandlerDefaultValue()) {
+        if (mod.tinyPacketHandler() != getTinyPacketHandlerDefaultValue()) {
             try {
                 tinyPacketHandler = mod.tinyPacketHandler().newInstance();
             } catch (Exception e) {
@@ -144,8 +144,8 @@ public class NetworkModHandler {
         if (side != null && side.isClient() && ! FMLCommonHandler.instance().getSide().isClient()) {
             return;
         }
-        if (clazz!=getPacketHandlerDefaultValue()) {
-            if (channels.length==0) {
+        if (clazz != getPacketHandlerDefaultValue()) {
+            if (channels.length == 0) {
                 FMLLog.warning("The mod id %s attempted to register a packet handler without specifying channels for it", container.getModId());
             } else {
                 IPacketHandler instance;

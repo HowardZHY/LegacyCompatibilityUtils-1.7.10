@@ -131,13 +131,13 @@ public abstract class Packet extends FMLProxyPacket {
     }
 
     @MappedName("writeNBTTagCompound")
-    public static void func_73275_a(NBTTagCompound nbt, DataOutput par1DataOutput) throws IOException {
+    public static void func_73275_a(NBTTagCompound nbt, DataOutput output) throws IOException {
         if (nbt == null) {
-            par1DataOutput.writeShort(-1);
+            output.writeShort(-1);
         } else {
             byte[] b = CompressedStreamTools.compress(nbt);
-            par1DataOutput.writeShort((short)b.length);
-            par1DataOutput.write(b);
+            output.writeShort((short)b.length);
+            output.write(b);
         }
     }
 }

@@ -3,6 +3,7 @@ package space.libs.asm;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
 import space.libs.asm.visitors.ConfigurationVisitor;
+import space.libs.asm.visitors.FMLLogVisitor;
 
 @SuppressWarnings("unused")
 public class EarliestTransformer implements IClassTransformer {
@@ -12,10 +13,14 @@ public class EarliestTransformer implements IClassTransformer {
         if (name == null || bytes == null) {
             return bytes;
         }
-        if (name.equals("net.minecraftforge.common.config.Configuration")) {
-            return TransformerUtils.transform(bytes, ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES, ConfigurationVisitor.class, ClassReader.EXPAND_FRAMES);
+        if (name.equals("cpw.mods.fml.common.FMLLog")) {
+            return TransformerUtils.transformSafe(bytes, ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES, FMLLogVisitor.class, ClassReader.EXPAND_FRAMES);
         } else {
-            return bytes;
+            if (name.equals("net.minecraftforge.common.config.Configuration")) {
+                return TransformerUtils.transform(bytes, ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES, ConfigurationVisitor.class, ClassReader.EXPAND_FRAMES);
+            } else {
+                return bytes;
+            }
         }
     }
 
