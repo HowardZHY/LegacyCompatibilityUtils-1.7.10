@@ -8,17 +8,21 @@ import cpw.mods.fml.common.modloader.BaseModProxy;
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.Launch;
 import space.libs.CompatLib;
+import space.libs.core.ICoreUtils;
+import space.libs.util.PlayerUtils;
 
 import java.lang.reflect.*;
 import java.util.regex.Pattern;
 
-public abstract class ModLoadingUtils {
+public abstract class ModLoadingUtils implements ICoreUtils {
 
     public static Pattern modClass;
 
     public static void init() {
-        PatternInitializer initializer = new PatternInitializer();
-        initializer.start();
+        EXECUTOR.execute(() -> {
+            modClass = Pattern.compile(".*(\\.|)(mod_[^\\s$]+)$");
+            PlayerUtils.UUID = Pattern.compile("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}");
+        });
     }
 
     @SuppressWarnings("unused")
@@ -61,14 +65,6 @@ public abstract class ModLoadingUtils {
             map.put(modClazzName, c.cast(instance));
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    public static class PatternInitializer extends Thread {
-
-        @Override
-        public void run() {
-            modClass = Pattern.compile(".*(\\.|)(mod_[^\\s$]+)$");
         }
     }
 }

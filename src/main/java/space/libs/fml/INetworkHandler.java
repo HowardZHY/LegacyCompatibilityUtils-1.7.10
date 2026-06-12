@@ -15,6 +15,7 @@ package space.libs.fml;
 /**
  * @author cpw
  */
+@SuppressWarnings("unused")
 public interface INetworkHandler {
 
     boolean onChat(Object... data);

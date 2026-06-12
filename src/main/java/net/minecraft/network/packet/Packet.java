@@ -2,8 +2,7 @@ package net.minecraft.network.packet;
 
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
-import io.netty.buffer.ByteBufInputStream;
-import io.netty.buffer.Unpooled;
+import io.netty.buffer.*;
 import net.minecraft.client.multiplayer.NetClientHandler;
 import net.minecraft.logging.ILogAgent;
 import net.minecraft.nbt.*;
@@ -28,7 +27,7 @@ public abstract class Packet extends FMLProxyPacket {
     public boolean field_73287_r = false;
 
     public Packet() {
-        this("NOOP", new byte[0]);
+        this("UNKNOWN", new byte[0]);
     }
 
     public Packet(String type, byte[] data) {
@@ -97,7 +96,12 @@ public abstract class Packet extends FMLProxyPacket {
 
     @Override
     public void writePacketData(PacketBuffer data) {
-        // NO-OP?
+        try {
+            DataOutput out = new DataOutputStream(new ByteBufOutputStream(data));
+            this.func_73273_a(out);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

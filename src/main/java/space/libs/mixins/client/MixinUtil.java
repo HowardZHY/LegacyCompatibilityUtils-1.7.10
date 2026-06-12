@@ -3,22 +3,22 @@ package space.libs.mixins.client;
 import net.minecraft.util.Util;
 import org.spongepowered.asm.mixin.Mixin;
 import space.libs.util.MappedName;
+import space.libs.util.PlayerUtils;
 import space.libs.util.cursedmixinextensions.annotations.Public;
 
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-@SuppressWarnings("all")
 @Mixin(Util.class)
 public abstract class MixinUtil {
 
     @Public
-    private static Pattern field_147174_a = Pattern.compile("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}");
+    private static Pattern field_147174_a = PlayerUtils.UUID;
 
     @MappedName("isUUIDStringDetermines")
     @Public
-    private static boolean func_147172_a(String paramString) {
-        return field_147174_a.matcher(paramString).matches();
+    private static boolean func_147172_a(String s) {
+        return field_147174_a.matcher(s).matches();
     }
 
     @MappedName("tryGetUUIDFromString")

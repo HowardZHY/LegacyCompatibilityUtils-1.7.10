@@ -15,8 +15,11 @@ public class Packet250CustomPayload extends Packet {
     @MappedName("data")
     public byte[] field_73629_c;
 
+    public boolean raw;
+
     public Packet250CustomPayload() {
         super();
+        this.raw = true;
     }
 
     public Packet250CustomPayload(String type, byte[] data) {

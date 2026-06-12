@@ -5,6 +5,8 @@ import org.objectweb.asm.*;
 @SuppressWarnings("unused")
 public class ClassWriterSafe extends ClassWriter {
 
+    public static final String OBJECT = "java/lang/Object";
+
     public ClassWriterSafe(int flags) {
         super(flags);
     }
@@ -24,13 +26,13 @@ public class ClassWriterSafe extends ClassWriter {
             } else if (c2.isAssignableFrom(c1)) {
                 return type2;
             } else if (c1.isInterface() || c2.isInterface()) {
-                return "java/lang/Object";
+                return OBJECT;
             } else do {
                 c1 = c1.getSuperclass();
             } while (!c1.isAssignableFrom(c2));
             return c1.getName().replace('.', '/');
         } catch (Throwable t) {
-            return "java/lang/Object";
+            return OBJECT;
         }
     }
 }

@@ -6,7 +6,8 @@ import space.libs.util.IPathUtils;
 import java.io.File;
 import java.nio.file.*;
 import java.util.Set;
-import java.util.concurrent.*;
+
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.zip.*;
 
 public class CompatLoader implements ICoreUtils, IPathUtils {
@@ -14,8 +15,6 @@ public class CompatLoader implements ICoreUtils, IPathUtils {
     public static final Version[] VERSIONS = new Version[127];
 
     public static final short[] LOAD = new short[]{62, 64};
-
-    public static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(LOAD.length);
 
     public static boolean INIT = false;
 

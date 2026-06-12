@@ -1,6 +1,11 @@
 package space.libs.util;
 
-@SuppressWarnings("all")
-public abstract class PlayerUtils {
+import space.libs.core.ICoreUtils;
+
+import java.util.regex.Pattern;
+
+public abstract class PlayerUtils implements ICoreUtils {
+
+    public static Pattern UUID;
 
 }

@@ -13,6 +13,7 @@ import net.minecraft.network.packet.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.world.World;
+import space.libs.CompatLib;
 import space.libs.interfaces.*;
 
 import java.io.IOException;
@@ -106,7 +107,8 @@ public class FMLNetworkHandler extends cpw.mods.fml.common.network.internal.FMLN
     public boolean registerNetworkMod(ModContainer container, Class<?> networkModClass, ASMDataTable asmData) {
         NetworkModHandler handler = new NetworkModHandler(container, networkModClass, asmData);
         if (handler.isNetworkMod()) {
-            registerNetworkMod(handler);
+            CompatLib.LOGGER.info("Registering Legacy NetworkMod" + networkModClass);
+            this.registerNetworkMod(handler);
         }
         return handler.isNetworkMod();
     }
@@ -182,9 +184,9 @@ public class FMLNetworkHandler extends cpw.mods.fml.common.network.internal.FMLN
             }
         }
         if (add == null && !addresses.isEmpty()) {
-            for (InetAddress addr: addresses) {
-                if (addr.getAddress().length == 4) {
-                    add = addr;
+            for (InetAddress ia: addresses) {
+                if (ia.getAddress().length == 4) {
+                    add = ia;
                     break;
                 }
             }

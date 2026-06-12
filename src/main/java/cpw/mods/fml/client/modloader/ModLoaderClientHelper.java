@@ -43,7 +43,6 @@ import space.libs.fml.client.KeyBindingRegistry;
 import java.util.*;
 import java.util.Map.Entry;
 
-@SuppressWarnings("unused")
 @SideOnly(Side.CLIENT)
 public class ModLoaderClientHelper implements IModLoaderSidedHelper {
 
@@ -99,6 +98,7 @@ public class ModLoaderClientHelper implements IModLoaderSidedHelper {
 
     private static Multimap<ModLoaderModContainer, ModLoaderKeyBindingHandler> keyBindingContainers;
 
+    @SuppressWarnings("unused")
     public static void registerKeyBinding(BaseModProxy mod, KeyBinding keyHandler, boolean allowRepeat) {
         ModLoaderModContainer container = (ModLoaderModContainer) Loader.instance().activeModContainer();
         ModLoaderKeyBindingHandler handler = Iterables.getOnlyElement(keyBindingContainers.get(container));
@@ -122,17 +122,17 @@ public class ModLoaderClientHelper implements IModLoaderSidedHelper {
 
     @Override
     public Object getClientGui(BaseModProxy mod, EntityPlayer player, int ID, int x, int y, int z) {
-        return ((net.minecraft.src.BaseMod)mod).getContainerGUI((EntityClientPlayerMP) player, ID, x, y, z);
+        return ((BaseMod)mod).getContainerGUI((EntityClientPlayerMP) player, ID, x, y, z);
     }
 
     @Override
     public Entity spawnEntity(BaseModProxy mod, EntitySpawnPacket input, EntityRegistry.EntityRegistration er) {
-        return ((net.minecraft.src.BaseMod)mod).spawnEntity(er.getModEntityId(), client.theWorld, input.getScaled(1), input.getScaled(2), input.getScaled(3));
+        return ((BaseMod)mod).spawnEntity(er.getModEntityId(), client.theWorld, input.getScaled(1), input.getScaled(2), input.getScaled(3));
     }
 
     @Override
     public void sendClientPacket(BaseModProxy mod, Packet250CustomPayload packet) {
-        ((net.minecraft.src.BaseMod)mod).clientCustomPayload(client.thePlayer.sendQueue, packet);
+        ((BaseMod)mod).clientCustomPayload(client.thePlayer.sendQueue, packet);
     }
 
     public Map<INetworkManager, NetHandler> managerLookups = new MapMaker().weakKeys().weakValues().makeMap();

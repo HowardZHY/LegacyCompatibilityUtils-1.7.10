@@ -19,6 +19,7 @@
     "MixinFMLMessageEntityAdjustMessage",
     "MixinFMLMessageEntityMessage",
     "MixinFMLMessageEntitySpawnMessage",
+    "MixinFMLProxyPacket",
     "MixinFMLServerHandler",
     "MixinGameRegistry",
     "MixinLanguageRegistry",

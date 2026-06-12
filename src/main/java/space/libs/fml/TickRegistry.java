@@ -80,9 +80,8 @@ public class TickRegistry {
             ticks.clear();
             long tick = getCounter(side).incrementAndGet();
             PriorityQueue<TickQueueElement> tickHandlers = getQueue(side);
-
             while (true) {
-                if (tickHandlers.size()==0 || !tickHandlers.peek().scheduledNow(tick)) {
+                if (tickHandlers.size() == 0 || !tickHandlers.peek().scheduledNow(tick)) {
                     break;
                 }
                 TickRegistry.TickQueueElement tickQueueElement  = tickHandlers.poll();
