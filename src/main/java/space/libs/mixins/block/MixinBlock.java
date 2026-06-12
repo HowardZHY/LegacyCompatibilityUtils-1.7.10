@@ -21,10 +21,10 @@ import space.libs.util.forge.RegistryUtils;
 public abstract class MixinBlock implements BlockProxy, IBlock, ICoreUtils {
 
     @Shadow
-    protected String textureName;
+    public String textureName;
 
     @Shadow
-    private String unlocalizedName;
+    public String unlocalizedName;
 
     @Shadow
     public abstract Block setStepSound(Block.SoundType sound);

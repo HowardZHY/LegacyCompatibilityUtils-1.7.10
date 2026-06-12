@@ -164,21 +164,24 @@ public class MixinNetworkRegistry implements INetworkRegistry {
     @Override
     public void handleCustomPacket(Packet250CustomPayload packet, INetworkManager network, NetHandler handler) {
         if ("REGISTER".equals(packet.field_73630_a)) {
-            handleRegistrationPacket(packet, (Player)handler.getPlayer());
+            this.handleRegistrationPacket(packet, (Player)handler.getPlayer());
         } else if ("UNREGISTER".equals(packet.field_73630_a)) {
-            handleUnregistrationPacket(packet, (Player)handler.getPlayer());
+            this.handleUnregistrationPacket(packet, (Player)handler.getPlayer());
         } else {
-            handlePacket(packet, network, (Player)handler.getPlayer());
+            this.handlePacket(packet, network, (Player)handler.getPlayer());
         }
     }
 
     @Override
     public void handlePacket(Packet250CustomPayload packet, INetworkManager network, Player player) {
         String channel = packet.field_73630_a;
-        for (IPacketHandler handler : Iterables.concat(
+        for (
+            IPacketHandler handler :
+            Iterables.concat(
                 universalPacketHandlers.get(channel),
                 player instanceof EntityPlayerMP ? serverPacketHandlers.get(channel) : clientPacketHandlers.get(channel)
-        )) {
+            )
+        ) {
             handler.onPacketData(network, packet, player);
         }
     }

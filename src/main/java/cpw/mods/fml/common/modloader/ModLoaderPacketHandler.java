@@ -17,6 +17,7 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import space.libs.fml.network.IPacketHandler;
 import space.libs.fml.network.Player;
+import space.libs.interfaces.IEntityPlayerMP;
 
 public class ModLoaderPacketHandler implements IPacketHandler {
 
@@ -29,7 +30,8 @@ public class ModLoaderPacketHandler implements IPacketHandler {
     @Override
     public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
         if (player instanceof EntityPlayerMP) {
-            mod.serverCustomPayload(player.getNetServerHandler(), packet);
+            IEntityPlayerMP playerMP = (IEntityPlayerMP) player;
+            mod.serverCustomPayload(playerMP.getNetServerHandler(), packet);
         } else {
             ModLoaderHelper.sidedHelper.sendClientPacket(mod, packet);
         }

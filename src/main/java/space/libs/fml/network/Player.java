@@ -12,14 +12,9 @@
 
 package space.libs.fml.network;
 
-import net.minecraft.network.NetServerHandler;
-
 /**
  * @author cpw
  */
 public interface Player {
 
-    default NetServerHandler getNetServerHandler() {
-        return null;
-    }
 }
