@@ -41,6 +41,7 @@
   ],
   "mixins": [
     "MixinCommandBase",
+    "MixinContainer",
     "MixinEnchantmentDamage",
     "MixinMinecraftServer",
     "MixinPlayerManager",

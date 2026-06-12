@@ -3,7 +3,7 @@ package space.libs.core;
 import com.google.common.eventbus.EventBus;
 import cpw.mods.fml.common.*;
 
-import static space.libs.util.ForgeUtils.*;
+import static space.libs.util.forge.ForgeUtils.*;
 
 @SuppressWarnings({"unused", "UnstableApiUsage"})
 public class CompatLibCoreContainer extends DummyModContainer {
