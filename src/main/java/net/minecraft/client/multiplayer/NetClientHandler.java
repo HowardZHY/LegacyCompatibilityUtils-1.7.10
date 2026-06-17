@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import space.libs.fml.network.FMLNetworkHandler;
 
 /**
+ * @see net.minecraft.client.network.NetHandlerLoginClient
  * @see net.minecraft.client.network.NetHandlerPlayClient
  */
 public class NetClientHandler extends NetHandler {
@@ -18,6 +19,11 @@ public class NetClientHandler extends NetHandler {
     public static byte connectionCompatibilityLevel;
 
     public final Minecraft field_72563_h = Minecraft.getMinecraft();
+
+    @Override
+    public void func_72455_a(Packet1Login packet1Login) {
+        FMLNetworkHandler.onConnectionEstablishedToServer(this, this.getNetworkManager(), packet1Login);
+    }
 
     @Override
     public void func_72501_a(Packet250CustomPayload payload) {
@@ -46,11 +52,11 @@ public class NetClientHandler extends NetHandler {
     }
 
     public INetworkManager getNetworkManager() {
-        return (INetworkManager) this.get().netManager;
+        return (INetworkManager) get(this).netManager;
     }
 
     @SuppressWarnings("DataFlowIssue")
-    public NetHandlerPlayClient get() {
-        return ((NetHandlerPlayClient) (Object) this);
+    public static NetHandlerPlayClient get(NetClientHandler instance) {
+        return ((NetHandlerPlayClient) (Object) instance);
     }
 }

@@ -20,6 +20,7 @@ import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.discovery.ASMDataTable;
 import cpw.mods.fml.common.discovery.ASMDataTable.ASMData;
 import cpw.mods.fml.common.network.FMLNetworkException;
+import cpw.mods.fml.common.network.internal.NetworkModHolder;
 import cpw.mods.fml.common.versioning.*;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.init.Items;
@@ -27,7 +28,7 @@ import net.minecraft.item.Item;
 import space.libs.interfaces.INetworkRegistry;
 
 @SuppressWarnings("unused")
-public class NetworkModHandler {
+public class NetworkModHandler extends NetworkModHolder {
 
     public static Object connectionHandlerDefaultValue;
 
@@ -56,6 +57,7 @@ public class NetworkModHandler {
     public ITinyPacketHandler tinyPacketHandler;
 
     public NetworkModHandler(ModContainer container, NetworkMod modAnnotation) {
+        super(container);
         this.container = container;
         this.mod = modAnnotation;
         this.localId = assignedIds++;
@@ -242,18 +244,22 @@ public class NetworkModHandler {
         return mod.serverSideRequired();
     }
 
+    @Override
     public boolean acceptVersion(String version) {
         return true;
     }
 
+    @Override
     public int getLocalId() {
         return localId;
     }
 
+    @Override
     public int getNetworkId() {
         return networkId;
     }
 
+    @Override
     public ModContainer getContainer() {
         return container;
     }
@@ -266,7 +272,9 @@ public class NetworkModHandler {
         return mod != null;
     }
 
+    @Override
     public void setNetworkId(int value) {
+        super.setNetworkId(value);
         this.networkId = value;
     }
 
@@ -276,5 +284,10 @@ public class NetworkModHandler {
 
     public ITinyPacketHandler getTinyPacketHandler() {
         return tinyPacketHandler;
+    }
+
+    @Override
+    public boolean acceptsVanilla(Side from) {
+        return true;
     }
 }

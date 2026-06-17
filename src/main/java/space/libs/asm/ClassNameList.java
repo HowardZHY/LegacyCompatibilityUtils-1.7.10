@@ -80,6 +80,7 @@ public class ClassNameList {
             "java",
             "jopt",
             "junit",
+            "mcp.mobius.wail",
             "net.java.",
             "net.jpointz",
             "net.md_5.spec",

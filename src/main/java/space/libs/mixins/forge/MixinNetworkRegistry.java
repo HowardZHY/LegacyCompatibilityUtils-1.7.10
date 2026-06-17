@@ -18,6 +18,8 @@ import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.discovery.ASMDataTable;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
+import net.minecraft.client.multiplayer.NetClientHandler;
+import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.player.*;
 import net.minecraft.network.*;
 import net.minecraft.network.packet.*;
@@ -57,7 +59,13 @@ public class MixinNetworkRegistry implements INetworkRegistry {
     public List<IChatListener> chatListeners = Lists.newArrayList();
 
     public byte[] getPacketRegistry(Side side) {
-        return Joiner.on('\0').join(Iterables.concat(Collections.singletonList("FML"),universalPacketHandlers.keySet(), side.isClient() ? clientPacketHandlers.keySet() : serverPacketHandlers.keySet())).getBytes(Charsets.UTF_8);
+        return Joiner.on('\0').join(
+            Iterables.concat(
+                Collections.singletonList("FML"),
+                universalPacketHandlers.keySet(),
+                side.isClient() ? clientPacketHandlers.keySet() : serverPacketHandlers.keySet()
+            )
+        ).getBytes(Charsets.UTF_8);
     }
 
     @Override
@@ -146,11 +154,18 @@ public class MixinNetworkRegistry implements INetworkRegistry {
     }
 
     public void generateChannelRegistration(EntityPlayer player, NetHandler netHandler, INetworkManager manager) {
-        Packet250CustomPayload pkt = new Packet250CustomPayload();
-        pkt.field_73630_a = "REGISTER";
-        pkt.field_73629_c = getPacketRegistry(player instanceof EntityPlayerMP ? Side.SERVER : Side.CLIENT);
+        String channel = "REGISTER";
+        byte[] data = getPacketRegistry(player instanceof EntityPlayerMP ? Side.SERVER : Side.CLIENT);
+        Packet250CustomPayload pkt = new Packet250CustomPayload(channel, data);
         pkt.field_73628_b = pkt.field_73629_c.length;
-        manager.func_74429_a(pkt); //addToSendQueue
+        if (netHandler instanceof NetServerHandler) {
+            NetHandlerPlayServer handlerPlayServer = NetServerHandler.get((NetServerHandler) netHandler);
+            handlerPlayServer.sendPacket(pkt.toS3FPacket());
+        } else if (netHandler instanceof NetClientHandler) {
+            NetHandlerPlayClient handlerPlayClient = NetClientHandler.get((NetClientHandler) netHandler);
+            handlerPlayClient.addToSendQueue(pkt.toC17Packet());
+        }
+        manager.func_74429_a(pkt);
     }
 
     @Override

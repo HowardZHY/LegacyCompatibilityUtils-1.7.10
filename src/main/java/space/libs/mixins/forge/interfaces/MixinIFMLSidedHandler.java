@@ -11,7 +11,6 @@ import space.libs.fml.ItemData;
 import space.libs.fml.network.*;
 import space.libs.interfaces.IIFMLSidedHandler;
 
-@SuppressWarnings("RedundantMethodOverride")
 @Mixin(value = IFMLSidedHandler.class, remap = false)
 public interface MixinIFMLSidedHandler extends IIFMLSidedHandler {
 

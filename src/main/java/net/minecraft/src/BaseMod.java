@@ -163,6 +163,9 @@ public abstract class BaseMod implements cpw.mods.fml.common.modloader.BaseModPr
 
     public void clientCustomPayload(NetClientHandler handler, Packet250CustomPayload packet) {}
 
-    public void clientCustomPayload(NetHandlerPlayClient handler, Packet250CustomPayload packet) {}
+    @SuppressWarnings("DataFlowIssue")
+    public void clientCustomPayload(NetHandlerPlayClient handler, Packet250CustomPayload packet) {
+        this.clientCustomPayload((NetClientHandler) (Object) handler, packet);
+    }
 
 }

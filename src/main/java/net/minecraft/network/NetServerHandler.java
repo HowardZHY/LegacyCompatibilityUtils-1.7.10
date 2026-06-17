@@ -17,15 +17,15 @@ public class NetServerHandler extends NetHandler {
 
     @Override
     public EntityPlayer getPlayer() {
-        return this.get().playerEntity;
+        return get(this).playerEntity;
     }
 
     public INetworkManager getNetworkManager() {
-        return (INetworkManager) this.get().netManager;
+        return (INetworkManager) get(this).netManager;
     }
 
     @SuppressWarnings("DataFlowIssue")
-    public NetHandlerPlayServer get() {
-        return ((NetHandlerPlayServer) (Object) this);
+    public static NetHandlerPlayServer get(NetServerHandler instance) {
+        return ((NetHandlerPlayServer) (Object) instance);
     }
 }

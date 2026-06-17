@@ -5,15 +5,18 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.*;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.BanList;
-import net.minecraft.server.management.ServerConfigurationManager;
-import net.minecraft.server.management.UserListOps;
-import net.minecraft.server.management.UserListWhitelist;
+import net.minecraft.server.management.*;
 import net.minecraft.stats.StatisticsFile;
 import net.minecraft.world.*;
 import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import space.libs.CompatLib;
+import space.libs.fml.network.FMLNetworkHandler;
+import space.libs.util.MappedName;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -68,7 +71,7 @@ public abstract class MixinServerConfigurationManager {
     @Shadow
     public void removeOp(GameProfile profile) {}
 
-    /** isPlayerOpped */
+    @MappedName("isPlayerOpped")
     public boolean func_72353_e(String name) {
         GameProfile profile = this.getProfileFromName(name);
         if (profile != null) {
@@ -78,7 +81,7 @@ public abstract class MixinServerConfigurationManager {
         }
     }
 
-    /** setGameType */
+    @MappedName("setGameType")
     public void func_72357_a(WorldSettings.GameType type) {
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             ServerConfigurationManager This = (ServerConfigurationManager) (Object) this;
@@ -88,7 +91,7 @@ public abstract class MixinServerConfigurationManager {
         }
     }
 
-    /** addToWhiteList */
+    @MappedName("addToWhiteList")
     public void func_72359_h(String name) {
         GameProfile profile = this.getProfileFromName(name);
         if (profile != null) {
@@ -96,7 +99,7 @@ public abstract class MixinServerConfigurationManager {
         }
     }
 
-    /** removeOP **/
+    @MappedName("removeOP")
     public void func_72360_c(String name) {
         GameProfile profile = this.ops.getGameProfileFromName(name);
         if (profile != null) {
@@ -104,7 +107,7 @@ public abstract class MixinServerConfigurationManager {
         }
     }
 
-    /** getPlayerForUsername */
+    @MappedName("getPlayerForUsername")
     public EntityPlayerMP func_72361_f(String name) {
         EntityPlayerMP entityplayermp;
         Iterator<EntityPlayerMP> iterator = this.playerEntityList.iterator();
@@ -116,7 +119,7 @@ public abstract class MixinServerConfigurationManager {
         return entityplayermp;
     }
 
-    /** isAllowedToLogin **/
+    @MappedName("isAllowedToLogin")
     public boolean func_72370_d(String name) {
         try {
             return this.canJoin(this.getProfileFromName(name));
@@ -126,7 +129,7 @@ public abstract class MixinServerConfigurationManager {
         }
     }
 
-    /** getOps **/
+    @MappedName("getOps")
     public Set<String> func_72376_i() {
         try {
             throw new UnsupportedOperationException("Server");
@@ -144,7 +147,7 @@ public abstract class MixinServerConfigurationManager {
         }
     }
 
-    /** addOp */
+    @MappedName("addOp")
     public void func_72386_b(String name) {
         GameProfile profile = this.getProfileFromName(name);
         if (profile != null) {
@@ -152,7 +155,7 @@ public abstract class MixinServerConfigurationManager {
         }
     }
 
-    /** getWhiteListedPlayers **/
+    @MappedName("getWhiteListedPlayers")
     public Set<String> func_72388_h() {
         try {
             throw new UnsupportedOperationException("Server");
@@ -163,7 +166,7 @@ public abstract class MixinServerConfigurationManager {
         return Arrays.stream(this.whiteListedPlayers.getKeys()).collect(Collectors.toSet());
     }
 
-    /** getBannedPlayers */
+    @MappedName("getBannedPlayers")
     public BanList func_72390_e() {
         try {
             throw new UnsupportedOperationException();
@@ -174,7 +177,7 @@ public abstract class MixinServerConfigurationManager {
         return this.bannedIPs;
     }
 
-    /** getPlayerListAsString */
+    @MappedName("getPlayerListAsString")
     public String func_72398_c() {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < this.playerEntityList.size(); i++) {
@@ -201,5 +204,18 @@ public abstract class MixinServerConfigurationManager {
             }
             return profile;
         }
+    }
+
+    @SuppressWarnings("DataFlowIssue")
+    @Inject(
+        method = "initializeConnectionToPlayer",
+        at = @At(
+            value = "INVOKE",
+            target = "Lcpw/mods/fml/common/FMLCommonHandler;firePlayerLoggedIn(Lnet/minecraft/entity/player/EntityPlayer;)V",
+            shift = At.Shift.AFTER
+        )
+    )
+    public void initializeConnectionToPlayer(NetworkManager manager, EntityPlayerMP player, NetHandlerPlayServer handler, CallbackInfo ci) {
+        FMLNetworkHandler.handlePlayerLogin(player, (NetServerHandler) (Object) handler, (INetworkManager) manager);
     }
 }

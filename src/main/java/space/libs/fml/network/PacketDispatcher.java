@@ -38,10 +38,11 @@ public class PacketDispatcher {
     }
 
     public static void sendPacketToPlayer(Packet packet, Player player) {
-        //TODO: Impl might be complicated
         validateChannel(packet);
         if (player instanceof EntityPlayerMP) {
             ((EntityPlayerMP)player).playerNetServerHandler.sendPacket(packet);
+        } else {
+            FMLLog.warning("Attempt to send packet to client player " + player + " wrongly ?");
         }
     }
 
