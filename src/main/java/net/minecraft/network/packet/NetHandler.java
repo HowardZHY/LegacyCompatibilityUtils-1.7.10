@@ -18,6 +18,10 @@ public abstract class NetHandler implements INetHandler {
 
     public void func_72455_a(Packet1Login packet1Login) {}
 
+    public void func_72494_a(Packet131MapData packet131MapData) {}
+
+    public void func_72468_a(Packet132TileEntityData par1Packet132TileEntityData) {}
+
     public void func_72501_a(Packet250CustomPayload payload) {}
 
     public void handleVanilla250Packet(Packet250CustomPayload payload) {

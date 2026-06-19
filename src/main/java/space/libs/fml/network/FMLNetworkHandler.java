@@ -76,7 +76,10 @@ public class FMLNetworkHandler extends cpw.mods.fml.common.network.internal.FMLN
         instance().handleClientConnection(netLoginHandler, server, address, userName);
     }
 
-    public void handleClientConnection(NetLoginHandler netLoginHandler, MinecraftServer server, SocketAddress address, String userName) {}
+    public void handleClientConnection(NetLoginHandler netLoginHandler, MinecraftServer server, SocketAddress address, String userName) {
+        String modKick = INetworkRegistry.instance().connectionReceived(netLoginHandler, netLoginHandler.getNetworkManager());
+        CompatLib.LOGGER.warn("Custom Legacy ModKick: " + modKick);
+    }
 
     public boolean handleVanillaLoginKick(NetLoginHandler netLoginHandler, MinecraftServer server, SocketAddress address, String userName) {
         ServerConfigurationManager playerList = server.getConfigurationManager();

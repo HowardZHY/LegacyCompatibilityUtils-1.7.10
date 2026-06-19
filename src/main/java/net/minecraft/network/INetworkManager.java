@@ -39,7 +39,9 @@ public interface INetworkManager {
     default void func_74423_d() {}
 
     @MappedName("packetSize")
-    int func_74426_e();
+    default int func_74426_e() {
+        return 0;
+    }
 
     @MappedName("networkShutdown")
     default void func_74424_a(String s, Object... args) {}

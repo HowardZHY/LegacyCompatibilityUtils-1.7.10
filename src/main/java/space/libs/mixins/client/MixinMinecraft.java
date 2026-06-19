@@ -9,6 +9,7 @@ import net.minecraft.util.ScreenShotHelper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import space.libs.util.MappedName;
 import space.libs.util.cursedmixinextensions.annotations.Public;
 
 import javax.imageio.ImageIO;
@@ -47,7 +48,7 @@ public abstract class MixinMinecraft {
     @Shadow
     public void displayGuiScreen(GuiScreen guiScreenIn) {}
 
-    /** screenshotListenerchecks */
+    @MappedName("screenshotListenerChecks")
     public void func_71365_K() {
         if (this.gameSettings.keyBindScreenshot.isPressed()) {
             if (!this.field_71414_F) {
@@ -63,16 +64,13 @@ public abstract class MixinMinecraft {
         this.displayGuiScreen(screen);
     }
 
-    /** readImage */
-    @SuppressWarnings("all")
-    public ByteBuffer func_110439_b(File par1File) throws IOException {
-        BufferedImage bufferedimage = ImageIO.read(par1File);
-        int[] aint = bufferedimage.getRGB(0, 0, bufferedimage.getWidth(), bufferedimage.getHeight(), (int[])null, 0, bufferedimage.getWidth());
-        ByteBuffer bytebuffer = ByteBuffer.allocate(4 * aint.length);
-        int[] aint1 = aint;
-        int i = aint.length;
-        for (int j = 0; j < i; j++) {
-            int k = aint1[j];
+    @MappedName("readImage")
+    public ByteBuffer func_110439_b(File file) throws IOException {
+        BufferedImage bufferedimage = ImageIO.read(file);
+        int[] array = bufferedimage.getRGB(0, 0, bufferedimage.getWidth(), bufferedimage.getHeight(), null, 0, bufferedimage.getWidth());
+        ByteBuffer bytebuffer = ByteBuffer.allocate(4 * array.length);
+        int i = array.length;
+        for (int k : array) {
             bytebuffer.putInt(k << 8 | k >> 24 & 0xFF);
         }
         bytebuffer.flip();

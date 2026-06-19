@@ -218,4 +218,9 @@ public abstract class MixinServerConfigurationManager {
     public void initializeConnectionToPlayer(NetworkManager manager, EntityPlayerMP player, NetHandlerPlayServer handler, CallbackInfo ci) {
         FMLNetworkHandler.handlePlayerLogin(player, (NetServerHandler) (Object) handler, (INetworkManager) manager);
     }
+
+    @Inject(method = "playerLoggedOut", at = @At("HEAD"))
+    public void playerLoggedOut(EntityPlayerMP player, CallbackInfo ci) {
+        FMLNetworkHandler.onConnectionClosed((INetworkManager) player.playerNetServerHandler.getNetworkManager(), player);
+    }
 }

@@ -13,7 +13,7 @@ import space.libs.util.MappedName;
 import java.io.*;
 
 /**
- * Old, Dummy Packet Class
+ * @implNote Old Packet Class
  */
 @SuppressWarnings("unused")
 public abstract class Packet extends FMLProxyPacket {
@@ -27,7 +27,7 @@ public abstract class Packet extends FMLProxyPacket {
     public boolean field_73287_r = false;
 
     public Packet() {
-        this("UNKNOWN", new byte[0]);
+        this("LEGACY", new byte[0]);
     }
 
     public Packet(String type, byte[] data) {
@@ -107,7 +107,7 @@ public abstract class Packet extends FMLProxyPacket {
     @Override
     public void processPacket(INetHandler handler) {
         if (handler instanceof NetHandler) {
-            if (handler instanceof NetServerHandler) {
+            if (handler instanceof NetServerHandler || handler instanceof NetLoginHandler) {
                 this.setTarget(Side.CLIENT);
             } else if (handler instanceof NetClientHandler) {
                 this.setTarget(Side.SERVER);

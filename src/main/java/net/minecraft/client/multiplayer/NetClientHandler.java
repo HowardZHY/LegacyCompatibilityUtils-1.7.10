@@ -5,8 +5,11 @@ import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.*;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.tileentity.*;
 import org.apache.logging.log4j.LogManager;
 import space.libs.fml.network.FMLNetworkHandler;
 
@@ -23,6 +26,36 @@ public class NetClientHandler extends NetHandler {
     @Override
     public void func_72455_a(Packet1Login packet1Login) {
         FMLNetworkHandler.onConnectionEstablishedToServer(this, this.getNetworkManager(), packet1Login);
+    }
+
+    @Override
+    public void func_72494_a(Packet131MapData packet131MapData) {
+        FMLNetworkHandler.handlePacket131Packet(this, packet131MapData);
+    }
+
+    @Override
+    public void func_72468_a(Packet132TileEntityData tileEntityData) {
+        int x = tileEntityData.field_73334_a;
+        int y = tileEntityData.field_73332_b;
+        int z = tileEntityData.field_73333_c;
+        if (this.field_72563_h.theWorld.blockExists(x, y, z)) {
+            TileEntity tileentity = this.field_72563_h.theWorld.getTileEntity(x, y, z);
+            if (tileentity != null) {
+                int type = tileEntityData.field_73330_d;
+                NBTTagCompound data = tileEntityData.field_73331_e;
+                if (type == 1 && tileentity instanceof TileEntityMobSpawner) {
+                    tileentity.readFromNBT(data);
+                } else if (type == 2 && tileentity instanceof TileEntityCommandBlock) {
+                    tileentity.readFromNBT(data);
+                } else if (type == 3 && tileentity instanceof TileEntityBeacon) {
+                    tileentity.readFromNBT(data);
+                } else if (type == 4 && tileentity instanceof TileEntitySkull) {
+                    tileentity.readFromNBT(data);
+                } else {
+                    tileentity.onDataPacket(get(this).netManager, new S35PacketUpdateTileEntity(x, y, z, type, data));
+                }
+            }
+        }
     }
 
     @Override

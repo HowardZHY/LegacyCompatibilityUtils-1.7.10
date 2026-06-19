@@ -92,7 +92,7 @@ public class NetworkModHandler extends NetworkModHolder {
                 FMLLog.warning("The declared version check handler method %s on network mod id %s is not accessible", versionCheckHandlerMethod, container.getModId());
             }
         }
-        configureNetworkMod(container);
+        this.configureNetworkMod(container);
     }
 
     public void configureNetworkMod(ModContainer container) {
@@ -113,14 +113,14 @@ public class NetworkModHandler extends NetworkModHolder {
         } else {
             FMLLog.finer("The mod %s accepts its own version (%s)", container.getModId(), container.getVersion());
         }
-        tryCreatingPacketHandler(container, mod.packetHandler(), mod.channels(), null);
+        this.tryCreatingPacketHandler(container, mod.packetHandler(), mod.channels(), null);
         if (FMLCommonHandler.instance().getSide().isClient()) {
             if (mod.clientPacketHandlerSpec() != getClientHandlerSpecDefaultValue()) {
-                tryCreatingPacketHandler(container, mod.clientPacketHandlerSpec().packetHandler(), mod.clientPacketHandlerSpec().channels(), Side.CLIENT);
+                this.tryCreatingPacketHandler(container, mod.clientPacketHandlerSpec().packetHandler(), mod.clientPacketHandlerSpec().channels(), Side.CLIENT);
             }
         }
         if (mod.serverPacketHandlerSpec() != getServerHandlerSpecDefaultValue()) {
-            tryCreatingPacketHandler(container, mod.serverPacketHandlerSpec().packetHandler(), mod.serverPacketHandlerSpec().channels(), Side.SERVER);
+            this.tryCreatingPacketHandler(container, mod.serverPacketHandlerSpec().packetHandler(), mod.serverPacketHandlerSpec().channels(), Side.SERVER);
         }
         if (mod.connectionHandler() != getConnectionHandlerDefaultValue()) {
             IConnectionHandler instance;
@@ -132,7 +132,7 @@ public class NetworkModHandler extends NetworkModHolder {
             }
             INetworkRegistry.RegisterConnectionHandler(instance);
         }
-        if (mod.tinyPacketHandler() != getTinyPacketHandlerDefaultValue()) {
+        if (mod.tinyPacketHandler() != this.getTinyPacketHandlerDefaultValue()) {
             try {
                 tinyPacketHandler = mod.tinyPacketHandler().newInstance();
             } catch (Exception e) {

@@ -1,14 +1,18 @@
 package net.minecraft.network;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.packet.NetHandler;
-import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.network.packet.*;
 import space.libs.fml.network.FMLNetworkHandler;
 
 /**
  * @see net.minecraft.network.NetHandlerPlayServer
  */
 public class NetServerHandler extends NetHandler {
+
+    @Override
+    public void func_72494_a(Packet131MapData par1Packet131MapData) {
+        FMLNetworkHandler.handlePacket131Packet(this, par1Packet131MapData);
+    }
 
     @Override
     public void func_72501_a(Packet250CustomPayload payload) {

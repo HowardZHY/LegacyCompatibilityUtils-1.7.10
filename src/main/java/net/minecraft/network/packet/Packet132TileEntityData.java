@@ -49,7 +49,7 @@ public class Packet132TileEntityData extends Packet {
 
     @Override
     public void func_73279_a(NetHandler handler) {
-        //handler.func_72468_a(this);
+        handler.func_72468_a(this);
     }
 
     public int func_73284_a() {
