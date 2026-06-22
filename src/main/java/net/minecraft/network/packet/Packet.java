@@ -18,6 +18,8 @@ import java.io.*;
 @SuppressWarnings("unused")
 public abstract class Packet extends FMLProxyPacket {
 
+    public static final String DEFAULT = "LEGACY";
+
     protected ILogAgent field_98193_m;
 
     @MappedName("creationTimeMillis")
@@ -27,7 +29,7 @@ public abstract class Packet extends FMLProxyPacket {
     public boolean field_73287_r = false;
 
     public Packet() {
-        this("LEGACY", new byte[0]);
+        this(DEFAULT, new byte[0]);
     }
 
     public Packet(String type, byte[] data) {
@@ -45,10 +47,10 @@ public abstract class Packet extends FMLProxyPacket {
     }
 
     @MappedName("readString")
-    public static String func_73282_a(DataInput input, int par1) throws IOException {
+    public static String func_73282_a(DataInput input, int i) throws IOException {
         short short1 = input.readShort();
-        if (short1 > par1) {
-            throw new IOException("Received string length longer than maximum allowed (" + short1 + " > " + par1 + ")");
+        if (short1 > i) {
+            throw new IOException("Received string length longer than maximum allowed (" + short1 + " > " + i + ")");
         } else if (short1 < 0) {
             throw new IOException("Received string length is less than zero! Weird string!");
         } else {

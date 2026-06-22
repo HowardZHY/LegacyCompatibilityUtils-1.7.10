@@ -4,13 +4,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.NetClientHandler;
 import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.NetworkManager;
+import net.minecraft.network.*;
 import net.minecraft.server.integrated.IntegratedServer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import space.libs.CompatNetworkHandler;
 import space.libs.fml.network.FMLNetworkHandler;
 import space.libs.util.cursedmixinextensions.annotations.ChangeSuperClass;
 
@@ -33,6 +33,16 @@ public abstract class MixinNetHandlerPlayClient {
             String ip = address.getHostString();
             int port = address.getPort();
             FMLNetworkHandler.onClientConnectionToRemoteServer(This, ip, port, iManager);
+        }
+    }
+
+    @Inject(method = "addToSendQueue", at = @At("HEAD"), cancellable = true)
+    public void addToSendQueue(Packet packetIn, CallbackInfo ci) {
+        if (packetIn instanceof net.minecraft.network.packet.Packet) {
+            CompatNetworkHandler.sendLegacyPacketToServer(
+                (net.minecraft.network.packet.Packet) packetIn
+            );
+            ci.cancel();
         }
     }
 }

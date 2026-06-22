@@ -28,6 +28,7 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import space.libs.CompatNetworkHandler;
 import space.libs.fml.network.*;
 import space.libs.interfaces.INetworkRegistry;
 import space.libs.util.cursedmixinextensions.annotations.Public;
@@ -75,6 +76,7 @@ public class MixinNetworkRegistry implements INetworkRegistry {
             throw new RuntimeException("Channel name is invalid");
         }
         universalPacketHandlers.put(channelName, handler);
+        CompatNetworkHandler.addChannel(channelName);
     }
 
     @Override
@@ -92,6 +94,7 @@ public class MixinNetworkRegistry implements INetworkRegistry {
         } else {
             serverPacketHandlers.put(channelName, handler);
         }
+        CompatNetworkHandler.addChannel(channelName);
     }
 
     public void activateChannel(Player player, String channel) {
