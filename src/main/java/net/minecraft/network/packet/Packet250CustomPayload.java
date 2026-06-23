@@ -1,5 +1,6 @@
 package net.minecraft.network.packet;
 
+import space.libs.CompatLib;
 import space.libs.util.MappedName;
 
 import java.io.*;
@@ -15,11 +16,9 @@ public class Packet250CustomPayload extends Packet {
     @MappedName("data")
     public byte[] field_73629_c;
 
-    public boolean raw;
-
     public Packet250CustomPayload() {
         super();
-        this.raw = true;
+        this.field_73630_a = Packet.DEFAULT;
     }
 
     public Packet250CustomPayload(String type, byte[] data) {
@@ -55,6 +54,7 @@ public class Packet250CustomPayload extends Packet {
 
     @Override
     public void func_73279_a(NetHandler handler) {
+        CompatLib.LOGGER.info(field_73630_a + field_73628_b + handler);
         handler.func_72501_a(this);
     }
 

@@ -26,7 +26,12 @@ public abstract class MixinFMLProxyPacket implements IFMLProxyPacket {
     }
 
     @Override
-    public void setPayload(byte[] payload) {
+    public void setPayload(ByteBuf payload) {
+        this.payload = payload;
+    }
+
+    @Override
+    public void setPayloadBytes(byte[] payload) {
         this.payload = Unpooled.wrappedBuffer(payload);
     }
 }

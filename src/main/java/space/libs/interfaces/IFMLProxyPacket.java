@@ -1,5 +1,7 @@
 package space.libs.interfaces;
 
+import io.netty.buffer.ByteBuf;
+
 @SuppressWarnings("unused")
 public interface IFMLProxyPacket {
 
@@ -7,6 +9,8 @@ public interface IFMLProxyPacket {
 
     void setChannel(String channel);
 
-    void setPayload(byte[] payload);
+    void setPayload(ByteBuf payload);
+
+    void setPayloadBytes(byte[] payload);
 
 }

@@ -28,8 +28,11 @@ public abstract class Packet extends FMLProxyPacket {
     @MappedName("isChunkDataPacket")
     public boolean field_73287_r = false;
 
+    public boolean raw;
+
     public Packet() {
         this(DEFAULT, new byte[0]);
+        this.raw = true;
     }
 
     public Packet(String type, byte[] data) {
@@ -87,32 +90,20 @@ public abstract class Packet extends FMLProxyPacket {
     public void func_73279_a(NetHandler handler) {}
 
     @Override
-    public void readPacketData(PacketBuffer data) {
-        try {
-            DataInput in = new DataInputStream(new ByteBufInputStream(data, data.readableBytes()));
-            this.func_73267_a(in);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    public void readPacketData(PacketBuffer data) {}
 
     @Override
-    public void writePacketData(PacketBuffer data) {
-        try {
-            DataOutput out = new DataOutputStream(new ByteBufOutputStream(data));
-            this.func_73273_a(out);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    public void writePacketData(PacketBuffer data) {}
 
     @Override
     public void processPacket(INetHandler handler) {
         if (handler instanceof NetHandler) {
-            if (handler instanceof NetServerHandler || handler instanceof NetLoginHandler) {
-                this.setTarget(Side.CLIENT);
-            } else if (handler instanceof NetClientHandler) {
-                this.setTarget(Side.SERVER);
+            if (this.getTarget() == null) {
+                if (handler instanceof NetServerHandler || handler instanceof NetLoginHandler) {
+                    this.setTarget(Side.CLIENT);
+                } else if (handler instanceof NetClientHandler) {
+                    this.setTarget(Side.SERVER);
+                }
             }
             super.processPacket(handler);
             this.func_73279_a((NetHandler) handler);
