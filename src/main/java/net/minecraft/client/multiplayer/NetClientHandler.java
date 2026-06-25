@@ -12,6 +12,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.*;
 import org.apache.logging.log4j.LogManager;
 import space.libs.fml.network.FMLNetworkHandler;
+import space.libs.util.MappedName;
 
 /**
  * @see net.minecraft.client.network.NetHandlerLoginClient
@@ -61,6 +62,15 @@ public class NetClientHandler extends NetHandler {
     @Override
     public void func_72501_a(Packet250CustomPayload payload) {
         FMLNetworkHandler.handlePacket250Packet(payload, this.getNetworkManager(), this);
+    }
+
+    @MappedName("addToSendQueue")
+    public void func_74429_a(Packet packet) {
+        this.addToSendQueue(packet);
+    }
+
+    public void addToSendQueue(net.minecraft.network.Packet packet) {
+        get(this).addToSendQueue(packet);
     }
 
     public void fmlPacket131Callback(Packet131MapData data) {

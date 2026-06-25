@@ -3,6 +3,7 @@ package net.minecraft.network;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.packet.*;
 import space.libs.fml.network.FMLNetworkHandler;
+import space.libs.util.MappedName;
 
 /**
  * @see net.minecraft.network.NetHandlerPlayServer
@@ -17,6 +18,15 @@ public class NetServerHandler extends NetHandler {
     @Override
     public void func_72501_a(Packet250CustomPayload payload) {
         FMLNetworkHandler.handlePacket250Packet(payload, this.getNetworkManager(), this);
+    }
+
+    @MappedName("sendPacketToPlayer")
+    public void func_72567_b(net.minecraft.network.packet.Packet packet) {
+        this.sendPacketToPlayer(packet);
+    }
+
+    public void sendPacketToPlayer(net.minecraft.network.Packet packet) {
+        get(this).sendPacket(packet);
     }
 
     @Override

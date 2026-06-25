@@ -19,7 +19,6 @@ import cpw.mods.fml.common.discovery.ASMDataTable;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.client.multiplayer.NetClientHandler;
-import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.player.*;
 import net.minecraft.network.*;
 import net.minecraft.network.packet.*;
@@ -162,11 +161,9 @@ public class MixinNetworkRegistry implements INetworkRegistry {
         Packet250CustomPayload pkt = new Packet250CustomPayload(channel, data);
         pkt.field_73628_b = pkt.field_73629_c.length;
         if (netHandler instanceof NetServerHandler) {
-            NetHandlerPlayServer handlerPlayServer = NetServerHandler.get((NetServerHandler) netHandler);
-            handlerPlayServer.sendPacket(pkt.toS3FPacket());
+            ((NetServerHandler) netHandler).sendPacketToPlayer(pkt.toS3FPacket());
         } else if (netHandler instanceof NetClientHandler) {
-            NetHandlerPlayClient handlerPlayClient = NetClientHandler.get((NetClientHandler) netHandler);
-            handlerPlayClient.addToSendQueue(pkt.toC17Packet());
+            ((NetClientHandler) netHandler).addToSendQueue(pkt.toC17Packet());
         }
         manager.func_74429_a(pkt);
     }
