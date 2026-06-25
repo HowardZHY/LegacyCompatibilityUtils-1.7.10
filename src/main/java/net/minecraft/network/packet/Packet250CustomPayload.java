@@ -17,8 +17,12 @@ public class Packet250CustomPayload extends Packet {
     public byte[] field_73629_c;
 
     public Packet250CustomPayload() {
+        this(Packet.DEFAULT);
+    }
+
+    public Packet250CustomPayload(String type) {
         super();
-        this.field_73630_a = Packet.DEFAULT;
+        this.field_73630_a = type;
     }
 
     public Packet250CustomPayload(String type, byte[] data) {

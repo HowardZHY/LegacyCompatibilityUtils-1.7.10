@@ -76,12 +76,19 @@ public class CompatNetworkHandler {
         FMLProxyPacket packet = event.packet;
         String channel = packet.channel();
         CompatLib.LOGGER.info(event + " " + packet + " " + channel);
-        if (NAMES.contains(channel)) {
-            Packet legacy = new Packet250CustomPayload(channel, packet.payload().array());
-            legacy.setTarget(packet.getTarget());
-            readPacketData(legacy);
-            legacy.func_73279_a((NetHandler) event.handler);
+        if (!NAMES.contains(channel)) {
+            return;
         }
+        ByteBuf buf = packet.payload();
+        int len = buf.readableBytes();
+        byte[] data = new byte[len];
+        buf.getBytes(buf.readerIndex(), data, 0, len);
+        Packet legacy = new Packet250CustomPayload(channel, data);
+        legacy.setTarget(packet.getTarget());
+        if (legacy.raw) {
+            readPacketData(legacy); //TODO - for other packets
+        }
+        legacy.func_73279_a((NetHandler) event.handler);
     }
 
     public static void readPacketData(Packet packet) {
@@ -107,13 +114,19 @@ public class CompatNetworkHandler {
 
     public static void validate(Packet packet) {
         IFMLProxyPacket accessor = (IFMLProxyPacket) packet;
+        if (packet instanceof Packet250CustomPayload) {
+            Packet250CustomPayload payload = (Packet250CustomPayload) packet;
+            byte[] data = payload.field_73629_c;
+            if (data == null) {
+                data = new byte[0];
+            }
+            payload.field_73628_b = data.length;
+            accessor.setChannel(payload.field_73630_a);
+            accessor.setPayloadBytes(data);
+            return;
+        }
         if (packet.raw) {
             writePacketData(packet);
-            if (packet instanceof Packet250CustomPayload) {
-                Packet250CustomPayload payload = (Packet250CustomPayload) packet;
-                accessor.setChannel(payload.field_73630_a);
-                accessor.setPayloadBytes(payload.field_73629_c);
-            }
         }
     }
 }

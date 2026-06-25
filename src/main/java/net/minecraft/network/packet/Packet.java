@@ -4,7 +4,7 @@ import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.*;
 import net.minecraft.client.multiplayer.NetClientHandler;
-import net.minecraft.logging.ILogAgent;
+import net.minecraft.logging.*;
 import net.minecraft.nbt.*;
 import net.minecraft.network.*;
 import net.minecraft.server.MinecraftServer;
@@ -20,7 +20,9 @@ public abstract class Packet extends FMLProxyPacket {
 
     public static final String DEFAULT = "LEGACY";
 
-    protected ILogAgent field_98193_m;
+    public final String Name = this.getClass().getSimpleName();
+
+    public ILogAgent field_98193_m = new LogAgent(Name, Name, "");
 
     @MappedName("creationTimeMillis")
     public final long field_73295_m = MinecraftServer.getCurrentTimeMillis();
