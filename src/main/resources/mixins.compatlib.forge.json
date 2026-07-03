@@ -9,7 +9,8 @@
     "MixinFMLClientHandler",
     "MixinForgeHooksClient",
     "MixinRenderingRegistry",
-    "MixinRenderPlayerEventSetArmorModel"
+    "MixinRenderPlayerEventSetArmorModel",
+    "interfaces.MixinISimpleBlockRenderingHandler"
   ],
   "mixins": [
     "MixinBonemealEvent",
