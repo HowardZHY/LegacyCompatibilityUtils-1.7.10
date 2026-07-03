@@ -23,7 +23,7 @@ public abstract class MixinBlockClient {
     public IIcon field_94336_cN;
 
     @Shadow
-    protected IIcon blockIcon;
+    public IIcon blockIcon;
 
     @Shadow
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {}
