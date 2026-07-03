@@ -49,7 +49,7 @@ public class Packet1Login extends Packet {
         this.field_73556_g = (byte)height;
         this.field_73562_h = (byte)maxPlayers;
         this.field_73560_c = hardcore;
-        this.vanillaCompatible = false;
+        this.vanillaCompatible = true;
     }
 
     @Override

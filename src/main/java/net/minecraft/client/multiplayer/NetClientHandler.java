@@ -6,7 +6,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.*;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.*;
@@ -18,7 +17,7 @@ import space.libs.util.MappedName;
  * @see net.minecraft.client.network.NetHandlerLoginClient
  * @see net.minecraft.client.network.NetHandlerPlayClient
  */
-public class NetClientHandler extends NetHandler {
+public class NetClientHandler extends NetHandler implements INetClientHandler {
 
     public static byte connectionCompatibilityLevel;
 
@@ -64,6 +63,7 @@ public class NetClientHandler extends NetHandler {
         FMLNetworkHandler.handlePacket250Packet(payload, this.getNetworkManager(), this);
     }
 
+    @Override
     @MappedName("addToSendQueue")
     public void func_74429_a(Packet packet) {
         this.addToSendQueue(packet);
@@ -83,7 +83,7 @@ public class NetClientHandler extends NetHandler {
 
     @Override
     public EntityPlayer getPlayer() {
-        return Minecraft.getMinecraft().thePlayer;
+        return this.field_72563_h.thePlayer;
     }
 
     public static void setConnectionCompatibilityLevel(byte connectionCompatibilityLevel) {
@@ -94,12 +94,11 @@ public class NetClientHandler extends NetHandler {
         return connectionCompatibilityLevel;
     }
 
-    public INetworkManager getNetworkManager() {
-        return (INetworkManager) get(this).netManager;
+    public static NetHandlerPlayClient get(INetClientHandler instance) {
+        return ((NetHandlerPlayClient) instance);
     }
 
-    @SuppressWarnings("DataFlowIssue")
-    public static NetHandlerPlayClient get(NetClientHandler instance) {
-        return ((NetHandlerPlayClient) (Object) instance);
+    public static NetClientHandler getLegacy(INetClientHandler instance) {
+        return ((NetClientHandler) instance);
     }
 }

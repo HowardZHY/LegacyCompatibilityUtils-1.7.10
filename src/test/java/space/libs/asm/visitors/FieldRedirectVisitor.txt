@@ -1,0 +1,95 @@
+package space.libs.asm.visitors;
+
+import com.google.common.base.*;
+import com.google.common.collect.Iterables;
+import com.google.common.io.*;
+import org.objectweb.asm.*;
+
+import java.io.IOException;
+import java.util.*;
+
+public class FieldRedirectVisitor extends ClassVisitor implements Opcodes {
+
+    public static String[][] ENTRIES = new String[0][];
+
+    public static boolean DISABLED;
+
+    @SuppressWarnings("UnstableApiUsage")
+    public static void init(final String file) throws IOException {
+        CharSource srgSource = Resources.asCharSource(Resources.getResource(file), Charsets.UTF_8);
+        List<String> csvList = srgSource.readLines();
+        Splitter splitter = Splitter.on(CharMatcher.anyOf(",")).omitEmptyStrings().trimResults();
+        List<String[]> entries = new ArrayList<>();
+        for (String line : csvList) {
+            line = line.trim();
+            if (line.length() < 1 || line.startsWith("#")) continue;
+            String[] parts = Iterables.toArray(splitter.split(line), String.class);
+            String[] entry = new String[]{parts[0], parts[1], parts[2], parts[3]};
+            entries.add(entry);
+        }
+        ENTRIES = entries.toArray(new String[0][]);
+        DISABLED = ENTRIES.length == 0;
+    }
+
+    public boolean changed;
+
+    public String currentClass;
+
+    public FieldRedirectVisitor(ClassVisitor cv) {
+        super(ASM5, cv);
+        this.changed = false;
+    }
+
+    @Override
+    public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+        this.currentClass = name;
+        super.visit(version, access, name, signature, superName, interfaces);
+    }
+
+    @Override
+    public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
+        MethodVisitor mv = super.visitMethod(access, name, desc, signature, exceptions);
+        if (mv == null) {
+            return null;
+        }
+        return new RedirectMethodVisitor(mv, this.currentClass);
+    }
+
+    public class RedirectMethodVisitor extends MethodVisitor {
+
+        private final String currentMethod;
+
+        RedirectMethodVisitor(MethodVisitor mv, String currentMethod) {
+            super(ASM5, mv);
+            this.currentMethod = currentMethod;
+        }
+
+        @Override
+        public void visitFieldInsn(int opcode, String owner, String name, String desc) {
+            for (String[] entry : ENTRIES) {
+                String owner1 = entry[0];
+                String field = entry[1];
+                String getter = entry[2];
+                String setter = entry[3];
+                if (this.currentMethod.equals(setter) || this.currentMethod.equals(getter)) {
+                    break;
+                }
+                if (!field.equals(name) || !owner1.equals(owner)) {
+                    continue;
+                }
+                if (opcode == GETFIELD && getter != null) {
+                    super.visitMethodInsn(INVOKEVIRTUAL, owner, getter, "()" + desc, false);
+                    changed = true;
+                    return;
+                }
+                if (opcode == PUTFIELD && setter != null) {
+                    super.visitMethodInsn(INVOKEVIRTUAL, owner, setter, "(" + desc + ")V", false);
+                    changed = true;
+                    return;
+                }
+                break;
+            }
+            super.visitFieldInsn(opcode, owner, name, desc);
+        }
+    }
+}

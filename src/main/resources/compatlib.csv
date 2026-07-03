@@ -258,6 +258,16 @@ field_94074_J,field_146993_M
 field_94075_K,field_146994_N
 field_94076_q,field_147007_t
 field_94077_p,field_147008_s
+# net/minecraft/client/network/NetHandlerPlayClient
+field_72556_d,field_147304_c
+field_72557_e,field_147306_l
+field_72558_b,field_147305_a
+field_72559_c,field_147303_b
+field_72561_j,field_147309_h
+field_72562_k,field_147310_i
+field_72563_h,field_147299_f
+field_72564_i,field_147300_g
+field_98183_l,field_147307_j
 # net/minecraft/client/renderer/RenderBlocks
 func_78570_q,func_147784_q
 func_78573_e,func_147798_e
@@ -276,6 +286,21 @@ renderTileEntityAt,func_147500_a
 # net/minecraft/inventory/IInventory
 func_70303_b,func_145825_b
 func_94042_c,func_145818_k_
+# net/minecraft/network/NetHandlerPlayServer
+field_72573_d,field_147367_d
+field_72574_e,field_147369_b
+field_72578_n,field_147375_m
+field_72579_o,field_147373_o
+field_72580_l,field_147377_k
+field_72581_m,field_147374_l
+field_72582_j,field_147379_i
+field_72583_k,field_147376_j
+field_72584_h,field_147366_g
+field_72585_i,field_147378_h
+field_72586_s,field_147372_n
+field_72587_r,field_147380_r
+field_72588_q,field_147381_q
+field_72589_p,field_147382_p
 # net/minecraft/tileentity/TileEntity
 field_70323_b,field_145853_j
 field_70324_q,field_145854_h
@@ -320,10 +345,14 @@ func_70400_i,func_145950_i
 func_70401_b,func_145954_b
 func_70402_r,func_145948_k
 func_70403_d,func_145955_e
+# net/minecraft/world/ChunkPosition
+field_76930_a,field_151329_a
+field_76928_b,field_151327_b
+field_76929_c,field_151328_c
 # net/minecraft/world/IBlockAccess
 func_72796_p,func_147438_o
 func_72799_c,func_147437_c
-# net/minecraft/would/World
+# net/minecraft/world/World
 func_72831_a,func_147447_a
 func_72837_a,func_147455_a
 func_72840_a,func_147461_a

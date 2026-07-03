@@ -8,7 +8,7 @@ import space.libs.util.MappedName;
 /**
  * @see net.minecraft.network.NetHandlerPlayServer
  */
-public class NetServerHandler extends NetHandler {
+public class NetServerHandler extends NetHandler implements INetServerHandler {
 
     @Override
     public void func_72494_a(Packet131MapData par1Packet131MapData) {
@@ -20,6 +20,7 @@ public class NetServerHandler extends NetHandler {
         FMLNetworkHandler.handlePacket250Packet(payload, this.getNetworkManager(), this);
     }
 
+    @Override
     @MappedName("sendPacketToPlayer")
     public void func_72567_b(net.minecraft.network.packet.Packet packet) {
         this.sendPacketToPlayer(packet);
@@ -34,12 +35,7 @@ public class NetServerHandler extends NetHandler {
         return get(this).playerEntity;
     }
 
-    public INetworkManager getNetworkManager() {
-        return (INetworkManager) get(this).netManager;
-    }
-
-    @SuppressWarnings("DataFlowIssue")
-    public static NetHandlerPlayServer get(NetServerHandler instance) {
-        return ((NetHandlerPlayServer) (Object) instance);
+    public static NetHandlerPlayServer get(INetServerHandler instance) {
+        return ((NetHandlerPlayServer) instance);
     }
 }

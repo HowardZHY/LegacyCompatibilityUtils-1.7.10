@@ -38,12 +38,14 @@ CL: cpw/mods/fml/common/registry/TickRegistry space/libs/fml/TickRegistry
 CL: net/minecraft/block/BlockFluid net/minecraft/block/BlockLiquid
 CL: net/minecraft/block/BlockFlowing net/minecraft/block/BlockDynamicLiquid
 CL: net/minecraft/block/BlockStationary net/minecraft/block/BlockStaticLiquid
+CL: net/minecraft/client/multiplayer/NetClientHandler net/minecraft/client/network/NetHandlerPlayClient
 CL: net/minecraft/client/renderer/texture/IconRegister net/minecraft/client/renderer/texture/IIconRegister
 CL: net/minecraft/client/renderer/tileentity/TileEntityRenderer net/minecraft/client/renderer/tileentity/TileEntityRendererDispatcher
 CL: net/minecraft/entity/ai/attributes/Attribute net/minecraft/entity/ai/attributes/IAttribute
 CL: net/minecraft/entity/player/EnumStatus net/minecraft/entity/player/EntityPlayer$EnumStatus
 CL: net/minecraft/item/EnumArmorMaterial net/minecraft/item/ItemArmor$ArmorMaterial
 CL: net/minecraft/item/EnumToolMaterial net/minecraft/item/Item$ToolMaterial
+CL: net/minecraft/network/NetServerHandler net/minecraft/network/NetHandlerPlayServer
 CL: net/minecraft/util/Icon net/minecraft/util/IIcon
 CL: net/minecraft/util/WeightedRandomItem net/minecraft/util/WeightedRandom$Item
 CL: net/minecraftforge/common/Configuration net/minecraftforge/common/config/Configuration

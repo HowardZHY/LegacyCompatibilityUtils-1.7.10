@@ -1,0 +1,47 @@
+/*
+ * Minecraft Forge
+ * Copyright (c) 2016-2020.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation version 2.1
+ * of the License.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+package space.libs.asm;
+
+import net.minecraft.launchwrapper.IClassTransformer;
+import org.objectweb.asm.*;
+import space.libs.asm.visitors.FieldRedirectVisitor;
+import space.libs.core.ICoreUtils;
+
+/**
+ * @implNote Prepared for possible future usage.
+ */
+public class FieldRedirectTransformer implements IClassTransformer, ICoreUtils {
+
+    public byte[] transform(String name, String transformedName, byte[] bytes) {
+        if (name == null || bytes == null) {
+            return bytes;
+        }
+        if (!name.equals(transformedName) || ClassNameList.ShouldNotTransform(name)) {
+            return bytes;
+        }
+        if (FieldRedirectVisitor.DISABLED) {
+            return bytes;
+        }
+        ClassReader reader = new ClassReader(bytes);
+        ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS);
+        ClassVisitor visitor = new FieldRedirectVisitor(writer);
+        reader.accept(visitor, ClassReader.EXPAND_FRAMES);
+        return writer.toByteArray();
+    }
+}

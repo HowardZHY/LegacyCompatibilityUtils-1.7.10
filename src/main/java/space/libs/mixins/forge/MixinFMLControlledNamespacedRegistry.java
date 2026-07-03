@@ -14,17 +14,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(FMLControlledNamespacedRegistry.class)
 public abstract class MixinFMLControlledNamespacedRegistry extends RegistryNamespaced {
 
-    @Inject(method = "addObject", at = @At("RETURN"))
-    public void addObject(int id, String name, Object thing, CallbackInfo ci) {
-        if (id > 0) {
+    @Inject(method = "addObjectRaw", at = @At("RETURN"))
+    public void addObjectRaw(int id, String name, Object thing, CallbackInfo ci) {
+        if (id > -1 && id < 32000) {
             if (thing instanceof Block) {
-                if (id < 176) {
+                if (id < 4096) {
                     ((IBlock) thing).SetLegacyID(id);
                 }
             } else if (thing instanceof Item) {
-                if (id < 176 || (id > 255 && id < 423) || (id > 2255 && id < 2268)) {
-                    ((IItem) thing).SetLegacyID(id);
-                }
+                ((IItem) thing).SetLegacyID(id);
             }
         }
     }
