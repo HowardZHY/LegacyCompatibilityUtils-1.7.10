@@ -1,6 +1,8 @@
 package space.libs.mixins.world;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.util.Vec3Pool;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -45,6 +47,9 @@ public abstract class MixinWorld implements IBlockAccessBridge {
     public abstract boolean isBlockTickScheduledThisTick(int x, int y, int z, Block block);
 
     @Shadow
+    public abstract MovingObjectPosition rayTraceBlocks(Vec3 pos, Vec3 pos1, boolean b, boolean b1, boolean b2);
+
+    @Shadow
     public abstract void addBlockEvent(int x, int y, int z, Block blockIn, int eventId, int eventParameter);
 
     @Shadow
@@ -60,6 +65,10 @@ public abstract class MixinWorld implements IBlockAccessBridge {
 
     public void func_72821_m(int x, int y, int z, int block) {
         this.notifyBlockOfNeighborChange(x, y, z, Block.getBlockById(block));
+    }
+
+    public MovingObjectPosition func_72831_a(Vec3 pos, Vec3 pos1, boolean b, boolean b1) {
+        return this.rayTraceBlocks(pos, pos1, b, b1, false);
     }
 
     public boolean func_72832_d(int x, int y, int z, int block, int metadataIn, int flags) {

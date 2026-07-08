@@ -362,7 +362,10 @@ field_76929_c,field_151328_c
 func_72796_p,func_147438_o
 func_72799_c,func_147437_c
 # net/minecraft/world/World
-func_72831_a,func_147447_a
+field_72989_L,field_147481_N
+field_73000_b,field_147483_b
+field_73002_a,field_147484_a
+field_73009_h,field_147482_g
 func_72837_a,func_147455_a
 func_72840_a,func_147461_a
 func_72845_h,func_147471_g
