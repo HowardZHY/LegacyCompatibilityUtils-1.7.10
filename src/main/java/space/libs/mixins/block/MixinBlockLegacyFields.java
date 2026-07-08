@@ -57,6 +57,7 @@ public abstract class MixinBlockLegacyFields {
     @Public private static BlockDeadBush field_71961_Y;
     @Public private static BlockTallGrass field_71962_X;
     @Public private static BlockPistonBase field_71963_Z;
+    @Public private static Block field_71978_w;
     @Public private static Block field_71979_v;
     @Public private static Block field_71980_u;
     @Public private static Block field_71981_t;
@@ -222,6 +223,7 @@ public abstract class MixinBlockLegacyFields {
         field_71961_Y = Blocks.deadbush;
         field_71962_X = Blocks.tallgrass;
         field_71963_Z = Blocks.piston;
+        field_71978_w = Blocks.cobblestone;
         field_71979_v = Blocks.dirt;
         field_71980_u = Blocks.grass;
         field_71981_t = Blocks.stone;
