@@ -290,6 +290,8 @@ func_83020_a,func_147782_a
 func_96445_r,func_147779_s
 # net/minecraft/client/renderer/tileentity/TileEntitySpecialRenderer
 renderTileEntityAt,func_147500_a
+# net/minecraft/entity/Entity
+field_70157_k,field_145783_c
 # net/minecraft/inventory/IInventory
 func_70303_b,func_145825_b
 func_94042_c,func_145818_k_
