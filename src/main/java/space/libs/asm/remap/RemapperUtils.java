@@ -5,6 +5,8 @@ import space.libs.asm.*;
 import space.libs.asm.visitors.DuplicateMethodVisitor;
 import space.libs.core.CompatLoader;
 
+import static space.libs.asm.remap.CustomRemappingAdapter.*;
+
 @SuppressWarnings("unused")
 public class RemapperUtils {
 
@@ -17,14 +19,14 @@ public class RemapperUtils {
             return bytes;
         }
         if (CompatLoader.isFromLegacyJar(name, 62)) {
-            bytes = transformRemap(bytes, new CustomRemapper("1.6.2.srg", 62));
+            bytes = transformRemap(bytes, Remapper("1.6.2.srg", 62));
         } else if (CompatLoader.isFromLegacyJar(name, 64)) {
-            bytes = transformRemap(bytes, new CustomRemapper("1.6.4.srg", 64));
+            bytes = transformRemap(bytes, Remapper("1.6.4.srg", 64));
         }
         if (unpackaged) {
             bytes = TransformerUtils.transformSafe(bytes, ClassWriter.COMPUTE_MAXS, DuplicateMethodVisitor.class, ClassReader.SKIP_FRAMES);
         }
-        return transformRemap(bytes, new DefaultRemapper());
+        return transformRemap(bytes, DefaultRemapper.INSTANCE);
     }
 
     public static byte[] transformRemap(byte[] bytes, DefaultRemapper remapper) {

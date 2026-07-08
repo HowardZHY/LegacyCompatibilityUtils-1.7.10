@@ -28,7 +28,8 @@ public abstract class RemapperBase extends Remapper implements IRemapperDebug {
         this.mappings = Resources.getResource(file);
         this.id = id;
         this.legacy = (id > 9);
-        this.renamesMap = Maps.newHashMap();
+        this.fieldRenamesMap = Maps.newHashMap();
+        this.methodRenamesMap = Maps.newHashMap();
         this.fieldDescriptions = Maps.newHashMap();
         this.rawFieldMaps = Maps.newHashMap();
         this.rawMethodMaps = Maps.newHashMap();
@@ -79,7 +80,8 @@ public abstract class RemapperBase extends Remapper implements IRemapperDebug {
     protected final Set<String> negativeFields;
     protected final Set<String> negativeMethods;
 
-    protected final Map<String, String> renamesMap;
+    protected final Map<String, String> fieldRenamesMap;
+    protected final Map<String, String> methodRenamesMap;
     protected final Map<String, Map<String, String>> fieldDescriptions;
 
     protected void setupClasses() {
@@ -215,10 +217,10 @@ public abstract class RemapperBase extends Remapper implements IRemapperDebug {
                 }
             }
         }
-        if (this.noRenames()) {
+        if (this.noFieldRenames()) {
             return name;
         } else {
-            mapped = renamesMap.get(name);
+            mapped = fieldRenamesMap.get(name);
             return mapped != null ? mapped : name;
         }
     }
@@ -233,10 +235,10 @@ public abstract class RemapperBase extends Remapper implements IRemapperDebug {
                 return mapped;
             }
         }
-        if (this.noRenames()) {
+        if (this.noMethodRenames()) {
             return name;
         } else {
-            mapped = renamesMap.get(name);
+            mapped = methodRenamesMap.get(name);
             return mapped != null ? mapped : name;
         }
     }
@@ -364,8 +366,12 @@ public abstract class RemapperBase extends Remapper implements IRemapperDebug {
         return this.classesBiMap == null || this.classesBiMap.isEmpty();
     }
 
-    public boolean noRenames() {
-        return this.renamesMap == null || this.renamesMap.isEmpty();
+    public boolean noFieldRenames() {
+        return this.fieldRenamesMap == null || this.fieldRenamesMap.isEmpty();
+    }
+
+    public boolean noMethodRenames() {
+        return this.methodRenamesMap == null || this.methodRenamesMap.isEmpty();
     }
 
     public boolean isRemappedClass(String className) {

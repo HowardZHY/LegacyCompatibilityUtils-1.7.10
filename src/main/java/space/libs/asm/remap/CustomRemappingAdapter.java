@@ -15,14 +15,32 @@ import org.objectweb.asm.commons.*;
 @SuppressWarnings("unused")
 public class CustomRemappingAdapter extends RemappingClassAdapter {
 
-    public static DefaultRemapper[] INSTANCES = new DefaultRemapper[127];
+    public static final DefaultRemapper[] INSTANCES = new DefaultRemapper[127];
+
+    public static DefaultRemapper Remapper(final String name, final int id) {
+        if (id < 0 || id > 126) {
+            throw new IllegalArgumentException();
+        }
+        synchronized (INSTANCES) {
+            DefaultRemapper instance = INSTANCES[id];
+            if (instance == null) {
+                if (id > 9) {
+                    instance = new CustomRemapper(name, id);
+                } else {
+                    instance = new DefaultRemapper(name, id);
+                }
+                INSTANCES[id] = instance;
+            }
+            return instance;
+        }
+    }
 
     public static CustomRemappingAdapter Default(ClassVisitor cv) {
-        return new CustomRemappingAdapter(cv, new DefaultRemapper());
+        return new CustomRemappingAdapter(cv, DefaultRemapper.INSTANCE);
     }
 
     public static CustomRemappingAdapter Legacy(ClassVisitor cv) {
-        return new CustomRemappingAdapter(cv, new CustomRemapper(DefaultRemapper.LEGACY_MAPPINGS, 10));
+        return new CustomRemappingAdapter(cv, Remapper(DefaultRemapper.LEGACY_MAPPINGS, 10));
     }
 
     public CustomRemappingAdapter(ClassVisitor cv, DefaultRemapper instance) {

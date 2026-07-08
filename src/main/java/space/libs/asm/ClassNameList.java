@@ -127,6 +127,7 @@ public class ClassNameList {
             "net.iris",
             "net.fybertech.int",
             "net.minecraft.",
+            "net.minecraftxr",
             "net.minecraftforge",
             "net.nevermine",
             "net.tclproject",
