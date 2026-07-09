@@ -40,7 +40,8 @@
     "client.gui.MixinGuiNewChat",
     "client.gui.MixinGuiScreen",
     "client.gui.MixinGuiSelectWorld",
-    "client.gui.MixinGuiYesNo"
+    "client.gui.MixinGuiYesNo",
+    "client.interfaces.MixinIImageBuffer"
   ],
   "mixins": [
     "MixinCommandBase",
@@ -85,6 +86,7 @@
     "interfaces.MixinIBlockAccess",
     "interfaces.MixinIBossDisplayData",
     "interfaces.MixinIEntityOwnable",
+    "interfaces.MixinIJsonSerializable",
     "interfaces.MixinITileEntityProvider",
     "item.MixinItem",
     "item.MixinItemBlock",

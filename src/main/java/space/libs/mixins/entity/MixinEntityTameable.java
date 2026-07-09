@@ -7,6 +7,7 @@ import net.minecraft.server.MinecraftServer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import space.libs.CompatLib;
+import space.libs.util.MappedName;
 
 import java.util.UUID;
 
@@ -20,12 +21,12 @@ public abstract class MixinEntityTameable implements IEntityOwnableName {
     @Shadow
     public abstract void func_152115_b(String uuid);
 
-    /** getOwnerName */
+    @MappedName("getOwnerName")
     @Override
     public String func_70905_p() {
         String name;
         try {
-            UUID uuid = UUID.fromString(func_152113_b());
+            UUID uuid = UUID.fromString(this.func_152113_b());
             EntityPlayer player = MinecraftServer.getServer().getEntityWorld().getPlayerEntityByUUID(uuid);
             name = player.getCommandSenderName();
         } catch (Exception e) {
@@ -36,7 +37,7 @@ public abstract class MixinEntityTameable implements IEntityOwnableName {
         return name;
     }
 
-    /** setOwner */
+    @MappedName("setOwner")
     public void func_70910_a(String name) {
         EntityPlayer player = MinecraftServer.getServer().getEntityWorld().getPlayerEntityByName(name);
         if (player != null) {

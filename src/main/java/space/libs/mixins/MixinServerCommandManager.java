@@ -9,8 +9,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityCommandBlock;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
 import org.spongepowered.asm.mixin.Mixin;
+import space.libs.util.MappedName;
 
 import java.util.*;
 
@@ -18,7 +18,8 @@ import java.util.*;
 @Mixin(ServerCommandManager.class)
 public class MixinServerCommandManager implements IAdminCommandLegacy {
 
-    /** notifyAdmins */
+    @MappedName("notifyAdmins")
+    @Override
     public void func_71563_a(ICommandSender sender, int i, String msgFormat, Object ... msgParams) {
         boolean flag = true;
         if (sender instanceof TileEntityCommandBlock && !MinecraftServer.getServer().worldServers[0].getGameRules().getGameRuleBooleanValue("commandBlockOutput")) {
@@ -39,7 +40,7 @@ public class MixinServerCommandManager implements IAdminCommandLegacy {
             MinecraftServer.getServer().addChatMessage(chatComponentTranslation);
         }
         if ((i & 1) != 1) {
-            sender.addChatMessage((IChatComponent) new ChatComponentTranslation(msgFormat, msgParams));
+            sender.addChatMessage(new ChatComponentTranslation(msgFormat, msgParams));
         }
     }
 

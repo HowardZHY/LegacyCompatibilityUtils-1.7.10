@@ -142,7 +142,7 @@ net/minecraft/tileentity/TileEntitySkull:
     #DONE
 net/minecraft/util/IJsonSerializable:
   - error: func_152753_a(Lcom/google/gson/JsonElement;)V - Method was made abstract
-    #INVALID
+    #DONE
 net/minecraft/command/ServerCommandManager:
   - error: func_71563_a(Lnet/minecraft/command/ICommandSender;ILjava/lang/String;[Ljava/lang/Object;)V - Method was removed
     #DONE
@@ -306,7 +306,7 @@ net/minecraft/client/Minecraft:
     #DONE
 net/minecraft/client/renderer/IImageBuffer:
   - error: func_152634_a()V - Method was made abstract
-    #INVALID
+    #DONE
 net/minecraftforge/common/BiomeDictionary$Type:
   - error: <init>(Ljava/lang/String;I)V - Method was removed
     #INVALID
