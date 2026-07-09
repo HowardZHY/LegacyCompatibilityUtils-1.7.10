@@ -22,12 +22,12 @@ public class LogAgent implements ILogAgent {
     @MappedName("loggerPrefix")
     public final String field_98239_d;
 
-    public LogAgent(String name, String name1, String prefix) {
+    public LogAgent(String name, String prefix, String file) {
         LOGGER = LogManager.getLogger("LogAgent-" + name);
         this.field_98242_a = Logger.getLogger(name);
         this.field_98241_c = name;
-        this.field_98239_d = name1;
-        this.field_98240_b = prefix;
+        this.field_98239_d = prefix;
+        this.field_98240_b = file;
         this.func_98238_b();
     }
 
@@ -36,14 +36,14 @@ public class LogAgent implements ILogAgent {
         for (Handler handler : this.field_98242_a.getHandlers()) {
             this.field_98242_a.removeHandler(handler);
         }
-        LogFormatter logformatter = new LogFormatter(this, null);
+        /*LogFormatter logFormatter = new LogFormatter(this, null);
         try {
-            FileHandler filehandler = new FileHandler(this.field_98240_b, true);
-            filehandler.setFormatter(logformatter);
-            this.field_98242_a.addHandler(filehandler);
+            FileHandler fileHandler = new FileHandler(this.field_98240_b, true);
+            fileHandler.setFormatter(logFormatter);
+            this.field_98242_a.addHandler(fileHandler);
         } catch (Exception exception) {
             LOGGER.warn("Failed to log " + this.field_98241_c + " to " + this.field_98240_b + ": " + exception);
-        }
+        }*/
     }
 
     @Override

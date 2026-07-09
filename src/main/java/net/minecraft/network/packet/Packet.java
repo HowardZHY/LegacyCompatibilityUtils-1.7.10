@@ -22,7 +22,7 @@ public abstract class Packet extends FMLProxyPacket {
 
     public final String Name = this.getClass().getSimpleName();
 
-    public ILogAgent field_98193_m = new LogAgent(Name, Name, "");
+    public ILogAgent field_98193_m = new LogAgent(Name, Name, ".log");
 
     @MappedName("creationTimeMillis")
     public final long field_73295_m = MinecraftServer.getCurrentTimeMillis();

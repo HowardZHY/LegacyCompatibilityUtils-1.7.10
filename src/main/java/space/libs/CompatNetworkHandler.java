@@ -75,7 +75,7 @@ public class CompatNetworkHandler {
     public static void processPacket(FMLNetworkEvent.CustomPacketEvent<?> event) {
         FMLProxyPacket packet = event.packet;
         String channel = packet.channel();
-        CompatLib.LOGGER.info(event + " " + packet + " " + channel);
+        //CompatLib.LOGGER.info(event + " " + packet + " " + channel);
         if (!NAMES.contains(channel)) {
             return;
         }
