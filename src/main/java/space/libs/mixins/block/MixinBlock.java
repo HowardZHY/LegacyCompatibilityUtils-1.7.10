@@ -33,7 +33,7 @@ public abstract class MixinBlock implements BlockProxy, IBlock, ICoreUtils {
     public abstract Block setTickRandomly(boolean shouldTick);
 
     @Shadow
-    public @Final void setBlockBounds(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {}
+    public final void setBlockBounds(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {}
 
     @Shadow
     public abstract boolean isOpaqueCube();

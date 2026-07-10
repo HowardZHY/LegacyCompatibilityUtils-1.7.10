@@ -6,10 +6,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.storage.SaveHandler;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.*;
+import space.libs.util.MappedName;
 
 import java.io.File;
 
-@SuppressWarnings("all")
 @Mixin(SaveHandler.class)
 public abstract class MixinSaveHandler {
 
@@ -24,7 +24,7 @@ public abstract class MixinSaveHandler {
     @Shadow
     public abstract NBTTagCompound readPlayerData(EntityPlayer player);
 
-    /** getPlayerData */
+    @MappedName("getPlayerData")
     public NBTTagCompound func_75764_a(String name) {
         EntityPlayer player;
         try {

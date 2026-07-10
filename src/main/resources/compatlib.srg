@@ -41,6 +41,8 @@ CL: net/minecraft/block/BlockStationary net/minecraft/block/BlockStaticLiquid
 CL: net/minecraft/client/multiplayer/NetClientHandler net/minecraft/client/network/NetHandlerPlayClient
 CL: net/minecraft/client/renderer/texture/IconRegister net/minecraft/client/renderer/texture/IIconRegister
 CL: net/minecraft/client/renderer/tileentity/TileEntityRenderer net/minecraft/client/renderer/tileentity/TileEntityRendererDispatcher
+CL: net/minecraft/entity/EntityLivingData net/minecraft/entity/IEntityLivingData
+CL: net/minecraft/entity/EntityOwnable net/minecraft/entity/IEntityOwnable
 CL: net/minecraft/entity/ai/attributes/Attribute net/minecraft/entity/ai/attributes/IAttribute
 CL: net/minecraft/entity/player/EnumStatus net/minecraft/entity/player/EntityPlayer$EnumStatus
 CL: net/minecraft/item/EnumArmorMaterial net/minecraft/item/ItemArmor$ArmorMaterial

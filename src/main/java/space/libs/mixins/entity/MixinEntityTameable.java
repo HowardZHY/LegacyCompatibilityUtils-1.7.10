@@ -3,7 +3,7 @@ package space.libs.mixins.entity;
 import net.minecraft.entity.IEntityOwnableName;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import space.libs.CompatLib;
@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @SuppressWarnings("unused")
 @Mixin(EntityTameable.class)
-public abstract class MixinEntityTameable implements IEntityOwnableName {
+public abstract class MixinEntityTameable extends MixinEntityAnimal implements IEntityOwnableName {
 
     @Shadow
     public abstract String func_152113_b();
@@ -24,28 +24,30 @@ public abstract class MixinEntityTameable implements IEntityOwnableName {
     @MappedName("getOwnerName")
     @Override
     public String func_70905_p() {
-        String name;
+        String name = this.func_152113_b();
         try {
-            UUID uuid = UUID.fromString(this.func_152113_b());
-            EntityPlayer player = MinecraftServer.getServer().getEntityWorld().getPlayerEntityByUUID(uuid);
+            UUID uuid = UUID.fromString(name);
+            EntityPlayer player = this.compatlib$getWorld().getPlayerEntityByUUID(uuid);
             name = player.getCommandSenderName();
         } catch (Exception e) {
-            CompatLib.LOGGER.error("Cannot get tamable entity owner's name. Return owner's uuid instead.");
+            CompatLib.LOGGER.error("Cannot get tamable entity owner's name. Return owner's UUID instead.");
             e.printStackTrace();
-            return this.func_152113_b();
         }
         return name;
     }
 
     @MappedName("setOwner")
     public void func_70910_a(String name) {
-        EntityPlayer player = MinecraftServer.getServer().getEntityWorld().getPlayerEntityByName(name);
-        if (player != null) {
-            String uuid = player.getUniqueID().toString();
-            this.func_152115_b(uuid);
-        } else {
-            CompatLib.LOGGER.warn("A Legacy Mod tried to set tamable entity owner as someone not online. This is unsupported.");
+        World world = this.compatlib$getWorld();
+        if (world != null) {
+            EntityPlayer player = world.getPlayerEntityByName(name);
+            if (player != null) {
+                String uuid = player.getUniqueID().toString();
+                this.func_152115_b(uuid);
+                return;
+            }
         }
+        CompatLib.LOGGER.warn("A Legacy Mod tried to set tamable entity owner as someone not online. This is unsupported.");
     }
 
 }
