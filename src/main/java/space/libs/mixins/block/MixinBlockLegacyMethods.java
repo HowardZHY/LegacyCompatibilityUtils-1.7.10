@@ -17,7 +17,12 @@ public abstract class MixinBlockLegacyMethods {
     @Shadow
     public void breakBlock(World worldIn, int x, int y, int z, Block blockBroken, int meta) {}
 
+    @Shadow
+    public void onNeighborBlockChange(World worldIn, int x, int y, int z, Block neighbor) {}
+
     private ThreadLocal<Boolean> legacyBreakBlock = ThreadLocal.withInitial(() -> false);
+
+    private ThreadLocal<Boolean> legacyNeighborBlockChange = ThreadLocal.withInitial(() -> false);
 
     @Inject(method = "breakBlock", at = @At("HEAD"), cancellable = true)
     public void breakBlock(World worldIn, int x, int y, int z, Block blockBroken, int meta, CallbackInfo ci) {
@@ -29,9 +34,24 @@ public abstract class MixinBlockLegacyMethods {
         }
     }
 
+    @Inject(method = "onNeighborBlockChange", at = @At("HEAD"), cancellable = true)
+    public void onNeighborBlockChange(World worldIn, int x, int y, int z, Block neighbor, CallbackInfo ci) {
+        if (legacyNeighborBlockChange.get()) {
+            this.legacyNeighborBlockChange.set(false);
+        } else {
+            this.func_71863_a(worldIn, x, y, z, Block.getIdFromBlock(neighbor));
+            ci.cancel();
+        }
+    }
+
     public void func_71852_a(World worldIn, int x, int y, int z, int block, int meta) {
         this.legacyBreakBlock.set(true);
         this.breakBlock(worldIn, x, y, z, Block.getBlockById(block), meta);
+    }
+
+    public void func_71863_a(World worldIn, int x, int y, int z, int neighborId) {
+        this.legacyNeighborBlockChange.set(true);
+        this.onNeighborBlockChange(worldIn, x, y, z, Block.getBlockById(neighborId));
     }
 
     public Block func_71864_b(String name) {
