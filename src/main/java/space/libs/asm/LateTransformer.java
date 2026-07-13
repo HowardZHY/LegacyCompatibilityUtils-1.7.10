@@ -3,10 +3,13 @@ package space.libs.asm;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
 import org.objectweb.asm.tree.*;
+import space.libs.asm.visitors.CheckCastVisitor;
 import space.libs.core.ICoreUtils;
 
 @SuppressWarnings("unused")
 public class LateTransformer implements IClassTransformer {
+
+    private static final String BlockBlastingCap = "com.moreexplosives.block.BlockBlastingCap";
 
     private static final String BlockLiquid = "net.minecraft.block.BlockLiquid";
 
@@ -16,6 +19,9 @@ public class LateTransformer implements IClassTransformer {
     public byte[] transform(String name, String transformedName, byte[] bytes) {
         if (name == null || bytes == null) {
             return bytes;
+        }
+        if (BlockBlastingCap.equals(name)){
+            return TransformerUtils.transformSafe(bytes, ClassWriter.COMPUTE_MAXS, CheckCastVisitor.class, ClassReader.EXPAND_FRAMES);
         }
         if ("alw".equals(name) || BlockLiquid.equals(name)) {
             return transformBlockLiquid(bytes);
