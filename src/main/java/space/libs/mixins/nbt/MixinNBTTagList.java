@@ -28,6 +28,7 @@ public abstract class MixinNBTTagList extends MixinNBTBase {
     @NewConstructor
     public void NBTTagList(String name) {
         NBTBase(name);
+        this.tagList = new ArrayList<>();
     }
 
     @MappedName(value = "load", until = "1.7.2")

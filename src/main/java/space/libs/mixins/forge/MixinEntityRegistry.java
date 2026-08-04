@@ -7,6 +7,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import space.libs.interfaces.IEntityRegistry;
 import space.libs.util.cursedmixinextensions.annotations.Public;
 
@@ -24,14 +27,17 @@ public class MixinEntityRegistry implements IEntityRegistry {
     @Shadow
     private void doModEntityRegistration(Class<? extends Entity> entityClass, String entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {}
 
+    @Override
     public BiMap<Class<? extends Entity>, EntityRegistry.EntityRegistration> getEntityClassRegistrations() {
         return entityClassRegistrations;
     }
 
+    @Override
     public void doModRegistration(Class<? extends Entity> entityClass, String entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
         this.doModEntityRegistration(entityClass, entityName, id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
     }
 
+    @Override
     public EntityRegistry.EntityRegistration registerModLoader(Object mod, Class<? extends Entity> entityClass, int entityTypeId, int updateRange, int updateInterval, boolean sendVelocityInfo) {
         String entityName = (String) EntityList.classToStringMapping.get(entityClass);
         if (entityName == null) {
@@ -45,5 +51,20 @@ public class MixinEntityRegistry implements IEntityRegistry {
     private static EntityRegistry.EntityRegistration registerModLoaderEntity(Object mod, Class<? extends Entity> entityClass, int entityTypeId, int updateRange, int updateInterval, boolean sendVelocityInfo) {
         IEntityRegistry accessor = (IEntityRegistry) instance();
         return accessor.registerModLoader(mod, entityClass, entityTypeId, updateRange, updateInterval, sendVelocityInfo);
+    }
+
+    @Inject(
+        method = "registerGlobalEntityID(Ljava/lang/Class;Ljava/lang/String;I)V",
+        at = @At(
+            value = "INVOKE",
+            target = "Lcpw/mods/fml/common/Loader;instance()Lcpw/mods/fml/common/Loader;"
+        ),
+        cancellable = true
+    )
+    private static void registerGlobalEntityID(Class<? extends Entity> entityClass, String entityName, int id, CallbackInfo ci) {
+        EntityRegistry.EntityRegistration registration = ((IEntityRegistry) instance()).getEntityClassRegistrations().get(entityClass);
+        if (registration != null && registration.getModEntityId() == id) {
+            ci.cancel();
+        }
     }
 }

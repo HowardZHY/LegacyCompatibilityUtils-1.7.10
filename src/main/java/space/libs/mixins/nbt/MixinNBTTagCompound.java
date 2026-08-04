@@ -7,12 +7,11 @@ import net.minecraft.util.ReportedException;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import space.libs.util.MappedName;
-import space.libs.util.cursedmixinextensions.annotations.Public;
+import space.libs.util.cursedmixinextensions.annotations.*;
 
 import java.io.DataInput;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings({"unused"})
 @Mixin(NBTTagCompound.class)
@@ -24,6 +23,15 @@ public abstract class MixinNBTTagCompound extends MixinNBTBase implements INBTBa
     @Shadow
     private CrashReport createCrashReport(String key, int i, ClassCastException e) {
         throw new AbstractMethodError();
+    }
+
+    @ShadowSuperConstructor
+    public void NBTBase(String name) {}
+
+    @NewConstructor
+    public void NBTTagCompound(String name) {
+        NBTBase(name);
+        this.tagMap = new HashMap<>();
     }
 
     @MappedName(value = "load", until = "1.7.2")

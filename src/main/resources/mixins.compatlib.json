@@ -47,6 +47,7 @@
     "MixinCommandBase",
     "MixinContainer",
     "MixinEnchantmentDamage",
+    "MixinFurnaceRecipes",
     "MixinInventoryPlayer",
     "MixinMinecraftServer",
     "MixinPlayerManager",

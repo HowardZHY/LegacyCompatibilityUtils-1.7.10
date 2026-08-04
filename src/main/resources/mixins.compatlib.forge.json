@@ -8,6 +8,7 @@
   "client": [
     "MixinFMLClientHandler",
     "MixinForgeHooksClient",
+    "MixinMinecraftForgeClient",
     "MixinRenderingRegistry",
     "MixinRenderPlayerEventSetArmorModel",
     "interfaces.MixinISimpleBlockRenderingHandler"
