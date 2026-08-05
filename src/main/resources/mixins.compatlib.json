@@ -23,6 +23,7 @@
     "client.MixinScaledResolution",
     "client.MixinServerData",
     "client.MixinShaderGroup",
+    "client.MixinTextureManager",
     "client.MixinTextureUtil",
     "client.MixinThreadDownloadImageData",
     "client.MixinTileEntitySkullRenderer",

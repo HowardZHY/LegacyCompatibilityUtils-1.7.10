@@ -18,6 +18,15 @@ import space.libs.util.cursedmixinextensions.annotations.ShadowConstructor;
 public abstract class MixinItemStack implements IItemStack {
 
     @Shadow
+    public int stackSize;
+
+    @Shadow
+    private Item theItem;
+
+    @Shadow
+    int metadata;
+
+    @Shadow
     public abstract Item getItem();
 
     @ShadowConstructor
@@ -41,11 +50,27 @@ public abstract class MixinItemStack implements IItemStack {
         this.field_77993_c = Item.getIdFromItem(item);
     }
 
+    /**
+     * Workarounds to prevent NPE
+     */
     @Inject(method = "getMetadata", at = @At("HEAD"), cancellable = true)
     public void getMetadata(CallbackInfoReturnable<Integer> cir) {
         if (this.getItem() == null) {
-            // Workaround to prevent NPE
             cir.setReturnValue(0);
+        }
+    }
+
+    @Inject(method = "getUnlocalizedName", at = @At("HEAD"), cancellable = true)
+    public void getUnlocalizedName(CallbackInfoReturnable<String> cir) {
+        if (this.theItem == null) {
+            cir.setReturnValue("null");
+        }
+    }
+
+    @Inject(method = "toString", at = @At("HEAD"), cancellable = true)
+    public void toString(CallbackInfoReturnable<String> cir) {
+        if (this.theItem == null) {
+            cir.setReturnValue(this.stackSize + "x" + "null" + "@" + this.metadata);
         }
     }
 }

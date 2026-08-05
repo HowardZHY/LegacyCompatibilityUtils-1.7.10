@@ -3,18 +3,27 @@ package space.libs.mixins;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import org.apache.logging.log4j.LogManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import space.libs.util.MappedName;
+import space.libs.util.forge.ForgeUtils;
 
 import java.util.*;
 
+@SuppressWarnings("unused")
 @Mixin(FurnaceRecipes.class)
 public abstract class MixinFurnaceRecipes {
 
     public HashMap<List<Integer>, ItemStack> metaSmeltingList = new HashMap<>();
 
     public HashMap<List<Integer>, Float> metaExperience = new HashMap<>();
+
+    public Map<Integer, ItemStack> LegacySmeltingList = new HashMap<>();
 
     @Shadow
     public void addSmelting(Item item, ItemStack stack, float exp) {}
@@ -26,7 +35,7 @@ public abstract class MixinFurnaceRecipes {
     public abstract float getSmeltingExperience(ItemStack stack);
 
     @Shadow
-    public abstract void addSmeltingRecipe(ItemStack p_151394_1_, ItemStack p_151394_2_, float p_151394_3_);
+    public abstract void addSmeltingRecipe(ItemStack item, ItemStack stack, float exp);
 
     @MappedName(value = "addSmelting", until = "1.6.4")
     public void func_77600_a(int itemID, ItemStack stack, float exp) {
@@ -53,5 +62,25 @@ public abstract class MixinFurnaceRecipes {
 
     public HashMap<List<Integer>, Float> getMetaExperience() {
         return this.metaExperience;
+    }
+
+    @Inject(method = "addSmeltingRecipe", at = @At("HEAD"))
+    public void addSmeltingRecipe(ItemStack itemIn, ItemStack stack, float exp, CallbackInfo ci) {
+        Item item = itemIn.getItem();
+        if (item != null) {
+            int id = Item.getIdFromItem(item);
+            if (id > 0) {
+                this.LegacySmeltingList.put(id, stack);
+                return;
+            }
+        }
+        LogManager.getLogger().warn("Invalid Smelting: " + itemIn + " " + stack + " " + exp);
+    }
+
+    @Inject(method = "getSmeltingList", at = @At("HEAD"), cancellable = true)
+    public void getSmeltingList(CallbackInfoReturnable<Map<?, ?>> cir) {
+        if (ForgeUtils.getCallerClass(3).startsWith("eec.")) {
+            cir.setReturnValue(this.LegacySmeltingList);
+        }
     }
 }

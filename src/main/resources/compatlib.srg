@@ -40,6 +40,7 @@ CL: net/minecraft/block/BlockFlowing net/minecraft/block/BlockDynamicLiquid
 CL: net/minecraft/block/BlockStationary net/minecraft/block/BlockStaticLiquid
 CL: net/minecraft/client/multiplayer/NetClientHandler net/minecraft/client/network/NetHandlerPlayClient
 CL: net/minecraft/client/renderer/texture/IconRegister net/minecraft/client/renderer/texture/IIconRegister
+CL: net/minecraft/client/renderer/texture/TextureObject net/minecraft/client/renderer/texture/ITextureObject
 CL: net/minecraft/client/renderer/tileentity/TileEntityRenderer net/minecraft/client/renderer/tileentity/TileEntityRendererDispatcher
 CL: net/minecraft/entity/EntityLivingData net/minecraft/entity/IEntityLivingData
 CL: net/minecraft/entity/EntityOwnable net/minecraft/entity/IEntityOwnable

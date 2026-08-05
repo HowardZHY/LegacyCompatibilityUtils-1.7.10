@@ -13,4 +13,8 @@ public abstract class ForgeUtils {
         return data;
     }
 
+    public static String getCallerClass(int index) {
+        StackTraceElement[] stack = new Throwable().getStackTrace();
+        return stack[index].getClassName();
+    }
 }
