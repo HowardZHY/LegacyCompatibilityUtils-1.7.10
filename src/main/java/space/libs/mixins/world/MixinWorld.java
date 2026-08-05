@@ -11,6 +11,7 @@ import net.minecraft.world.IBlockAccessBridge;
 import org.spongepowered.asm.mixin.Shadow;
 import space.libs.util.MappedName;
 
+@SuppressWarnings("unused")
 @Mixin(World.class)
 public abstract class MixinWorld implements IBlockAccessBridge {
 
@@ -55,7 +56,11 @@ public abstract class MixinWorld implements IBlockAccessBridge {
     @Shadow
     public abstract void updateNeighborsAboutBlockChange(int x, int y, int z, Block block);
 
-    @Shadow
+    @Shadow(remap = false)
+    public abstract boolean isSideSolid(int x, int y, int z, ForgeDirection side);
+
+    @Shadow(remap = false)
+    @Override
     public abstract boolean isSideSolid(int x, int y, int z, ForgeDirection side, boolean _default);
 
     @Override
@@ -87,6 +92,7 @@ public abstract class MixinWorld implements IBlockAccessBridge {
         this.addBlockEvent(x, y, z, Block.getBlockById(block), eventId, eventParameter);
     }
 
+    @Override
     @MappedName("getWorldVec3Pool")
     public Vec3Pool func_82732_R() {
         return this.field_82741_K;
@@ -106,5 +112,14 @@ public abstract class MixinWorld implements IBlockAccessBridge {
 
     public void func_96440_m(int x, int y, int z, int block) {
         this.updateNeighborsAboutBlockChange(x, y, z, Block.getBlockById(block));
+    }
+
+    public boolean isBlockSolidOnSide(int x, int y, int z, ForgeDirection side) {
+        return this.isSideSolid(x, y, z, side);
+    }
+
+    @Override
+    public boolean isBlockSolidOnSide(int x, int y, int z, ForgeDirection side, boolean _default) {
+        return this.isSideSolid(x, y, z, side, _default);
     }
 }
