@@ -86,7 +86,7 @@ public abstract class RemapperBase extends Remapper implements IRemapperDebug {
 
     protected void setupClasses() {
         try {
-            Resources.readLines(mappings, Charsets.UTF_8, new MappingLineProcessor( true, legacy));
+            Resources.readLines(mappings, Charsets.UTF_8, new MappingLineProcessor(true, legacy));
         } catch (Exception e) {
             LOGGER.error("An error occurred loading the custom map data " + mappings, e);
         }

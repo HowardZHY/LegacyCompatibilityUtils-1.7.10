@@ -59,7 +59,7 @@ public class DefaultRemapper extends RemapperBase implements IClassNameTransform
             Splitter splitter = Splitter.on(CharMatcher.anyOf(",")).omitEmptyStrings().trimResults();
             for (String line : csvList) {
                 line = line.trim();
-                if (line.length() < 1 || line.startsWith("#")) continue;
+                if (line.isEmpty() || line.startsWith("#")) continue;
                 String[] parts = Iterables.toArray(splitter.split(line), String.class);
                 String from = parts[0];
                 String to = parts[1];
