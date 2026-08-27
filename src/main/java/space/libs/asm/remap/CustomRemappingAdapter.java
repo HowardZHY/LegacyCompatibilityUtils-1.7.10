@@ -70,7 +70,7 @@ public class CustomRemappingAdapter extends RemappingClassAdapter {
         if (interfaces == null) {
             interfaces = new String[0];
         }
-        if (legacy) { //TODO?
+        if (legacy) {
             this.getCustomRemapper().mergeSuperMaps(name, superName, interfaces, false, true);
         } else {
             this.getRemapper().mergeSuperMaps(name, superName, interfaces, false, true);

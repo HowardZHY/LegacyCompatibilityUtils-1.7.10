@@ -3,9 +3,8 @@ package space.libs;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import space.libs.core.CompatLoader;
+import org.apache.logging.log4j.*;
+import space.libs.core.ICoreUtils;
 
 @SuppressWarnings("all")
 @Mod(
@@ -44,7 +43,7 @@ public class CompatLib {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        CompatLoader.EXECUTOR.shutdown();
+        ICoreUtils.EXECUTOR.shutdown();
     }
 
     public void onClientModLoading() {

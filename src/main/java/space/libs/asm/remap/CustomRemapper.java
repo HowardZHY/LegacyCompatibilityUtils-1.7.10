@@ -26,13 +26,13 @@ public class CustomRemapper extends DefaultRemapper {
         }
         if (name.contains("/")) {
             if (isMCPackage(name)) {
-                return FMLRemapper.unmap(name);
+                return this.FMLRemapper.unmap(name);
             } else {
                 return name; // Not Mapped
             }
         }
         String mappedName = this.map(name);
-        String realName = FMLRemapper.unmap(mappedName);
+        String realName = this.FMLRemapper.unmap(mappedName);
         if (DEBUG_CUSTOM_REMAPPING && (!name.equals(realName))) {
             LOGGER.info("Get " + name + "'s unmapped name " + realName + " from " + mappedName);
         }
@@ -51,7 +51,7 @@ public class CustomRemapper extends DefaultRemapper {
                 return name; // Not Mapped
             }
         } else {
-            String mapped = FMLRemapper.map(name);
+            String mapped = this.FMLRemapper.map(name);
             return this.unmap(mapped);
         }
     }
@@ -84,9 +84,5 @@ public class CustomRemapper extends DefaultRemapper {
             bytes = super.getBytesForSuperMap(name);
         }
         return bytes;
-    }
-
-    public static boolean isMCPackage(String name) {
-        return name.startsWith("net/minecraft/");
     }
 }

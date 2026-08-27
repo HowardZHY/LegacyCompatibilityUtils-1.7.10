@@ -281,7 +281,7 @@ public abstract class RemapperBase extends Remapper implements IRemapperDebug {
     }
 
     public void mergeSuperMaps(String name, String superName, String[] interfaces, boolean handleSuper, boolean visit) {
-        if (name.startsWith("java/") || Strings.isNullOrEmpty(superName) || superName.startsWith("net/minecraftforge/event") ) {
+        if (name.startsWith("java/") || Strings.isNullOrEmpty(superName) || superName.startsWith("net/minecraftforge/e") ) {
             return;
         }
         int l = interfaces.length;
@@ -333,7 +333,7 @@ public abstract class RemapperBase extends Remapper implements IRemapperDebug {
             fields.putAll(this.rawFields.row(name));
             methods.putAll(this.rawMethods.row(name));
         }
-        if (DEBUG_REMAPPING && (name.startsWith("net/minecraft/") || !name.contains("/"))) {
+        if (DEBUG_REMAPPING && (isMCPackage(name) || !name.contains("/"))) {
             DebugRemap("Field Maps of " + name + ": " + fields);
         }
         this.fieldsMap.put(name, ImmutableMap.copyOf(fields));
@@ -393,6 +393,10 @@ public abstract class RemapperBase extends Remapper implements IRemapperDebug {
         parents[0] = superName;
         System.arraycopy(interfaces, 0, parents, 1, l);
         return parents;
+    }
+
+    public static boolean isMCPackage(String name) {
+        return name.startsWith("net/minecraft/");
     }
 
     public enum MappingType {
