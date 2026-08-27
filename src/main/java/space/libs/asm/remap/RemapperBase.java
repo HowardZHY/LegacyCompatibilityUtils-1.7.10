@@ -280,6 +280,10 @@ public abstract class RemapperBase extends Remapper implements IRemapperDebug {
         }
     }
 
+    /**
+     * @param handleSuper Should parents to be proceed by getLegacyName
+     * @param visit Called by CustomRemappingAdapter#visit
+     */
     public void mergeSuperMaps(String name, String superName, String[] interfaces, boolean handleSuper, boolean visit) {
         if (name.startsWith("java/") || Strings.isNullOrEmpty(superName) || superName.startsWith("net/minecraftforge/e") ) {
             return;
@@ -332,9 +336,6 @@ public abstract class RemapperBase extends Remapper implements IRemapperDebug {
         } else {
             fields.putAll(this.rawFields.row(name));
             methods.putAll(this.rawMethods.row(name));
-        }
-        if (DEBUG_REMAPPING && (isMCPackage(name) || !name.contains("/"))) {
-            DebugRemap("Field Maps of " + name + ": " + fields);
         }
         this.fieldsMap.put(name, ImmutableMap.copyOf(fields));
         this.methodsMap.put(name, ImmutableMap.copyOf(methods));
