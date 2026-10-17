@@ -22,13 +22,11 @@ repositories {
         url = "https://maven.minecraftforge.net/"
     }
     maven {
-        name = "GTNH Maven"
-        url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
-        allowInsecureProtocol = true
-    }
-    maven {
         name = "Sponge"
         url 'https://repo.spongepowered.org/maven'
+    }
+    maven {
+        url 'https://jitpack.io'
     }
     maven {
         name = "CurseMaven"
@@ -80,7 +78,7 @@ unimined.minecraft {
     }
 }
 
-def mixinProviderSpecNoClassifer = "io.github.legacymoddingmc:unimixins:0.1.16"
+def mixinProviderSpecNoClassifer = "com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:0.1.17"
 def mixinProviderSpec = "${mixinProviderSpecNoClassifer}:dev"
 
 dependencies {

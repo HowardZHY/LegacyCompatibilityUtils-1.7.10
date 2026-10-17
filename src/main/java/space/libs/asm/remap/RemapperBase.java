@@ -21,7 +21,7 @@ import java.io.*;
 import java.net.URL;
 import java.util.*;
 
-@SuppressWarnings("UnstableApiUsage")
+@SuppressWarnings({"unused", "UnstableApiUsage", "CommentedOutCode"})
 public abstract class RemapperBase extends Remapper implements IRemapperDebug {
 
     public RemapperBase(final String file, final int id) {
@@ -138,6 +138,9 @@ public abstract class RemapperBase extends Remapper implements IRemapperDebug {
             if (!this.fieldsMap.containsKey(owner)) {
                 this.negativeFields.add(owner);
             }
+            /*if (DEBUG_REMAPPING && !owner.startsWith("java")) {
+                DebugRemap("Field map for " + owner + " : " + fieldsMap.get(owner));
+            }*/
         }
         return this.fieldsMap.get(owner);
     }
@@ -152,6 +155,9 @@ public abstract class RemapperBase extends Remapper implements IRemapperDebug {
             if (!this.methodsMap.containsKey(owner)) {
                 this.negativeMethods.add(owner);
             }
+            /*if (DEBUG_REMAPPING && !owner.startsWith("java")) {
+                DebugRemap("Method map for " + owner + " : " + methodsMap.get(owner));
+            }*/
         }
         return this.methodsMap.get(owner);
     }
@@ -379,7 +385,6 @@ public abstract class RemapperBase extends Remapper implements IRemapperDebug {
         return !map(className).equals(className);
     }
 
-    @SuppressWarnings("unused")
     public Set<String> getObfedClasses() {
         return ImmutableSet.copyOf(this.classesBiMap.keySet());
     }

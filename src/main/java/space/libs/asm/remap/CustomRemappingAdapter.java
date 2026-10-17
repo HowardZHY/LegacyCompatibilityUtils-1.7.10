@@ -15,10 +15,12 @@ import org.objectweb.asm.commons.*;
 @SuppressWarnings("unused")
 public class CustomRemappingAdapter extends RemappingClassAdapter {
 
-    public static final DefaultRemapper[] INSTANCES = new DefaultRemapper[127];
+    public static final int MAX = 128;
+
+    public static final DefaultRemapper[] INSTANCES = new DefaultRemapper[MAX];
 
     public static DefaultRemapper Remapper(final String name, final int id) {
-        if (id < 0 || id > 126) {
+        if (id < 0 || id >= MAX) {
             throw new IllegalArgumentException();
         }
         synchronized (INSTANCES) {
