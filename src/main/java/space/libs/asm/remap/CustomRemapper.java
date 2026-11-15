@@ -28,7 +28,7 @@ public class CustomRemapper extends DefaultRemapper {
             if (isMCPackage(name)) {
                 return this.FMLRemapper.unmap(name);
             } else {
-                return name; // Not Mapped
+                return name; // Not mapped
             }
         }
         String mappedName = this.map(name);
@@ -48,12 +48,11 @@ public class CustomRemapper extends DefaultRemapper {
             if (isMCPackage(name)) {
                 return this.unmap(name);
             } else {
-                return name; // Not Mapped
+                return name; // Not mapped
             }
-        } else {
-            String mapped = this.FMLRemapper.map(name);
-            return this.unmap(mapped);
         }
+        String mapped = this.FMLRemapper.map(name);
+        return this.unmap(mapped);
     }
 
     @Override

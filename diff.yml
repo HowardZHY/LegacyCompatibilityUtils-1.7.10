@@ -1,9 +1,16 @@
-Incompatibilities found: 182 errors, 0 warnings
+Incompatibilities found: 295 errors, 0 warnings
+net/minecraft/util/MessageDeserializer:
+  - error: <init>()V - Method was lowered in visibility
+    #DONE
 cpw/mods/fml/common/registry/GameData:
   - error: injectWorldIDMap(Ljava/util/Map;ZZ)Ljava/util/List; - Method was removed
   - error: buildItemDataList()Ljava/util/Map; - Method was removed
   - error: injectWorldIDMap(Ljava/util/Map;Ljava/util/Set;Ljava/util/Map;Ljava/util/Map;ZZ)Ljava/util/List; - Method was removed
     #CANNOT BE DONE WITH MIXIN
+cpw/mods/fml/common/network/simpleimpl/SimpleNetworkWrapper:
+  - error: addServerHandlerAfter(Lcpw/mods/fml/common/network/FMLEmbeddedChannel;Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)V - Method was removed
+  - error: getHandlerWrapper(Ljava/lang/Class;Lcpw/mods/fml/relauncher/Side;Ljava/lang/Class;)Lcpw/mods/fml/common/network/simpleimpl/SimpleChannelHandlerWrapper; - Method was removed
+  - error: addClientHandlerAfter(Lcpw/mods/fml/common/network/FMLEmbeddedChannel;Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)V - Method was removed
 cpw/mods/fml/common/LoaderState$ModState:
   - error: <init>(Ljava/lang/String;ILjava/lang/String;)V - Method was removed
     #INVALID
@@ -22,153 +29,197 @@ net/minecraft/client/gui/GuiMainMenu:
     #DONE
 net/minecraft/server/management/PlayerManager:
   - error: <init>(Lnet/minecraft/world/WorldServer;I)V - Method was removed
-    #DONE
+cpw/mods/fml/common/registry/GameRegistry$Type:
+  - error: Class was made abstract
+  - error: getRegistry()Lcpw/mods/fml/common/registry/FMLControlledNamespacedRegistry; - Method was made abstract
+net/minecraft/client/gui/mco/GuiScreenMcoWorldTemplate$SelectionList:
+  - error: Class no longer exists
+net/minecraft/client/gui/mco/GuiScreenBackup:
+  - error: Class no longer exists
+net/minecraft/client/gui/GuiScreenAddServer:
+  - error: field_146311_h:Lnet/minecraft/client/multiplayer/ServerData; - Field was made final
+  - error: field_146310_a:Lnet/minecraft/client/gui/GuiScreen; - Field was made final
+cpw/mods/fml/common/launcher/Yggdrasil$Response$Profile:
+  - error: Class no longer exists
+cpw/mods/fml/common/network/handshake/NetworkDispatcher:
+  - error: serverInitiateHandshake()V - Method was removed
 net/minecraft/client/mco/ExceptionRetryCall:
   - error: Class no longer exists
-    #INVALID
 net/minecraft/client/mco/GuiScreenClientOutdated:
   - error: Class no longer exists
-    #INVALID
+net/minecraft/client/gui/mco/GuiScreenCreateOnlineWorld:
+  - error: Class no longer exists
 cpw/mods/fml/common/IFMLSidedHandler:
   - error: allowLogins()V - Method was made abstract
   - error: stripSpecialChars(Ljava/lang/String;)Ljava/lang/String; - Method was made abstract
   - error: processWindowMessages()V - Method was made abstract
-    #INVALID
+net/minecraft/client/mco/McoServerList$UpdateTask$Comparator:
+  - error: Class no longer exists
 net/minecraft/util/AABBPool:
   - error: Class no longer exists
-    #DONE
 net/minecraft/world/gen/layer/GenLayerBiome:
   - error: icyBiomes:Ljava/util/List; - Field was removed
   - error: warmBiomes:Ljava/util/List; - Field was removed
   - error: desertBiomes:Ljava/util/List; - Field was removed
   - error: coolBiomes:Ljava/util/List; - Field was removed
-    #DONE
 net/minecraft/nbt/NBTTagByteArray:
   - error: func_74735_a(Ljava/io/DataInput;I)V - Method was removed
-    #DONE
+net/minecraftforge/fluids/FluidContainerRegistry$ContainerKey:
+  - error: fluid:Lnet/minecraftforge/fluids/FluidStack; - Field was removed
+net/minecraft/client/mco/McoServerList:
+  - error: Class no longer exists
 net/minecraft/util/AxisAlignedBB:
   - error: <clinit>()V - Method was removed
   - error: func_72332_a()Lnet/minecraft/util/AABBPool; - Method was removed
-  - error: __OBFID:Ljava/lang/String; - Field was removed
   - error: field_72335_g:Ljava/lang/ThreadLocal; - Field was removed
-    #DONE
+net/minecraft/client/mco/WorldTemplateList:
+  - error: Class no longer exists
+net/minecraft/client/gui/GuiScreenReamlsTOS:
+  - error: Class no longer exists
+net/minecraft/client/gui/GuiButtonLink:
+  - error: Class no longer exists
 net/minecraft/nbt/NBTTagCompound:
   - error: func_150300_a(Ljava/io/DataInput;)B - Method was removed
   - error: func_150294_b(Ljava/io/DataInput;)Ljava/lang/String; - Method was removed
   - error: func_74735_a(Ljava/io/DataInput;I)V - Method was removed
   - error: func_150293_a(BLjava/lang/String;Ljava/io/DataInput;I)Lnet/minecraft/nbt/NBTBase; - Method was removed
-    #DONE
+cpw/mods/fml/common/launcher/Yggdrasil$Request$Agent:
+  - error: Class no longer exists
 cpw/mods/fml/common/eventhandler/Event:
   - error: hasAnnotation(Ljava/lang/Class;)Z - Method was removed
   - error: annotationMap:Ljava/util/Map; - Field was removed
-    #NOT PLANNED
+  - error: hasResult:Z - Field was removed
+  - error: isCancelable:Z - Field was removed
 net/minecraft/nbt/NBTTagString:
   - error: func_74735_a(Ljava/io/DataInput;I)V - Method was removed
-    #DONE
 net/minecraftforge/common/ForgeModContainer:
   - error: forceDuplicateFluidBlockCrash:Z - Field was removed
-    #INVALID
 net/minecraft/client/gui/ScaledResolution:
   - error: <init>(Lnet/minecraft/client/settings/GameSettings;II)V - Method was removed
-    #DONE
+cpw/mods/fml/common/network/handshake/FMLHandshakeMessage$ModIdData:
+  - error: <init>(Ljava/util/Map;)V - Method was removed
+net/minecraft/client/gui/mco/GuiScreenCreateOnlineWorld$TaskWorldCreation:
+  - error: Class no longer exists
+net/minecraft/client/gui/GuiScreenInvite:
+  - error: Class no longer exists
 net/minecraft/client/renderer/texture/TextureUtil:
   - error: func_147950_a(ZZ)V - Method was removed
-    #DONE
 net/minecraft/nbt/NBTTagLong:
   - error: func_74735_a(Ljava/io/DataInput;I)V - Method was removed
-    #DONE
+net/minecraft/client/mco/McoServer:
+  - error: Class no longer exists
+net/minecraft/util/ObjectIntIdentityMap:
+  - error: field_148748_b:Ljava/util/List; - Field was lowered in visibility
+  - error: field_148749_a:Ljava/util/Map; - Field was lowered in visibility
 net/minecraft/server/MinecraftServer:
   - error: func_71210_a(Lnet/minecraft/server/management/ServerConfigurationManager;)V - Method was removed
   - error: func_152363_m()Z - Method was made abstract
-    #DONE
 net/minecraft/world/IBlockAccess:
   - error: func_82732_R()Lnet/minecraft/util/Vec3Pool; - Method was removed
-    #DONE?
 net/minecraft/profiler/PlayerUsageSnooper:
   - error: func_76464_f()V - Method was removed
   - error: func_76472_a(Ljava/lang/String;Ljava/lang/Object;)V - Method was removed
   - error: field_76482_a:Ljava/util/Map; - Field was removed
-    #DONE
 net/minecraft/entity/IEntityOwnable:
   - error: func_70905_p()Ljava/lang/String; - Method was removed
   - error: func_152113_b()Ljava/lang/String; - Method was made abstract
-    #DONE
+net/minecraft/client/gui/GuiScreenBuyRealms:
+  - error: Class no longer exists
+cpw/mods/fml/common/launcher/Yggdrasil$Request:
+  - error: Class no longer exists
+net/minecraft/client/gui/GuiScreenConfirmation:
+  - error: Class no longer exists
+net/minecraft/client/gui/TaskLongRunning:
+  - error: Class no longer exists
+net/minecraft/enchantment/EnchantmentDamage:
+  - error: func_77323_a(ILnet/minecraft/entity/EntityLivingBase;)F - Method was removed
+net/minecraft/client/gui/mco/GuiScreenBackup$RestoreTask:
+  - error: Class no longer exists
+net/minecraft/client/gui/TaskOnlineConnect:
+  - error: Class no longer exists
 net/minecraft/client/renderer/OpenGlHelper:
   - error: field_77477_c:Z - Field was removed
-    #DONE
+cpw/mods/fml/common/launcher/Yggdrasil$Response$User:
+  - error: Class no longer exists
 cpw/mods/fml/common/Mod:
   - error: modLanguageAdapter()Ljava/lang/String; - Method was made abstract
-    #INVALID
 net/minecraft/nbt/NBTBase:
   - error: func_74735_a(Ljava/io/DataInput;I)V - Method was removed
   - error: func_150283_g(I)Ljava/lang/String; - Method was removed
   - error: func_152446_a(Ljava/io/DataInput;ILnet/minecraft/nbt/NBTSizeTracker;)V - Method was made abstract
-    #DONE
+cpw/mods/fml/common/registry/GameRegistry:
+  - error: addAlias(Ljava/lang/String;Ljava/lang/String;Lcpw/mods/fml/common/registry/GameRegistry$Type;)V - Method was removed
 net/minecraft/client/gui/GuiScreenOnlineServers:
   - error: Class no longer exists
-    #DONE DUMMY
 cpw/mods/fml/common/ModContainerFactory:
   - error: <init>()V - Method was lowered in visibility
-    #INVALID
-net/minecraft/command/CommandBase:
-  - error: func_71524_a(Lnet/minecraft/command/ICommandSender;ILjava/lang/String;[Ljava/lang/Object;)V - Method was removed
-  - error: func_71522_a(Lnet/minecraft/command/ICommandSender;Ljava/lang/String;[Ljava/lang/Object;)V - Method was removed
-    #DONE
 net/minecraft/util/Util:
   - error: func_147172_a(Ljava/lang/String;)Z - Method was removed
   - error: func_147173_b(Ljava/lang/String;)Ljava/util/UUID; - Method was removed
   - error: <clinit>()V - Method was removed
   - error: field_147174_a:Ljava/util/regex/Pattern; - Field was removed
-    #DONE
+net/minecraft/command/CommandBase:
+  - error: func_71524_a(Lnet/minecraft/command/ICommandSender;ILjava/lang/String;[Ljava/lang/Object;)V - Method was removed
+  - error: func_71522_a(Lnet/minecraft/command/ICommandSender;Ljava/lang/String;[Ljava/lang/Object;)V - Method was removed
 net/minecraft/client/mco/McoClient:
   - error: Class no longer exists
-    #INVALID
 net/minecraft/nbt/NBTTagShort:
   - error: func_74735_a(Ljava/io/DataInput;I)V - Method was removed
-    #DONE
+net/minecraft/client/gui/SelectionListBase:
+  - error: Class no longer exists
+net/minecraft/client/mco/PendingInvitesList:
+  - error: Class no longer exists
 net/minecraft/nbt/NBTTagInt:
   - error: func_74735_a(Ljava/io/DataInput;I)V - Method was removed
-    #DONE
+net/minecraft/client/multiplayer/ServerData:
+  - error: func_147408_b()Z - Method was removed
+  - error: func_78838_a(Z)V - Method was removed
+  - error: func_82820_d()Z - Method was removed
+  - error: func_82819_b(Z)V - Method was removed
+  - error: func_147410_c()Z - Method was removed
+  - error: field_82823_k:Z - Field was removed
+  - error: field_78848_h:Z - Field was removed
+  - error: field_78842_g:Z - Field was removed
 net/minecraft/util/Util$EnumOS:
   - error: MACOS:Lnet/minecraft/util/Util$EnumOS; - Field was removed
-    #DONE with ASM?
 net/minecraft/client/mco/Request$Get:
   - error: Class no longer exists
-    #INVALID
+net/minecraft/client/gui/GuiScreenSelectLocation:
+  - error: Class no longer exists
 net/minecraft/tileentity/TileEntitySkull:
   - error: func_145905_a(ILjava/lang/String;)V - Method was removed
   - error: func_145907_c()Ljava/lang/String; - Method was removed
   - error: field_145909_j:Ljava/lang/String; - Field was removed
-    #DONE
 net/minecraft/util/IJsonSerializable:
   - error: func_152753_a(Lcom/google/gson/JsonElement;)V - Method was made abstract
-    #DONE
 net/minecraft/command/ServerCommandManager:
   - error: func_71563_a(Lnet/minecraft/command/ICommandSender;ILjava/lang/String;[Ljava/lang/Object;)V - Method was removed
-    #DONE
 net/minecraft/nbt/NBTTagEnd:
   - error: func_74735_a(Ljava/io/DataInput;I)V - Method was removed
-    #DONE
 net/minecraft/client/mco/Request$Delete:
   - error: Class no longer exists
-    #INVALID
 net/minecraft/world/World:
   - error: func_82732_R()Lnet/minecraft/util/Vec3Pool; - Method was removed
   - error: func_152379_p()I - Method was made abstract
   - error: field_82741_K:Lnet/minecraft/util/Vec3Pool; - Field was removed
-    #DONE
+net/minecraft/client/mco/McoServerList$UpdateTask:
+  - error: Class no longer exists
 net/minecraft/client/renderer/tileentity/TileEntitySkullRenderer:
   - error: func_147530_a(FFFIFILjava/lang/String;)V - Method was removed
-    #DONE
+net/minecraft/inventory/ContainerBeacon$BeaconSlot:
+  - error: field_82876_a:Lnet/minecraft/inventory/ContainerBeacon; - Field was removed
+net/minecraft/client/gui/GuiScreenOnlineServersSubscreen:
+  - error: Class no longer exists
 net/minecraft/client/gui/inventory/GuiEditSign:
   - error: field_146850_a:Ljava/lang/String; - Field was removed
-    #DONE
 net/minecraft/client/settings/GameSettings$Options:
   - error: USE_SERVER_TEXTURES:Lnet/minecraft/client/settings/GameSettings$Options; - Field was removed
-    #DONE?
 cpw/mods/fml/common/registry/LanguageRegistry:
   - error: loadLanguageTable(Ljava/util/Map;Ljava/lang/String;)V - Method was removed
-    #DONE
+cpw/mods/fml/common/launcher/Yggdrasil:
+  - error: close(Ljava/io/Closeable;)V - Method was removed
+net/minecraft/client/mco/Backup:
+  - error: Class no longer exists
 net/minecraft/server/management/BanList:
   - error: func_73709_b(Ljava/lang/String;)V - Method was removed
   - error: func_73712_c()Ljava/util/Map; - Method was removed
@@ -178,89 +229,135 @@ net/minecraft/server/management/BanList:
   - error: func_73710_b()Z - Method was removed
   - error: func_73708_a(Z)V - Method was removed
   - error: func_73705_d()V - Method was removed
+  - error: func_73707_e()V - Method was removed
   - error: func_73706_a(Lnet/minecraft/server/management/BanEntry;)V - Method was removed
   - error: field_73715_a:Lnet/minecraft/server/management/LowerStringMap; - Field was removed
   - error: field_73714_c:Z - Field was removed
   - error: field_73713_b:Ljava/io/File; - Field was removed
   - error: field_151356_a:Lorg/apache/logging/log4j/Logger; - Field was removed
-    #NOT PLANNED FOR DEDICATED SERVER
+net/minecraft/client/mco/BackupList:
+  - error: Class no longer exists
+net/minecraft/util/ValueObject:
+  - error: Class no longer exists
+net/minecraft/client/gui/GuiScreenLongRunningTask:
+  - error: Class no longer exists
 net/minecraft/client/resources/DefaultResourcePack:
   - error: <init>(Ljava/io/File;)V - Method was removed
   - error: func_110604_a(Ljava/lang/String;Ljava/io/File;)V - Method was removed
   - error: func_110603_a(Ljava/io/File;)V - Method was removed
   - error: field_110607_c:Ljava/io/File; - Field was removed
   - error: field_110606_b:Ljava/util/Map; - Field was removed
-    #DONE
 net/minecraft/entity/passive/EntityHorse:
   - error: func_142019_cb()Ljava/lang/String; - Method was removed
   - error: func_110213_b(Ljava/lang/String;)V - Method was removed
-    #DONE
 net/minecraft/nbt/NBTTagList:
   - error: func_74735_a(Ljava/io/DataInput;I)V - Method was removed
-    #DONE
-net/minecraft/nbt/NBTTagIntArray:
-  - error: func_74735_a(Ljava/io/DataInput;I)V - Method was removed
-    #DONE
+cpw/mods/fml/common/asm/transformers/deobf/LZMAInputSupplier:
+  - error: getInput()Ljava/io/InputStream; - Method was made final
 net/minecraft/world/storage/SaveHandler:
   - error: func_75764_a(Ljava/lang/String;)Lnet/minecraft/nbt/NBTTagCompound; - Method was removed
-    #DONE
+net/minecraft/nbt/NBTTagIntArray:
+  - error: func_74735_a(Ljava/io/DataInput;I)V - Method was removed
+net/minecraftforge/fluids/FluidStack:
+  - error: fluidID:I - Field was removed
 net/minecraft/nbt/NBTTagByte:
   - error: func_74735_a(Ljava/io/DataInput;I)V - Method was removed
-    #DONE
 net/minecraft/client/mco/ExceptionMcoService:
   - error: Class no longer exists
-    #INVALID
+net/minecraft/client/gui/mco/ScreenWithCallback:
+  - error: Class no longer exists
+net/minecraft/client/gui/mco/GuiScreenBackup$SelectionList:
+  - error: Class no longer exists
+net/minecraft/client/gui/mco/GuiScreenResetWorld$ResetWorldTask:
+  - error: Class no longer exists
 net/minecraft/world/ChunkCache:
   - error: func_82732_R()Lnet/minecraft/util/Vec3Pool; - Method was removed
-    #DONE
+net/minecraft/client/mco/WorldTemplate:
+  - error: Class no longer exists
 net/minecraft/nbt/NBTTagDouble:
   - error: func_74735_a(Ljava/io/DataInput;I)V - Method was removed
-    #DONE
 net/minecraft/client/gui/GuiSelectWorld:
   - error: func_146623_a(Lnet/minecraft/client/gui/GuiScreen;Ljava/lang/String;I)Lnet/minecraft/client/gui/GuiYesNo; - Method was removed
-    #DONE
+cpw/mods/fml/common/network/simpleimpl/SimpleChannelHandlerWrapper:
+  - error: side:Lcpw/mods/fml/relauncher/Side; - Field was made final
+  - error: messageHandler:Lcpw/mods/fml/common/network/simpleimpl/IMessageHandler; - Field was made final
 net/minecraft/util/Session:
   - error: <init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V - Method was removed
-    #INVALID
 net/minecraft/client/mco/Request$Post:
   - error: Class no longer exists
-    #INVALID
 net/minecraft/client/mco/Request:
   - error: Class no longer exists
-    #INVALID
 net/minecraft/client/mco/ExceptionMcoHttp:
   - error: Class no longer exists
-    #INVALID
+net/minecraft/client/mco/McoServer$State:
+  - error: Class no longer exists
 net/minecraft/nbt/CompressedStreamTools:
   - error: func_74792_a([B)Lnet/minecraft/nbt/NBTTagCompound; - Method was removed
   - error: func_150664_a(Ljava/io/DataInput;I)Lnet/minecraft/nbt/NBTBase; - Method was removed
   - error: func_74794_a(Ljava/io/DataInput;)Lnet/minecraft/nbt/NBTTagCompound; - Method was removed
-    #DONE
+net/minecraft/client/mco/ValueObjectList:
+  - error: Class no longer exists
 net/minecraft/command/IAdminCommand:
   - error: func_71563_a(Lnet/minecraft/command/ICommandSender;ILjava/lang/String;[Ljava/lang/Object;)V - Method was removed
   - error: func_152372_a(Lnet/minecraft/command/ICommandSender;Lnet/minecraft/command/ICommand;ILjava/lang/String;[Ljava/lang/Object;)V - Method was made abstract
-    #DONE
+cpw/mods/fml/common/launcher/Yggdrasil$Response:
+  - error: Class no longer exists
 net/minecraft/client/mco/Request$Put:
   - error: Class no longer exists
-    #INVALID
+net/minecraft/enchantment/Enchantment:
+  - error: func_77323_a(ILnet/minecraft/entity/EntityLivingBase;)F - Method was removed
+net/minecraft/client/gui/mco/GuiScreenPendingInvitation$List:
+  - error: Class no longer exists
+net/minecraft/client/gui/GuiScreenEditOnlineWorld:
+  - error: Class no longer exists
+net/minecraft/client/gui/GuiScreenConfigureWorld:
+  - error: Class no longer exists
+net/minecraft/client/gui/mco/GuiScreenPendingInvitation:
+  - error: Class no longer exists
 net/minecraftforge/fluids/Fluid:
   - error: convertLegacyName(Ljava/lang/String;)Ljava/lang/String; - Method was removed
   - error: registerLegacyName(Ljava/lang/String;Ljava/lang/String;)V - Method was removed
   - error: <clinit>()V - Method was removed
   - error: legacyNames:Ljava/util/Map; - Field was removed
+net/minecraft/server/management/BanEntry:
+  - error: Class was made abstract
+  - error: <init>(Ljava/lang/String;)V - Method was removed
+  - error: func_73690_c()Ljava/lang/String; - Method was removed
+  - error: func_73683_b()Ljava/util/Date; - Method was removed
+  - error: func_73689_b(Ljava/lang/String;)V - Method was removed
+  - error: func_73685_g()Ljava/lang/String; - Method was removed
+  - error: func_73691_b(Ljava/util/Date;)V - Method was removed
+  - error: func_73682_e()Z - Method was lowered in visibility
+  - error: func_73681_a(Ljava/util/Date;)V - Method was removed
+  - error: func_73687_a(Ljava/lang/String;)V - Method was removed
+  - error: func_73688_c(Ljava/lang/String;)Lnet/minecraft/server/management/BanEntry; - Method was removed
+  - error: func_73684_a()Ljava/lang/String; - Method was removed
+  - error: field_73692_f:Ljava/util/Date; - Field was made final
+  - error: field_73694_d:Ljava/util/Date; - Field was made final
+  - error: field_73693_g:Ljava/lang/String; - Field was made final
+  - error: field_73695_e:Ljava/lang/String; - Field was made final
+  - error: field_73697_c:Ljava/lang/String; - Field was removed
+  - error: field_151362_b:Lorg/apache/logging/log4j/Logger; - Field was removed
 net/minecraft/entity/player/EntityPlayerMP:
   - error: field_71130_g:Ljava/util/List; - Field was lowered in visibility
   - error: field_71142_cm:I - Field was removed
-    #DONE
+net/minecraft/client/mco/ValueObjectSubscription:
+  - error: Class no longer exists
 net/minecraft/nbt/NBTTagFloat:
   - error: func_74735_a(Ljava/io/DataInput;I)V - Method was removed
-    #DONE
 net/minecraft/client/gui/GuiConfirmOpenLink:
   - error: <init>(Lnet/minecraft/client/gui/GuiScreen;Ljava/lang/String;IZ)V - Method was removed
   - error: field_146361_t:Ljava/lang/String; - Field was made final
   - error: field_146362_s:Ljava/lang/String; - Field was made final
   - error: field_146363_r:Ljava/lang/String; - Field was made final
-    #DONE
+net/minecraft/client/gui/mco/GuiScreenMcoWorldTemplate:
+  - error: Class no longer exists
+net/minecraft/client/shader/ShaderGroup:
+  - error: <init>(Lnet/minecraft/client/resources/IResourceManager;Lnet/minecraft/client/shader/Framebuffer;Lnet/minecraft/util/ResourceLocation;)V - Method was removed
+  - error: func_148025_a(Lnet/minecraft/util/ResourceLocation;)V - Method was removed
+  - error: func_148019_b(Lcom/google/gson/JsonElement;)V - Method was removed
+net/minecraft/client/gui/GuiScreenRealmsPinger:
+  - error: Class no longer exists
 net/minecraft/server/management/ServerConfigurationManager:
   - error: func_72379_i(Ljava/lang/String;)V - Method was removed
   - error: func_72388_h()Ljava/util/Set; - Method was removed
@@ -272,25 +369,24 @@ net/minecraft/server/management/ServerConfigurationManager:
   - error: func_72357_a(Lnet/minecraft/world/WorldSettings$GameType;)V - Method was removed
   - error: func_72398_c()Ljava/lang/String; - Method was removed
   - error: a(Lnet/minecraft/network/NetworkManager;Lnet/minecraft/entity/player/EntityPlayerMP;Lnet/minecraft/network/NetHandlerPlayServer;)V - Method was removed
-    #INVALID METHOD?
   - error: func_72353_e(Ljava/lang/String;)Z - Method was removed
   - error: func_72376_i()Ljava/util/Set; - Method was removed
   - error: func_72390_e()Lnet/minecraft/server/management/BanList; - Method was removed
   - error: func_72386_b(Ljava/lang/String;)V - Method was removed
   - error: field_72402_d:I - Field was lowered in visibility
-    #DONE MOST
+net/minecraft/client/mco/PendingInvite:
+  - error: Class no longer exists
+cpw/mods/fml/common/launcher/Yggdrasil$Response$User$Property:
+  - error: Class no longer exists
 net/minecraft/client/mco/McoClientConfig:
   - error: Class no longer exists
-    #INVALID
 net/minecraft/entity/passive/EntityTameable:
   - error: func_70910_a(Ljava/lang/String;)V - Method was removed
   - error: func_70905_p()Ljava/lang/String; - Method was removed
-    #DONE
 net/minecraft/world/storage/ISaveFormat:
   - error: func_154333_a()Ljava/lang/String; - Method was made abstract
   - error: func_154334_a(Ljava/lang/String;)Z - Method was made abstract
   - error: func_154335_d(Ljava/lang/String;)Z - Method was made abstract
-    #INVALID
 net/minecraft/util/Vec3:
   - error: <clinit>()V - Method was removed
   - error: <init>(Lnet/minecraft/util/Vec3Pool;DDD)V - Method was removed
@@ -303,34 +399,42 @@ net/minecraft/client/Minecraft:
   - error: <init>(Lnet/minecraft/util/Session;IIZZLjava/io/File;Ljava/io/File;Ljava/io/File;Ljava/net/Proxy;Ljava/lang/String;)V - Method was removed
   - error: func_147105_a(Ljava/lang/String;)V - Method was removed
   - error: field_71414_F:Z - Field was removed
-    #DONE
 net/minecraft/client/renderer/IImageBuffer:
   - error: func_152634_a()V - Method was made abstract
-    #DONE
 net/minecraftforge/common/BiomeDictionary$Type:
   - error: <init>(Ljava/lang/String;I)V - Method was removed
-    #INVALID
 net/minecraft/client/resources/data/PackMetadataSection:
   - error: <init>(Ljava/lang/String;I)V - Method was removed
   - error: func_110461_a()Ljava/lang/String; - Method was removed
-    #DONE
 net/minecraft/client/gui/GuiYesNo:
   - error: <init>(Lnet/minecraft/client/gui/GuiScreen;Ljava/lang/String;Ljava/lang/String;I)V - Method was removed
   - error: <init>(Lnet/minecraft/client/gui/GuiScreen;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V - Method was removed
-    #DONE
+net/minecraft/client/mco/McoServerAddress:
+  - error: Class no longer exists
+net/minecraft/client/Minecraft$SwitchMovingObjectType:
+  - error: field_151437_a:[I - Field was removed
+net/minecraft/client/gui/GuiScreenOnlineServers$OnlineServerList:
+  - error: Class no longer exists
 net/minecraft/client/settings/GameSettings:
   - error: field_74356_s:Z - Field was removed
-    #DONE
 net/minecraft/client/renderer/ThreadDownloadImageData:
   - error: <init>(Ljava/lang/String;Lnet/minecraft/util/ResourceLocation;Lnet/minecraft/client/renderer/IImageBuffer;)V - Method was removed
   - error: func_110557_a()Z - Method was removed
-    #DONE
+net/minecraft/util/MessageSerializer:
+  - error: <init>()V - Method was lowered in visibility
+net/minecraft/client/gui/GuiScreenSubscription:
+  - error: Class no longer exists
+net/minecraft/client/gui/GuiScreenConfigureWorld$SelectionListInvited:
+  - error: Class no longer exists
 net/minecraft/util/Vec3Pool:
   - error: Class no longer exists
     #DONE
+net/minecraft/client/gui/mco/GuiScreenResetWorld:
+  - error: Class no longer exists
 net/minecraft/client/gui/GuiScreenDisconnectedOnline:
   - error: Class no longer exists
-    #DONE
+net/minecraft/client/gui/GuiScreenConfirmation$ConfirmationType:
+  - error: Class no longer exists
 net/minecraft/client/entity/AbstractClientPlayer:
   - error: func_110300_d(Ljava/lang/String;)Ljava/lang/String; - Method was removed
   - error: func_110302_j()V - Method was removed
@@ -343,7 +447,14 @@ net/minecraft/client/entity/AbstractClientPlayer:
   - error: func_110301_a(Lnet/minecraft/util/ResourceLocation;Ljava/lang/String;Lnet/minecraft/util/ResourceLocation;Lnet/minecraft/client/renderer/IImageBuffer;)Lnet/minecraft/client/renderer/ThreadDownloadImageData; - Method was removed
   - error: field_110316_a:Lnet/minecraft/client/renderer/ThreadDownloadImageData; - Field was removed
   - error: field_110315_c:Lnet/minecraft/client/renderer/ThreadDownloadImageData; - Field was removed
-    #DONE
+net/minecraft/server/dedicated/DedicatedPlayerList:
+  - error: func_72370_d(Ljava/lang/String;)Z - Method was removed
+  - error: func_72379_i(Ljava/lang/String;)V - Method was removed
+  - error: func_72386_b(Ljava/lang/String;)V - Method was removed
+  - error: func_72360_c(Ljava/lang/String;)V - Method was removed
+  - error: func_72359_h(Ljava/lang/String;)V - Method was removed
+  - error: field_72422_f:Ljava/io/File; - Field was removed
+  - error: field_72423_e:Ljava/io/File; - Field was removed
 cpw/mods/fml/client/FMLConfigGuiFactory:
   - error: minecraft:Lnet/minecraft/client/Minecraft; - Field was removed
     #INVALID
