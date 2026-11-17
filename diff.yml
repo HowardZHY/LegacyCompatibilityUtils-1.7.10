@@ -143,6 +143,7 @@ cpw/mods/fml/common/launcher/Yggdrasil$Response$User:
   - error: Class no longer exists
 cpw/mods/fml/common/Mod:
   - error: modLanguageAdapter()Ljava/lang/String; - Method was made abstract
+    #INVALID
 net/minecraft/nbt/NBTBase:
   - error: func_74735_a(Ljava/io/DataInput;I)V - Method was removed
   - error: func_150283_g(I)Ljava/lang/String; - Method was removed
@@ -153,6 +154,7 @@ net/minecraft/client/gui/GuiScreenOnlineServers:
   - error: Class no longer exists
 cpw/mods/fml/common/ModContainerFactory:
   - error: <init>()V - Method was lowered in visibility
+    #INVALID
 net/minecraft/util/Util:
   - error: func_147172_a(Ljava/lang/String;)Z - Method was removed
   - error: func_147173_b(Ljava/lang/String;)Ljava/util/UUID; - Method was removed

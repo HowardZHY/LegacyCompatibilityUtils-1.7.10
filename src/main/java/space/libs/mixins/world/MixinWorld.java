@@ -5,15 +5,18 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.util.Vec3Pool;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.spongepowered.asm.mixin.*;
 import net.minecraft.world.IBlockAccessBridge;
 import org.spongepowered.asm.mixin.Shadow;
+import space.libs.interfaces.IWorld;
+import space.libs.interfaces.IWorldProvider;
 import space.libs.util.MappedName;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "ShadowNameDoesntMatchTargetClass"})
 @Mixin(World.class)
-public abstract class MixinWorld implements IBlockAccessBridge {
+public abstract class MixinWorld implements IWorld, IBlockAccessBridge {
 
     @MappedName("difficultySetting")
     public int field_73013_u = 2; //TODO?
@@ -21,6 +24,9 @@ public abstract class MixinWorld implements IBlockAccessBridge {
     @MappedName("vecPool")
     @Mutable
     public final Vec3Pool field_82741_K = new Vec3Pool(300, 2000);
+
+    @Shadow
+    public @Final WorldProvider provider;
 
     @Shadow
     @Override
@@ -49,6 +55,12 @@ public abstract class MixinWorld implements IBlockAccessBridge {
 
     @Shadow
     public abstract MovingObjectPosition rayTraceBlocks(Vec3 pos, Vec3 pos1, boolean b, boolean b1, boolean b2);
+
+    @Shadow
+    public abstract boolean canSnowAt(int x, int y, int z, boolean checkLight);
+
+    @Shadow
+    public abstract boolean canSnowAtBody(int x, int y, int z, boolean checkLight);
 
     @Shadow
     public abstract void addBlockEvent(int x, int y, int z, Block blockIn, int eventId, int eventParameter);
@@ -84,6 +96,10 @@ public abstract class MixinWorld implements IBlockAccessBridge {
         this.notifyBlockChange(x, y, z, Block.getBlockById(block));
     }
 
+    public boolean func_72858_w(int x, int y, int z) {
+        return ((IWorldProvider) this.provider).canSnowAt(x, y, z);
+    }
+
     public void func_72898_h(int x, int y, int z, int block) {
         this.notifyBlocksOfNeighborChange(x, y, z, Block.getBlockById(block));
     }
@@ -112,6 +128,11 @@ public abstract class MixinWorld implements IBlockAccessBridge {
 
     public void func_96440_m(int x, int y, int z, int block) {
         this.updateNeighborsAboutBlockChange(x, y, z, Block.getBlockById(block));
+    }
+
+    @Override
+    public boolean canSnowAtBody(int x, int y, int z) {
+        return this.canSnowAtBody(x, y, z, true);
     }
 
     public boolean isBlockSolidOnSide(int x, int y, int z, ForgeDirection side) {

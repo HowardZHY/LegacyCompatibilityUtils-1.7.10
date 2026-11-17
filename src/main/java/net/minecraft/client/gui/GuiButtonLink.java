@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import space.libs.util.MappedName;
 
 import java.net.URI;
 
@@ -17,7 +18,7 @@ public class GuiButtonLink extends GuiButton {
         super(id, x, y, w, h, buttonText);
     }
 
-    /** openURI */
+    @MappedName("openURI")
     public void func_146138_a(String paramString) {
         try {
             URI uri = new URI(paramString);

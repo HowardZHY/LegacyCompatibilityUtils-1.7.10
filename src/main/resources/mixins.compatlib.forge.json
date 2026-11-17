@@ -15,6 +15,7 @@
   ],
   "mixins": [
     "MixinBonemealEvent",
+    "MixinChunkProviderEventReplaceBiomeBlocks",
     "MixinEntityRegistry",
     "MixinFMLCommonHandler",
     "MixinFMLControlledNamespacedRegistry",
@@ -26,6 +27,7 @@
     "MixinGameRegistry",
     "MixinLanguageRegistry",
     "MixinNetworkRegistry",
+    "MixinTerrainGen",
     "MixinTickEventType",
     "interfaces.MixinIEntityAdditionalSpawnData",
     "interfaces.MixinIFMLSidedHandler"

@@ -39,7 +39,7 @@ public abstract class MixinGuiMainMenu extends MixinGuiScreen {
         if (this.field_96141_q) {
             logger.warn("MCO/Realms Availability Checker is INVALID anymore!");
             if (field_96139_s) {
-                func_130022_h();
+                this.func_130022_h();
             }
         }
     }

@@ -51,6 +51,7 @@ CL: net/minecraft/item/EnumToolMaterial net/minecraft/item/Item$ToolMaterial
 CL: net/minecraft/network/NetServerHandler net/minecraft/network/NetHandlerPlayServer
 CL: net/minecraft/util/Icon net/minecraft/util/IIcon
 CL: net/minecraft/util/WeightedRandomItem net/minecraft/util/WeightedRandom$Item
+CL: net/minecraft/world/gen/feature/MapGenScatteredFeature net/minecraft/world/gen/structure/MapGenScatteredFeature
 CL: net/minecraftforge/common/Configuration net/minecraftforge/common/config/Configuration
 CL: net/minecraftforge/common/EnumHelper net/minecraftforge/common/util/EnumHelper
 CL: net/minecraftforge/common/ForgeDirection net/minecraftforge/common/util/ForgeDirection

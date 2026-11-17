@@ -131,8 +131,10 @@
     "world.MixinWorld",
     "world.MixinWorldChunkManager",
     "world.MixinWorldGenFlowers",
+    "world.MixinWorldGenLakes",
     "world.MixinWorldGenMineable",
     "world.MixinWorldGenTallGrass",
+    "world.MixinWorldProvider",
     "world.MixinWorldType"
   ]
 }
