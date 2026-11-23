@@ -91,6 +91,15 @@ dependencies {
     modCompileOnly("curse.maven:mob-dismemberment-229067:2232121")
 }
 
+sourceSets {
+    main {
+        java {
+            srcDir 'src/legacy/java'
+            srcDir 'src/retro/java'
+        }
+    }
+}
+
 processResources {}
 
 jar {
