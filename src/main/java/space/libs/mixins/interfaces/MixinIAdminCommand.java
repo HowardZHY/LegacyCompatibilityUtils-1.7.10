@@ -10,8 +10,9 @@ import org.spongepowered.asm.mixin.Overwrite;
 @Mixin(IAdminCommand.class)
 public interface MixinIAdminCommand extends IAdminCommandLegacy {
 
+    @SuppressWarnings("RedundantMethodOverride")
     @Override
-    default void func_71563_a(ICommandSender sender, int p_152372_3_, String msgFormat, Object ... msgParams) {}
+    default void func_71563_a(ICommandSender sender, int i, String msgFormat, Object ... msgParams) {}
 
     /**
      * @author HowardZHY

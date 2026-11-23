@@ -197,3 +197,5 @@ func_72978_e,func_147470_e
 func_85174_u,func_147469_q
 func_94571_i,func_147468_f
 func_94578_a,func_147480_a
+# net/minecraft/world/chunk/IChunkProvider
+func_73150_a,func_147416_a

@@ -1,4 +1,4 @@
-package space.libs.mixins.world;
+package space.libs.mixins.world.gen;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;

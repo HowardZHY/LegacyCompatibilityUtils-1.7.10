@@ -1,4 +1,4 @@
-package space.libs.mixins.world;
+package space.libs.mixins.world.gen;
 
 import net.minecraft.world.gen.layer.GenLayerBiome;
 import net.minecraftforge.common.BiomeManager;
@@ -10,7 +10,7 @@ import static net.minecraftforge.common.BiomeManager.BiomeEntry;
 
 @SuppressWarnings("unused")
 @Mixin(GenLayerBiome.class)
-public class MixinGenLayerBiome {
+public abstract class MixinGenLayerBiome {
 
     public List<BiomeEntry> desertBiomes = BiomeManager.getBiomes(BiomeManager.BiomeType.DESERT);
 
