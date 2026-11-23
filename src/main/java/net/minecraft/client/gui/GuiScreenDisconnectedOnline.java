@@ -7,7 +7,7 @@ import net.minecraft.util.IChatComponent;
 
 import java.util.List;
 
-@SuppressWarnings("all")
+@SuppressWarnings("unchecked")
 @SideOnly(Side.CLIENT)
 public class GuiScreenDisconnectedOnline extends GuiScreen {
 
@@ -21,24 +21,28 @@ public class GuiScreenDisconnectedOnline extends GuiScreen {
 
     public GuiScreenDisconnectedOnline(GuiScreen screen, String name, IChatComponent chatComponent) {
         this.field_146868_h = screen;
-        this.field_146867_a = I18n.format(name, new Object[0]);
+        this.field_146867_a = I18n.format(name);
         this.field_146865_f = chatComponent;
     }
 
+    @Override
     protected void keyTyped(char c, int i) {}
 
+    @Override
     public void initGui() {
         this.buttonList.clear();
-        this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120 + 12, I18n.format("gui.back", new Object[0])));
+        this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120 + 12, I18n.format("gui.back")));
         this.field_146866_g = this.fontRendererObj.listFormattedStringToWidth(this.field_146865_f.getFormattedText(), this.width - 50);
     }
 
+    @Override
     protected void actionPerformed(GuiButton button) {
         if (button.id == 0) {
             this.mc.displayGuiScreen(this.field_146868_h);
         }
     }
 
+    @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
         drawCenteredString(this.fontRendererObj, this.field_146867_a, this.width / 2, this.height / 2 - 50, 11184810);
@@ -52,6 +56,7 @@ public class GuiScreenDisconnectedOnline extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
+    @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
         super.mouseClicked(mouseX, mouseY, mouseButton);
     }

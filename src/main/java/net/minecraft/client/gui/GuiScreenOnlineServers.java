@@ -1,64 +1,539 @@
 package net.minecraft.client.gui;
 
+import com.google.common.collect.Lists;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.io.IOException;
+import java.net.UnknownHostException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.atomic.AtomicInteger;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.mco.GuiScreenCreateOnlineWorld;
+import net.minecraft.client.gui.mco.GuiScreenPendingInvitation;
+import net.minecraft.client.mco.*;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.util.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 
-@SuppressWarnings("all")
-@SideOnly(Side.CLIENT)
+@SideOnly(Side.CLIENT) @SuppressWarnings({"unchecked", "SameParameterValue"})
 public class GuiScreenOnlineServers extends GuiScreen {
 
-    public long field_146705_v;
+    private static final AtomicInteger field_146701_a = new AtomicInteger(0);
 
-    public GuiScreen field_146707_t;
+    private static final Logger field_146695_f = LogManager.getLogger();
 
-    public GuiScreenOnlineServers(GuiScreen screen) {
-        this.field_146707_t = screen;
+    private static final ResourceLocation field_146697_g = new ResourceLocation("textures/gui/widgets.png");
+
+    private static final ResourceLocation field_146702_h = new ResourceLocation("textures/gui/title/minecraft.png");
+
+    private static McoServerList field_146703_i = new McoServerList();
+
+    private static GuiScreenRealmsPinger field_146709_r = new GuiScreenRealmsPinger();
+
+    private static final ThreadPoolExecutor field_146708_s = new ScheduledThreadPoolExecutor(5, (new ThreadFactoryBuilder()).setNameFormat("Server Pinger #%d").setDaemon(true).build());
+
+    private GuiScreen field_146707_t;
+
+    private GuiScreenOnlineServers.OnlineServerList field_146706_u;
+
+    private long field_146705_v = -1L;
+
+    private GuiButton field_146704_w;
+
+    private GuiButton field_146712_x;
+
+    private GuiButtonLink field_146711_y;
+
+    private GuiButton field_146710_z;
+
+    private String field_146698_A;
+
+    private boolean field_146699_B;
+
+    private List<McoServer> field_146700_C = Lists.newArrayList();
+
+    private volatile int field_146694_D = 0;
+
+    private int field_146696_E;
+
+    public GuiScreenOnlineServers(GuiScreen p_i1123_1_) {
+        this.field_146707_t = p_i1123_1_;
     }
 
+    @Override
     public void initGui() {
         Keyboard.enableRepeatEvents(true);
         this.buttonList.clear();
+        field_146703_i.func_148475_a(this.mc.getSession());
+        if (!this.field_146699_B) {
+            this.field_146699_B = true;
+            this.field_146706_u = new GuiScreenOnlineServers.OnlineServerList();
+        } else {
+            this.field_146706_u.func_148346_a(this.width, this.height, 32, this.height - 64);
+        }
         this.func_146688_g();
     }
 
     public void func_146688_g() {
+        this.buttonList.add(this.field_146710_z = new GuiButton(1, this.width / 2 - 154, this.height - 52, 100, 20, I18n.format("mco.selectServer.play")));
+        String s = (this.field_146694_D > 0) ? I18n.format("mco.selectServer.create") : I18n.format("mco.selectServer.buy");
+        this.buttonList.add(this.field_146712_x = new GuiButton(2, this.width / 2 - 48, this.height - 52, 100, 20, s));
+        this.buttonList.add(this.field_146704_w = new GuiButton(3, this.width / 2 + 58, this.height - 52, 100, 20, I18n.format("mco.selectServer.configure")));
+        this.buttonList.add(this.field_146711_y = new GuiButtonLink(4, this.width / 2 - 154, this.height - 28, 154, 20, I18n.format("mco.selectServer.moreinfo")));
+        this.buttonList.add(new GuiButton(0, this.width / 2 + 6, this.height - 28, 153, 20, I18n.format("gui.cancel")));
+        McoServer mcoserver = func_146691_a(this.field_146705_v);
+        this.field_146710_z.enabled = (mcoserver != null && mcoserver.field_148808_d.equals(McoServer.State.OPEN.name()) && !mcoserver.field_148819_h);
+        this.field_146704_w.enabled = (mcoserver != null && !mcoserver.field_148808_d.equals(McoServer.State.ADMIN_LOCK.name()));
+        if (mcoserver != null && !mcoserver.field_148809_e.equals(this.mc.getSession().getUsername())) {
 
+            this.field_146704_w.displayString = I18n.format("mco.selectServer.leave");
+        }
     }
 
+    @Override
     public void updateScreen() {
         super.updateScreen();
+        ++this.field_146696_E;
+        if (field_146703_i.func_148472_a()) {
+            List<McoServer> list = field_146703_i.func_148473_c();
+            for (McoServer mcoserver : list) {
+                for (McoServer mcoserver1 : this.field_146700_C) {
+                    if (mcoserver.field_148812_a == mcoserver1.field_148812_a) {
+                        mcoserver.func_148799_a(mcoserver1);
+                        break;
+                    }
+                }
+            }
+            this.field_146694_D = field_146703_i.func_148469_e();
+            this.field_146700_C = list;
+            field_146703_i.func_148479_b();
+        }
+        this.field_146712_x.displayString = this.field_146694_D > 0 ? I18n.format("mco.selectServer.create") : I18n.format("mco.selectServer.buy");
     }
 
+    @Override
     public void onGuiClosed() {
         Keyboard.enableRepeatEvents(false);
     }
 
-    protected void actionPerformed(GuiButton paramGuiButton) {
-
+    @Override
+    protected void actionPerformed(GuiButton p_146284_1_) {
+        if (p_146284_1_.enabled)
+            if (p_146284_1_.id == 1) {
+                func_146656_d(this.field_146705_v);
+            } else if (p_146284_1_.id == 3) {
+                func_146667_u();
+            } else if (p_146284_1_.id == 0) {
+                func_146669_s();
+                this.mc.displayGuiScreen(this.field_146707_t);
+            } else if (p_146284_1_.id == 2) {
+                func_146669_s();
+                this.mc.displayGuiScreen((this.field_146694_D > 0) ? new GuiScreenCreateOnlineWorld(this) : new GuiScreenBuyRealms(this));
+            } else if (p_146284_1_.id == 4) {
+                func_146660_t();
+            } else {
+                this.field_146706_u.func_148357_a(p_146284_1_);
+            }
     }
 
-    public void confirmClicked(boolean result, int id) {
+    private void func_146669_s() {
+        field_146703_i.func_148476_f();
+        field_146709_r.func_148507_b();
+    }
 
+    private void func_146660_t() {
+        String s = I18n.format("mco.more.info.question.line1");
+        String s1 = I18n.format("mco.more.info.question.line2");
+        this.mc.displayGuiScreen(new GuiScreenConfirmation(this, GuiScreenConfirmation.ConfirmationType.Info, s, s1, 4));
+    }
+
+    private void func_146667_u() {
+        McoServer mcoserver = this.func_146691_a(this.field_146705_v);
+        if (mcoserver != null) {
+            if (this.mc.getSession().getUsername().equals(mcoserver.field_148809_e)) {
+                McoServer mcoserver1 = this.func_146677_c(mcoserver.field_148812_a);
+                if (mcoserver1 != null) {
+                    this.func_146669_s();
+                    this.mc.displayGuiScreen(new GuiScreenConfigureWorld(this, mcoserver1));
+                }
+            } else {
+                String s1 = I18n.format("mco.configure.world.leave.question.line1");
+                String s = I18n.format("mco.configure.world.leave.question.line2");
+                this.mc.displayGuiScreen(new GuiScreenConfirmation(this, GuiScreenConfirmation.ConfirmationType.Info, s1, s, 3));
+            }
+        }
+    }
+
+    private McoServer func_146691_a(long p_146691_1_) {
+        Iterator<McoServer> iterator = this.field_146700_C.iterator();
+        McoServer mcoserver;
+        do {
+            if (!iterator.hasNext()) {
+                return null;
+            }
+            mcoserver = iterator.next();
+        }
+        while (mcoserver.field_148812_a != p_146691_1_);
+        return mcoserver;
+    }
+
+    private int func_146672_b(long p_146672_1_) {
+        for (int j = 0; j < this.field_146700_C.size(); ++j) {
+            if (this.field_146700_C.get(j).field_148812_a == p_146672_1_) {
+                return j;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public void confirmClicked(boolean p_73878_1_, int p_73878_2_) {
+        if (p_73878_2_ == 3 && p_73878_1_) {
+            (new Thread("MCO Configure Requester #" + field_146701_a.incrementAndGet()) {
+                @Override
+                public void run() {
+                    try {
+                        McoServer mcoserver = GuiScreenOnlineServers.this.func_146691_a(GuiScreenOnlineServers.this.field_146705_v);
+                        if (mcoserver != null) {
+                            Session session = GuiScreenOnlineServers.this.mc.getSession();
+                            McoClient mcoclient = new McoClient(session.getSessionID(), session.getUsername(), "1.7.2", Minecraft.getMinecraft().getProxy());
+                            GuiScreenOnlineServers.field_146703_i.func_148470_a(mcoserver);
+                            GuiScreenOnlineServers.this.field_146700_C.remove(mcoserver);
+                            mcoclient.func_148698_c(mcoserver.field_148812_a);
+                            GuiScreenOnlineServers.field_146703_i.func_148470_a(mcoserver);
+                            GuiScreenOnlineServers.this.field_146700_C.remove(mcoserver);
+                            GuiScreenOnlineServers.this.func_146685_v();
+                        }
+                    } catch (ExceptionMcoService exceptionmcoservice) {
+                        GuiScreenOnlineServers.field_146695_f.error("Couldn't configure world");
+                    }
+                }
+            }).start();
+        } else if (p_73878_2_ == 4 && p_73878_1_) {
+            this.field_146711_y.func_146138_a("https://realms.minecraft.net/");
+        }
+        this.mc.displayGuiScreen(this);
+    }
+
+    private void func_146685_v() {
+        int i = this.func_146672_b(this.field_146705_v);
+        if (this.field_146700_C.size() - 1 == i) {
+            --i;
+        }
+        if (this.field_146700_C.size() == 0) {
+            i = -1;
+        }
+        if (i >= 0 && i < this.field_146700_C.size()) {
+            this.field_146705_v = this.field_146700_C.get(i).field_148812_a;
+        }
     }
 
     public void func_146670_h() {
         this.field_146705_v = -1L;
     }
 
-    protected void keyTyped(char c, int i) {
-        super.keyTyped(c, i);
+    private McoServer func_146677_c(long p_146677_1_) {
+        Session session = this.mc.getSession();
+        McoClient mcoclient = new McoClient(session.getSessionID(), session.getUsername(), "1.7.2", Minecraft.getMinecraft().getProxy());
+        try {
+            return mcoclient.func_148709_a(p_146677_1_);
+        } catch (ExceptionMcoService exceptionmcoservice) {
+            field_146695_f.error("Couldn't get own world");
+        } catch (IOException ioexception) {
+            field_146695_f.error("Couldn't parse response getting own world");
+        }
+        return null;
     }
 
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) {
+        if (keyCode == 59) {
+            this.mc.gameSettings.hideServerAddress = !this.mc.gameSettings.hideServerAddress;
+            this.mc.gameSettings.saveOptions();
+        } else {
+            if (keyCode != 28 && keyCode != 156) {
+                super.keyTyped(typedChar, keyCode);
+            } else {
+                this.actionPerformed((GuiButton) this.buttonList.get(0));
+            }
+        }
+    }
+
+    @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        this.field_146698_A = null;
+        this.drawDefaultBackground();
+        this.field_146706_u.func_148350_a(mouseX, mouseY, partialTicks);
+        this.func_146665_b(this.width / 2 - 50, 7);
         super.drawScreen(mouseX, mouseY, partialTicks);
+        if (this.field_146698_A != null) {
+            this.func_146658_b(this.field_146698_A, mouseX, mouseY);
+        }
+        this.func_146659_c(mouseX, mouseY);
     }
 
-    public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
+    private void func_146665_b(int p_146665_1_, int p_146665_2_) {
+        this.mc.getTextureManager().bindTexture(field_146702_h);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glPushMatrix();
+        GL11.glScalef(0.5F, 0.5F, 0.5F);
+        this.drawTexturedModalRect(p_146665_1_ * 2, p_146665_2_ * 2, 0, 97, 200, 50);
+        GL11.glPopMatrix();
+    }
+
+    @Override
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
         super.mouseClicked(mouseX, mouseY, mouseButton);
+        if (this.func_146662_d(mouseX, mouseY) && field_146703_i.func_148468_d() != 0) {
+            this.func_146669_s();
+            GuiScreenPendingInvitation guiscreenpendinginvitation = new GuiScreenPendingInvitation(this.field_146707_t);
+            this.mc.displayGuiScreen(guiscreenpendinginvitation);
+        }
     }
 
-    protected void func_146658_b(String s, int i, int j) {
+    private void func_146659_c(int p_146659_1_, int p_146659_2_) {
+        int k = field_146703_i.func_148468_d();
+        boolean flag = this.func_146662_d(p_146659_1_, p_146659_2_);
+        this.mc.getTextureManager().bindTexture(field_146697_g);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glPushMatrix();
+        this.drawTexturedModalRect(this.width / 2 + 58, 12, flag ? 166 : 182, 22, 16, 16);
+        GL11.glPopMatrix();
+        int l;
+        int i1;
+        if (k != 0) {
+            l = 198 + (Math.min(k, 6) - 1) * 8;
+            i1 = (int) (Math.max(0.0F, Math.max(MathHelper.sin((10 + this.field_146696_E) * 0.57F), MathHelper.cos(this.field_146696_E * 0.35F))) * -6.0F);
+            this.mc.getTextureManager().bindTexture(field_146697_g);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GL11.glPushMatrix();
+            this.drawTexturedModalRect(this.width / 2 + 58 + 4, 16 + i1, l, 22, 8, 8);
+            GL11.glPopMatrix();
+        }
+        if (flag) {
+            l = p_146659_1_ + 12;
+            i1 = p_146659_2_ - 12;
+            String s;
+            if (k != 0) {
+                s = I18n.format("mco.invites.pending");
+            } else {
+                s = I18n.format("mco.invites.nopending");
+            }
+            int j1 = this.fontRendererObj.getStringWidth(s);
+            this.drawGradientRect(l - 3, i1 - 3, l + j1 + 3, i1 + 8 + 3, -1073741824, -1073741824);
+            this.fontRendererObj.drawStringWithShadow(s, l, i1, -1);
+        }
+    }
 
+    private boolean func_146662_d(int p_146662_1_, int p_146662_2_) {
+        int k = this.width / 2 + 56;
+        int l = this.width / 2 + 78;
+        byte b0 = 13;
+        byte b1 = 27;
+        return k <= p_146662_1_ && p_146662_1_ <= l && b0 <= p_146662_2_ && p_146662_2_ <= b1;
+    }
+
+    private void func_146656_d(long p_146656_1_) {
+        McoServer mcoserver = this.func_146691_a(p_146656_1_);
+        if (mcoserver != null) {
+            this.func_146669_s();
+            GuiScreenLongRunningTask guiscreenlongrunningtask = new GuiScreenLongRunningTask(this.mc, this, new TaskOnlineConnect(this, mcoserver));
+            guiscreenlongrunningtask.func_146902_g();
+            this.mc.displayGuiScreen(guiscreenlongrunningtask);
+        }
+    }
+
+    private void func_146661_c(int p_146661_1_, int p_146661_2_, int p_146661_3_, int p_146661_4_) {
+        this.mc.getTextureManager().bindTexture(field_146697_g);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glPushMatrix();
+        GL11.glScalef(0.5F, 0.5F, 0.5F);
+        this.drawTexturedModalRect(p_146661_1_ * 2, p_146661_2_ * 2, 191, 0, 16, 15);
+        GL11.glPopMatrix();
+        if (p_146661_3_ >= p_146661_1_ && p_146661_3_ <= p_146661_1_ + 9 && p_146661_4_ >= p_146661_2_ && p_146661_4_ <= p_146661_2_ + 9) {
+            this.field_146698_A = I18n.format("mco.selectServer.expired");
+        }
+    }
+
+    private void func_146687_b(int p_146687_1_, int p_146687_2_, int p_146687_3_, int p_146687_4_, int p_146687_5_) {
+        if (this.field_146696_E % 20 < 10) {
+            this.mc.getTextureManager().bindTexture(field_146697_g);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GL11.glPushMatrix();
+            GL11.glScalef(0.5F, 0.5F, 0.5F);
+            this.drawTexturedModalRect(p_146687_1_ * 2, p_146687_2_ * 2, 207, 0, 16, 15);
+            GL11.glPopMatrix();
+        }
+        if (p_146687_3_ >= p_146687_1_ && p_146687_3_ <= p_146687_1_ + 9 && p_146687_4_ >= p_146687_2_ && p_146687_4_ <= p_146687_2_ + 9) {
+            if (p_146687_5_ == 0) {
+                this.field_146698_A = I18n.format("mco.selectServer.expires.soon");
+            } else if (p_146687_5_ == 1) {
+                this.field_146698_A = I18n.format("mco.selectServer.expires.day");
+            } else {
+                this.field_146698_A = I18n.format("mco.selectServer.expires.days", p_146687_5_);
+            }
+        }
+    }
+
+    private void func_146683_d(int p_146683_1_, int p_146683_2_, int p_146683_3_, int p_146683_4_) {
+        this.mc.getTextureManager().bindTexture(field_146697_g);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glPushMatrix();
+        GL11.glScalef(0.5F, 0.5F, 0.5F);
+        this.drawTexturedModalRect(p_146683_1_ * 2, p_146683_2_ * 2, 207, 0, 16, 15);
+        GL11.glPopMatrix();
+        if (p_146683_3_ >= p_146683_1_ && p_146683_3_ <= p_146683_1_ + 9 && p_146683_4_ >= p_146683_2_ && p_146683_4_ <= p_146683_2_ + 9) {
+            this.field_146698_A = I18n.format("mco.selectServer.open");
+        }
+    }
+
+    private void func_146671_e(int p_146671_1_, int p_146671_2_, int p_146671_3_, int p_146671_4_) {
+        this.mc.getTextureManager().bindTexture(field_146697_g);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glPushMatrix();
+        GL11.glScalef(0.5F, 0.5F, 0.5F);
+        this.drawTexturedModalRect(p_146671_1_ * 2, p_146671_2_ * 2, 223, 0, 16, 15);
+        GL11.glPopMatrix();
+        if (p_146671_3_ >= p_146671_1_ && p_146671_3_ <= p_146671_1_ + 9 && p_146671_4_ >= p_146671_2_ && p_146671_4_ <= p_146671_2_ + 9) {
+            this.field_146698_A = I18n.format("mco.selectServer.closed");
+        }
+    }
+
+    private void func_146666_f(int p_146666_1_, int p_146666_2_, int p_146666_3_, int p_146666_4_) {
+        this.mc.getTextureManager().bindTexture(field_146697_g);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glPushMatrix();
+        GL11.glScalef(0.5F, 0.5F, 0.5F);
+        this.drawTexturedModalRect(p_146666_1_ * 2, p_146666_2_ * 2, 223, 0, 16, 15);
+        GL11.glPopMatrix();
+        if (p_146666_3_ >= p_146666_1_ && p_146666_3_ <= p_146666_1_ + 9 && p_146666_4_ >= p_146666_2_ && p_146666_4_ <= p_146666_2_ + 9) {
+            this.field_146698_A = I18n.format("mco.selectServer.locked");
+        }
+    }
+
+    protected void func_146658_b(String p_146658_1_, int p_146658_2_, int p_146658_3_) {
+        if (p_146658_1_ != null) {
+            int k = p_146658_2_ + 12;
+            int l = p_146658_3_ - 12;
+            int i1 = this.fontRendererObj.getStringWidth(p_146658_1_);
+            drawGradientRect(k - 3, l - 3, k + i1 + 3, l + 8 + 3, -1073741824, -1073741824);
+            this.fontRendererObj.drawStringWithShadow(p_146658_1_, k, l, -1);
+        }
+    }
+
+    @SideOnly(Side.CLIENT) @SuppressWarnings({"Convert2Lambda", "unused"})
+    public class OnlineServerList extends GuiScreenSelectLocation {
+
+        public OnlineServerList() {
+            super(GuiScreenOnlineServers.this.mc, GuiScreenOnlineServers.this.width, GuiScreenOnlineServers.this.height, 32, GuiScreenOnlineServers.this.height - 64, 36);
+        }
+
+        @Override
+        protected int func_148355_a() {
+            return GuiScreenOnlineServers.this.field_146700_C.size() + 1;
+        }
+
+        @Override
+        protected void func_148352_a(int p_148352_1_, boolean p_148352_2_) {
+            if (p_148352_1_ < GuiScreenOnlineServers.this.field_146700_C.size()) {
+                McoServer mcoserver = GuiScreenOnlineServers.this.field_146700_C.get(p_148352_1_);
+                GuiScreenOnlineServers.this.field_146705_v = mcoserver.field_148812_a;
+                if (!GuiScreenOnlineServers.this.mc.getSession().getUsername().equals(mcoserver.field_148809_e)) {
+                    GuiScreenOnlineServers.this.field_146704_w.displayString = I18n.format("mco.selectServer.leave");
+                } else {
+                    GuiScreenOnlineServers.this.field_146704_w.displayString = I18n.format("mco.selectServer.configure");
+                }
+                GuiScreenOnlineServers.this.field_146704_w.enabled = !mcoserver.field_148808_d.equals(McoServer.State.ADMIN_LOCK.name());
+                GuiScreenOnlineServers.this.field_146710_z.enabled = mcoserver.field_148808_d.equals(McoServer.State.OPEN.name()) && !mcoserver.field_148819_h;
+                if (p_148352_2_ && GuiScreenOnlineServers.this.field_146710_z.enabled) {
+                    GuiScreenOnlineServers.this.func_146656_d(GuiScreenOnlineServers.this.field_146705_v);
+                }
+            }
+        }
+
+        @Override
+        protected boolean func_148356_a(int p_148356_1_) {
+            return p_148356_1_ == GuiScreenOnlineServers.this.func_146672_b(GuiScreenOnlineServers.this.field_146705_v);
+        }
+
+        @Override
+        protected boolean func_148349_b(int p_148349_1_) {
+            try {
+                return p_148349_1_ >= 0 && p_148349_1_ < GuiScreenOnlineServers.this.field_146700_C.size() && ((McoServer) GuiScreenOnlineServers.this.field_146700_C.get(p_148349_1_)).field_148809_e.toLowerCase().equals(GuiScreenOnlineServers.this.mc.getSession().getUsername());
+            } catch (Exception exception) {
+                return false;
+            }
+        }
+
+        @Override
+        protected int func_148351_b() {
+            return this.func_148355_a() * 36;
+        }
+
+        @Override
+        protected void func_148358_c() {
+            GuiScreenOnlineServers.this.drawDefaultBackground();
+        }
+
+        @Override
+        protected void func_148348_a(int p_148348_1_, int p_148348_2_, int p_148348_3_, int p_148348_4_, Tessellator p_148348_5_) {
+            if (p_148348_1_ < GuiScreenOnlineServers.this.field_146700_C.size()) {
+                this.func_148390_b(p_148348_1_, p_148348_2_, p_148348_3_, p_148348_4_, p_148348_5_);
+            }
+        }
+
+        private void func_148390_b(int p_148390_1_, int p_148390_2_, int p_148390_3_, int p_148390_4_, Tessellator p_148390_5_) {
+            final McoServer mcoserver = GuiScreenOnlineServers.this.field_146700_C.get(p_148390_1_);
+            if (!mcoserver.field_148814_o) {
+                mcoserver.field_148814_o = true;
+                GuiScreenOnlineServers.field_146708_s.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            GuiScreenOnlineServers.field_146709_r.func_148506_a(mcoserver);
+                        } catch (UnknownHostException unknownhostexception) {
+                            GuiScreenOnlineServers.field_146695_f.error("Pinger: Could not resolve host");
+                        }
+                    }
+                });
+            }
+            GuiScreenOnlineServers.this.drawString(GuiScreenOnlineServers.this.fontRendererObj, mcoserver.func_148801_b(), p_148390_2_ + 2, p_148390_3_ + 1, 16777215);
+            short short1 = 207;
+            byte b0 = 1;
+            if (mcoserver.field_148819_h) {
+                GuiScreenOnlineServers.this.func_146661_c(p_148390_2_ + short1, p_148390_3_ + b0, this.field_148365_e, this.field_148362_f);
+            } else if (mcoserver.field_148808_d.equals(McoServer.State.CLOSED.name())) {
+                GuiScreenOnlineServers.this.func_146671_e(p_148390_2_ + short1, p_148390_3_ + b0, this.field_148365_e, this.field_148362_f);
+            } else if (mcoserver.field_148809_e.equals(GuiScreenOnlineServers.this.mc.getSession().getUsername()) && mcoserver.field_148818_k < 7) {
+                this.func_148389_a(p_148390_1_, p_148390_2_ - 14, p_148390_3_, mcoserver);
+                GuiScreenOnlineServers.this.func_146687_b(p_148390_2_ + short1, p_148390_3_ + b0, this.field_148365_e, this.field_148362_f, mcoserver.field_148818_k);
+            } else if (mcoserver.field_148808_d.equals(McoServer.State.OPEN.name())) {
+                GuiScreenOnlineServers.this.func_146683_d(p_148390_2_ + short1, p_148390_3_ + b0, this.field_148365_e, this.field_148362_f);
+                this.func_148389_a(p_148390_1_, p_148390_2_ - 14, p_148390_3_, mcoserver);
+            } else if (mcoserver.field_148808_d.equals(McoServer.State.ADMIN_LOCK.name())) {
+                GuiScreenOnlineServers.this.func_146666_f(p_148390_2_ + short1, p_148390_3_ + b0, this.field_148365_e, this.field_148362_f);
+            }
+            GuiScreenOnlineServers.this.drawString(GuiScreenOnlineServers.this.fontRendererObj, mcoserver.field_148813_n, p_148390_2_ + 200 - GuiScreenOnlineServers.this.fontRendererObj.getStringWidth(mcoserver.field_148813_n), p_148390_3_ + 1, 8421504);
+            GuiScreenOnlineServers.this.drawString(GuiScreenOnlineServers.this.fontRendererObj, mcoserver.func_148800_a(), p_148390_2_ + 2, p_148390_3_ + 12, 7105644);
+            GuiScreenOnlineServers.this.drawString(GuiScreenOnlineServers.this.fontRendererObj, mcoserver.field_148809_e, p_148390_2_ + 2, p_148390_3_ + 12 + 11, 5000268);
+        }
+
+        private void func_148389_a(int p_148389_1_, int p_148389_2_, int p_148389_3_, McoServer p_148389_4_) {
+            if (p_148389_4_.field_148807_g != null) {
+                if (p_148389_4_.field_148816_m != null) {
+                    GuiScreenOnlineServers.this.drawString(GuiScreenOnlineServers.this.fontRendererObj, p_148389_4_.field_148816_m, p_148389_2_ + 215 - GuiScreenOnlineServers.this.fontRendererObj.getStringWidth(p_148389_4_.field_148816_m), p_148389_3_ + 1, 8421504);
+                }
+                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                GuiScreenOnlineServers.this.mc.getTextureManager().bindTexture(Gui.icons);
+            }
+        }
     }
 }

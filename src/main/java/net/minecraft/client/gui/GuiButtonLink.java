@@ -8,7 +8,6 @@ import space.libs.util.MappedName;
 
 import java.net.URI;
 
-@SuppressWarnings("all")
 @SideOnly(Side.CLIENT)
 public class GuiButtonLink extends GuiButton {
 
@@ -23,8 +22,8 @@ public class GuiButtonLink extends GuiButton {
         try {
             URI uri = new URI(paramString);
             Class<?> clazz = Class.forName("java.awt.Desktop");
-            Object object = clazz.getMethod("getDesktop", new Class[0]).invoke(null, new Object[0]);
-            clazz.getMethod("browse", new Class[] { URI.class }).invoke(object, new Object[] { uri });
+            Object object = clazz.getMethod("getDesktop").invoke(null);
+            clazz.getMethod("browse", URI.class).invoke(object, uri);
         } catch (Throwable throwable) {
             field_146139_o.error("Couldn't open link", throwable);
         }
