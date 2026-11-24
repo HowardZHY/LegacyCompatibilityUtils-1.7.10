@@ -18,9 +18,9 @@ public class GuiButtonLink extends GuiButton {
     }
 
     @MappedName("openURI")
-    public void func_146138_a(String paramString) {
+    public void func_146138_a(String link) {
         try {
-            URI uri = new URI(paramString);
+            URI uri = new URI(link);
             Class<?> clazz = Class.forName("java.awt.Desktop");
             Object object = clazz.getMethod("getDesktop").invoke(null);
             clazz.getMethod("browse", URI.class).invoke(object, uri);

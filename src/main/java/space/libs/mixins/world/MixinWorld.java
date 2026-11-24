@@ -22,8 +22,7 @@ public abstract class MixinWorld implements IWorld, IBlockAccessBridge {
     public int field_73013_u = 2; //TODO?
 
     @MappedName("vecPool")
-    @Mutable
-    public final Vec3Pool field_82741_K = new Vec3Pool(300, 2000);
+    public Vec3Pool field_82741_K = new Vec3Pool(300, 2000);
 
     @Shadow
     public @Final WorldProvider provider;

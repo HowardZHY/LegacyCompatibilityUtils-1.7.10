@@ -17,17 +17,17 @@ import org.lwjgl.input.Keyboard;
 @SideOnly(Side.CLIENT) @SuppressWarnings("all")
 public class GuiScreenReamlsTOS extends GuiScreen {
 
-    private static final Logger logger = LogManager.getLogger();
+    public static final Logger logger = LogManager.getLogger();
 
-    private final GuiScreen field_146770_f;
+    public final GuiScreen field_146770_f;
 
-    private final McoServer field_146771_g;
+    public final McoServer field_146771_g;
 
-    private GuiButton field_146774_h;
+    public GuiButton field_146774_h;
 
-    private boolean field_146775_i = false;
+    public boolean field_146775_i = false;
 
-    private String field_146772_r = "https://minecraft.net/realms/terms";
+    public String field_146772_r = "https://minecraft.net/realms/terms";
 
     public GuiScreenReamlsTOS(GuiScreen p_i45045_1_, McoServer p_i45045_2_) {
         this.field_146770_f = p_i45045_1_;
@@ -65,7 +65,7 @@ public class GuiScreenReamlsTOS extends GuiScreen {
         }
     }
 
-    private void func_146768_g() {
+    public void func_146768_g() {
         Session session = this.mc.getSession();
         McoClient mcoclient = new McoClient(session.getSessionID(), session.getUsername(), "1.7.2", Minecraft.getMinecraft().getProxy());
         try {
@@ -88,9 +88,9 @@ public class GuiScreenReamlsTOS extends GuiScreen {
         }
     }
 
-    private void func_146769_a(String p_146769_1_) {
+    public void func_146769_a(String link) {
         try {
-            URI uri = new URI(p_146769_1_);
+            URI uri = new URI(link);
             Class<?> oclass = Class.forName("java.awt.Desktop");
             Object object = oclass.getMethod("getDesktop", new Class[0]).invoke(null);
             oclass.getMethod("browse", new Class[] {URI.class}).invoke(object, uri);

@@ -11,6 +11,7 @@ cpw/mods/fml/common/network/simpleimpl/SimpleNetworkWrapper:
   - error: addServerHandlerAfter(Lcpw/mods/fml/common/network/FMLEmbeddedChannel;Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)V - Method was removed
   - error: getHandlerWrapper(Ljava/lang/Class;Lcpw/mods/fml/relauncher/Side;Ljava/lang/Class;)Lcpw/mods/fml/common/network/simpleimpl/SimpleChannelHandlerWrapper; - Method was removed
   - error: addClientHandlerAfter(Lcpw/mods/fml/common/network/FMLEmbeddedChannel;Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)V - Method was removed
+    #TODO
 cpw/mods/fml/common/LoaderState$ModState:
   - error: <init>(Ljava/lang/String;ILjava/lang/String;)V - Method was removed
     #INVALID
@@ -70,6 +71,7 @@ net/minecraft/world/gen/layer/GenLayerBiome:
   - error: warmBiomes:Ljava/util/List; - Field was removed
   - error: desertBiomes:Ljava/util/List; - Field was removed
   - error: coolBiomes:Ljava/util/List; - Field was removed
+    #DONE
 net/minecraft/nbt/NBTTagByteArray:
   - error: func_74735_a(Ljava/io/DataInput;I)V - Method was removed
 net/minecraftforge/fluids/FluidContainerRegistry$ContainerKey:
@@ -124,6 +126,7 @@ net/minecraft/client/mco/McoServer:
 net/minecraft/util/ObjectIntIdentityMap:
   - error: field_148748_b:Ljava/util/List; - Field was lowered in visibility
   - error: field_148749_a:Ljava/util/Map; - Field was lowered in visibility
+    #DONE
 net/minecraft/server/MinecraftServer:
   - error: func_71210_a(Lnet/minecraft/server/management/ServerConfigurationManager;)V - Method was removed
   - error: func_152363_m()Z - Method was made abstract
@@ -455,6 +458,7 @@ net/minecraft/client/Minecraft:
   - error: field_71414_F:Z - Field was removed
 net/minecraft/client/renderer/IImageBuffer:
   - error: func_152634_a()V - Method was made abstract
+    #DONE
 net/minecraftforge/common/BiomeDictionary$Type:
   - error: <init>(Ljava/lang/String;I)V - Method was removed
 net/minecraft/client/resources/data/PackMetadataSection:
