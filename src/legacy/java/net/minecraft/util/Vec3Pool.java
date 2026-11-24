@@ -25,8 +25,9 @@ public class Vec3Pool {
 
     public Vec3 func_72345_a(double x, double y, double z) {
         Vec3 vec3;
-        if (func_82589_e())
+        if (this.func_82589_e()) {
             return new Vec3(x, y, z);
+        }
         if (this.field_72347_d >= this.field_72350_c.size()) {
             vec3 = new Vec3(x, y, z);
             this.field_72350_c.add(vec3);
@@ -39,8 +40,9 @@ public class Vec3Pool {
     }
 
     public void func_72343_a() {
-        if (func_82589_e())
+        if (this.func_82589_e()) {
             return;
+        }
         if (this.field_72347_d > this.field_72348_e)
             this.field_72348_e = this.field_72347_d;
         if (this.field_72346_f++ == this.field_72351_a) {
@@ -54,8 +56,9 @@ public class Vec3Pool {
     }
 
     public void func_72344_b() {
-        if (func_82589_e())
+        if (this.func_82589_e()) {
             return;
+        }
         this.field_72347_d = 0;
         this.field_72350_c.clear();
     }

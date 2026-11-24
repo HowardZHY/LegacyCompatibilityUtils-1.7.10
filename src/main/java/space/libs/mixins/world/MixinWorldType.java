@@ -6,9 +6,7 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeManager;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -20,7 +18,7 @@ import java.util.*;
 
 @SuppressWarnings("unused")
 @Mixin(WorldType.class)
-public class MixinWorldType implements IWorldType {
+public abstract class MixinWorldType implements IWorldType {
 
     @Shadow
     private @Final int worldTypeId;
@@ -42,6 +40,7 @@ public class MixinWorldType implements IWorldType {
         return this.biomesForWorldType;
     }
 
+    @Override
     public void addNewBiome(BiomeGenBase biome) {
         if (this.biomesForWorldType == null) {
             this.setBiomesForWorldType();
@@ -53,6 +52,7 @@ public class MixinWorldType implements IWorldType {
         BiomeManager.addSpawnBiome(biome);
     }
 
+    @Override
     public void removeBiome(BiomeGenBase biome) {
         if (this.biomesForWorldType == null) {
             this.setBiomesForWorldType();
