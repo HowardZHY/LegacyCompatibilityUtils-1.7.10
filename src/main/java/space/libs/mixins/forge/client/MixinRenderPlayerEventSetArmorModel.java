@@ -1,4 +1,4 @@
-package space.libs.mixins.forge;
+package space.libs.mixins.forge.client;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

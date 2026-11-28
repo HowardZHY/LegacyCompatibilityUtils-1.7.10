@@ -7,10 +7,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.*;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import space.libs.fml.ItemData;
 import space.libs.fml.network.*;
 import space.libs.interfaces.IIFMLSidedHandler;
 
+@SuppressWarnings("OverwriteModifiers")
 @Mixin(value = IFMLSidedHandler.class, remap = false)
 public interface MixinIFMLSidedHandler extends IIFMLSidedHandler {
 
@@ -45,4 +47,26 @@ public interface MixinIFMLSidedHandler extends IIFMLSidedHandler {
     @Override
     default void updateResourcePackList() {}
 
+    /**
+     * @author HowardZHY
+     * @reason default
+     */
+    @Overwrite
+    default void allowLogins() {}
+
+    /**
+     * @author HowardZHY
+     * @reason default
+     */
+    @Overwrite
+    default void processWindowMessages() {}
+
+    /**
+     * @author HowardZHY
+     * @reason default
+     */
+    @Overwrite
+    default String stripSpecialChars(String string) {
+        return string;
+    }
 }

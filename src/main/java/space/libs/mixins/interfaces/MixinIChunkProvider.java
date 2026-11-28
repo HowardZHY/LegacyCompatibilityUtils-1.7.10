@@ -9,7 +9,7 @@ public interface MixinIChunkProvider {
 
     /**
      * @author HowardZHY
-     * @reason Abstract Method
+     * @reason default
      */
     @SuppressWarnings("OverwriteModifiers")
     @Overwrite

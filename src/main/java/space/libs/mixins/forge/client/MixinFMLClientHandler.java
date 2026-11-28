@@ -1,4 +1,4 @@
-package space.libs.mixins.forge;
+package space.libs.mixins.forge.client;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.MapDifference;
@@ -6,8 +6,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.modloader.ModLoaderClientHelper;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.*;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.multiplayer.*;
@@ -27,7 +25,6 @@ import space.libs.interfaces.*;
 
 import java.util.List;
 
-@SideOnly(Side.CLIENT)
 @Mixin(value = FMLClientHandler.class, remap = false)
 public class MixinFMLClientHandler implements IIFMLSidedHandler {
 

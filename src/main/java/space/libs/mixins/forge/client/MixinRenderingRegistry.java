@@ -1,4 +1,4 @@
-package space.libs.mixins.forge;
+package space.libs.mixins.forge.client;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -22,10 +22,12 @@ public class MixinRenderingRegistry implements IRenderingRegistry {
         TextureFXManager.instance().addNewTextureOverride(path, overlayPath, index);
     }
 
+    @Override
     public int addOverride(String fileToOverride, String fileToAdd) {
         return addTextureOverride(fileToOverride, fileToAdd);
     }
 
+    @Override
     public void addOverride(String path, String overlayPath, int index) {
         addTextureOverride(path, overlayPath, index);
     }

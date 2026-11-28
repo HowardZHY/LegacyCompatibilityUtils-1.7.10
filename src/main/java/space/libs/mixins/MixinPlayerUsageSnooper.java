@@ -10,7 +10,7 @@ import java.util.*;
 @Mixin(PlayerUsageSnooper.class)
 public abstract class MixinPlayerUsageSnooper {
 
-    public Map<?, ?> field_76482_a = new HashMap<Object, Object>();
+    public Map<?, ?> field_76482_a = new HashMap<>();
 
     @Shadow
     private void func_152766_h() {}

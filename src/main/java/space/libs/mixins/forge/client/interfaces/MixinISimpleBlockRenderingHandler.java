@@ -1,4 +1,4 @@
-package space.libs.mixins.forge.interfaces;
+package space.libs.mixins.forge.client.interfaces;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import org.spongepowered.asm.mixin.Mixin;

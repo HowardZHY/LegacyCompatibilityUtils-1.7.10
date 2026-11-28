@@ -15,11 +15,11 @@ public abstract class MixinPlayerManager {
     private int playerViewRadius;
 
     @ShadowConstructor
-    public void PlayerManager(WorldServer p_i1176_1_) {}
+    public void PlayerManager(WorldServer world) {}
 
     @NewConstructor
-    public void PlayerManager(WorldServer p_i1176_1_, int viewRadius) {
-        this.PlayerManager(p_i1176_1_);
+    public void PlayerManager(WorldServer world, int viewRadius) {
+        this.PlayerManager(world);
         this.playerViewRadius = viewRadius;
     }
 

@@ -10,10 +10,12 @@ public abstract class MixinRegistryNamespaced extends MixinRegistrySimple implem
     @Shadow
     public abstract String getNameForObject(Object object);
 
+    @Override
     public void compatlib$removeObject(String key, Object value) {
         this.registryObjects.remove(key, value);
     }
 
+    @Override
     public void compatlib$putObject(String key, Object value) {
         this.registryObjects.put(key, value);
     }

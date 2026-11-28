@@ -1,4 +1,4 @@
-package space.libs.mixins.forge;
+package space.libs.mixins.forge.client;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.client.IItemRenderer;

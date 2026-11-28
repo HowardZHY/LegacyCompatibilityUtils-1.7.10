@@ -6,12 +6,12 @@
   "plugin": "space.libs.core.CompatLibMixinPlugin",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "MixinFMLClientHandler",
-    "MixinForgeHooksClient",
-    "MixinMinecraftForgeClient",
-    "MixinRenderingRegistry",
-    "MixinRenderPlayerEventSetArmorModel",
-    "interfaces.MixinISimpleBlockRenderingHandler"
+    "client.MixinFMLClientHandler",
+    "client.MixinForgeHooksClient",
+    "client.MixinMinecraftForgeClient",
+    "client.MixinRenderingRegistry",
+    "client.MixinRenderPlayerEventSetArmorModel",
+    "client.interfaces.MixinISimpleBlockRenderingHandler"
   ],
   "mixins": [
     "MixinBonemealEvent",
@@ -27,6 +27,7 @@
     "MixinGameRegistry",
     "MixinLanguageRegistry",
     "MixinNetworkRegistry",
+    "MixinSimpleNetworkWrapper",
     "MixinTerrainGen",
     "MixinTickEventType",
     "interfaces.MixinIEntityAdditionalSpawnData",

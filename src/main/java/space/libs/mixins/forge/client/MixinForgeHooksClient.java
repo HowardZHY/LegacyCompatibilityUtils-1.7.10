@@ -1,7 +1,5 @@
-package space.libs.mixins.forge;
+package space.libs.mixins.forge.client;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -10,7 +8,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import space.libs.util.cursedmixinextensions.annotations.Public;
 
-@SideOnly(Side.CLIENT)
 @Mixin(value = ForgeHooksClient.class, remap = false)
 public abstract class MixinForgeHooksClient {
 

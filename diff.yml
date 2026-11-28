@@ -11,7 +11,7 @@ cpw/mods/fml/common/network/simpleimpl/SimpleNetworkWrapper:
   - error: addServerHandlerAfter(Lcpw/mods/fml/common/network/FMLEmbeddedChannel;Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)V - Method was removed
   - error: getHandlerWrapper(Ljava/lang/Class;Lcpw/mods/fml/relauncher/Side;Ljava/lang/Class;)Lcpw/mods/fml/common/network/simpleimpl/SimpleChannelHandlerWrapper; - Method was removed
   - error: addClientHandlerAfter(Lcpw/mods/fml/common/network/FMLEmbeddedChannel;Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Class;)V - Method was removed
-    #TODO
+    #DONE
 cpw/mods/fml/common/LoaderState$ModState:
   - error: <init>(Ljava/lang/String;ILjava/lang/String;)V - Method was removed
     #INVALID
@@ -60,6 +60,7 @@ cpw/mods/fml/common/IFMLSidedHandler:
   - error: allowLogins()V - Method was made abstract
   - error: stripSpecialChars(Ljava/lang/String;)Ljava/lang/String; - Method was made abstract
   - error: processWindowMessages()V - Method was made abstract
+    #DONE
 net/minecraft/client/mco/McoServerList$UpdateTask$Comparator:
   - error: Class no longer exists
     #DONE
@@ -222,6 +223,7 @@ net/minecraft/tileentity/TileEntitySkull:
   - error: field_145909_j:Ljava/lang/String; - Field was removed
 net/minecraft/util/IJsonSerializable:
   - error: func_152753_a(Lcom/google/gson/JsonElement;)V - Method was made abstract
+    #DONE
 net/minecraft/command/ServerCommandManager:
   - error: func_71563_a(Lnet/minecraft/command/ICommandSender;ILjava/lang/String;[Ljava/lang/Object;)V - Method was removed
 net/minecraft/nbt/NBTTagEnd:
@@ -291,6 +293,7 @@ net/minecraft/nbt/NBTTagList:
   - error: func_74735_a(Ljava/io/DataInput;I)V - Method was removed
 cpw/mods/fml/common/asm/transformers/deobf/LZMAInputSupplier:
   - error: getInput()Ljava/io/InputStream; - Method was made final
+    #INVALID
 net/minecraft/world/storage/SaveHandler:
   - error: func_75764_a(Ljava/lang/String;)Lnet/minecraft/nbt/NBTTagCompound; - Method was removed
 net/minecraft/nbt/NBTTagIntArray:
